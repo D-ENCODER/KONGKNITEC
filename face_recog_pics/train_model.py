@@ -5,7 +5,7 @@ import numpy as np
 # Command: pip install pillow
 from PIL import Image
 
-#Initialize names and path to empty list 
+# Initialize names and path to empty list
 names = []
 path = []
 
@@ -18,7 +18,6 @@ for name in names:
     for image in os.listdir("dataset/{}".format(name)):
         path_string = os.path.join("dataset/{}".format(name), image)
         path.append(path_string)
-
 
 faces = []
 ids = []

@@ -47,11 +47,13 @@ def knn(train, test, k=5):
 # KNN CODE (END)
 # Object initialization for capturing live video frame by frame
 
-cap = cv2.VideoCapture(0)
-face_cascade = cv2.CascadeClassifier("Detectors/haarcascade_frontalface_alt.xml")
+cap = cv2.VideoCapture(-1)
+face_cascade = cv2.CascadeClassifier(
+    "face_recog_numpy/Detectors/haarcascade_frontalface_alt.xml"
+)
 
 # Initializing variable for future use.
-dataset_path = "./face_dataset/"
+dataset_path = "./face_recog_numpy/face_dataset/"
 face_data = []
 labels = []
 class_id = 0
@@ -59,7 +61,7 @@ names = {}
 
 # Dataset data retrieving
 for fx in os.listdir(dataset_path):
-    if fx.endswith('.npy'):
+    if fx.endswith(".npy"):
         names[class_id] = fx[:-4]
         data_item = np.load(dataset_path + fx)
         face_data.append(data_item)
@@ -91,14 +93,23 @@ while True:
         x, y, w, h = face
         # Get the face ROI
         offset = 5
-        face_section = frame[y - offset:y + h + offset, x - offset:x + w + offset]
+        face_section = frame[y - offset : y + h + offset, x - offset : x + w + offset]
         face_section = cv2.resize(face_section, (100, 100))
         out = knn(trainset, face_section.flatten())
         # Draw rectangle in the original image
-        cv2.putText(frame, names[int(out)], (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv2.LINE_AA)
+        cv2.putText(
+            frame,
+            names[int(out)],
+            (x, y - 10),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            1,
+            (255, 0, 0),
+            2,
+            cv2.LINE_AA,
+        )
         cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 255, 255), 2)
     cv2.imshow("Faces", frame)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    if cv2.waitKey(1) & 0xFF == ord("q"):
         break
 
 # releasing the resources that were in use.

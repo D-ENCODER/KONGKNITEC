@@ -8,7 +8,9 @@ import cv2
 
 # Object initialization to capture live video frame by frame
 cap = cv2.VideoCapture(0)
-face_cascade = cv2.CascadeClassifier("Detectors/haarcascade_frontalface_alt.xml")
+face_cascade = cv2.CascadeClassifier(
+    "Detectors/haarcascade_frontalface_alt.xml"
+)
 
 while True:
     ret, frame = cap.read()
@@ -24,14 +26,14 @@ while True:
     for face in faces[:1]:
         x, y, w, h = face
         offset = 10
-        face_offset = frame[y - offset:y + h + offset, x - offset:x + w + offset]
+        face_offset = frame[y - offset : y + h + offset, x - offset : x + w + offset]
         face_selection = cv2.resize(face_offset, (100, 100))
         cv2.imshow("Face", face_selection)
         cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
     cv2.imshow("faces", frame)
     # If you press q then the command is terminated or else it continues the infinite loop.
     key_pressed = cv2.waitKey(1) & 0xFF
-    if key_pressed == ord('q'):
+    if key_pressed == ord("q"):
         break
 
 # Releasing the resources that were in use by the program.

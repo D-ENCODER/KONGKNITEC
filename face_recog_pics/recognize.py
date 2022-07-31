@@ -1,7 +1,7 @@
 import cv2
 import os
 
-faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
+faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_alt.xml")
 # video_capture = cv2.VideoCapture(0)
 
 # Call the trained model yml file to recognize faces
@@ -33,10 +33,10 @@ while True:
         cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
         id, _ = recognizer.predict(gray_image[y : y + h, x : x + w])
         print(id)
-        if id != range(len(names)):
+        if id == range(len(names)):
             cv2.putText(
                 img,
-                names[id - 1],
+                "Unknown",
                 (x, y - 4),
                 cv2.FONT_HERSHEY_SIMPLEX,
                 0.8,
@@ -47,7 +47,7 @@ while True:
         else:
             cv2.putText(
                 img,
-                "Unknown",
+                names[id - 1],
                 (x, y - 4),
                 cv2.FONT_HERSHEY_SIMPLEX,
                 0.8,
