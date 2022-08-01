@@ -1,0 +1,16 @@
+<html>
+	<head>
+		<title>Using image tag</title>
+	</head>
+    <img src="img1.jpg" height="90%" width="100%">
+	<body>
+		<table border="1" width="100%"> 
+            <tr>
+                <td align="center" width="25%"><a href="practical1-1.html">Eiffel Tower</a></td>
+                <td align="center" width="25%"><a href="practical1-2.html">Flower</a></td>
+                <td align="center" width="25%"><a href="practical1-3.html">Car</a></td>
+                <td align="center" width="25%"><a href="practical1-4.html">Animal</a></td>
+            <tr>
+        </table>
+	</body>
+</html>
