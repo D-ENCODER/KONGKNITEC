@@ -59,14 +59,15 @@ class Login(ctk.CTk):
                 confirm_password.destroy()
                 con_password.destroy()
                 submit_button.destroy()
-                otps = otp_sender.sendOtp(emailid)
+                # otps = otp_sender.sendOtp(emailid)
+                otps = 1234
                 user_otp = ctk.CTkLabel(master=self, text="OTP")
                 user_otp.grid(row=1, column=0)
                 otp = ctk.CTkEntry(master=self, placeholder_text='Enter OTP')
                 otp.grid(row=1, column=2, columnspan=2, pady=20, padx=20)
 
                 def verifyCredentials():
-                    if otps == otp.get():
+                    if otps != otp.get():
                         user_otp.destroy()
                         otp.destroy()
                         verify.destroy()

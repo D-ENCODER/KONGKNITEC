@@ -17,12 +17,12 @@ def generateDataset(userId, userName):
     # Function to save the image
     def save_image(image, username, userid, imgid):
         # Create a folder with the name as userName
-        Path("Dataset/{}".format(userid + "_" + username)).mkdir(
+        Path("Facial_Recognition/Dataset/{}".format(userid + "_" + username)).mkdir(
             parents=True, exist_ok=True
         )
         # Save the images inside the previously created folder
         cv2.imwrite(
-            "Dataset/{}/{}_{}.jpg".format(userid + "_" + username, userid, imgid), image
+            "Facial_Recognition/Dataset/{}/{}_{}.jpg".format(userid + "_" + username, userid, imgid), image
         )
         print("[INFO] Image {} has been saved in folder : {}".format(imgid, username))
 
