@@ -1,5 +1,9 @@
 import cv2
 from pathlib import Path
+from PIL import Image, ImageTk
+import customtkinter as ctk
+
+import Helper_Functions.custom_error_box
 
 
 def generateDataset(userId, userName):
@@ -12,7 +16,7 @@ def generateDataset(userId, userName):
     # userId = input()
     # userName = input()
     # Initially Count is = 1
-    count = 1
+    counter = 1
 
     # Function to save the image
     def save_image(image, username, userid, imgid):
@@ -27,7 +31,14 @@ def generateDataset(userId, userName):
         print("[INFO] Image {} has been saved in folder : {}".format(imgid, username))
 
     print("[INFO] Video Capture is now starting please stay still...")
-    while True:
+    app1 = ctk.CTk()
+    app1.geometry("700x600")
+    frame = ctk.CTkLabel(master=app1)
+    frame.grid(row=0, column=0)
+    progressbar = ctk.CTkProgressBar(master=app1)
+    progressbar.grid(row=3, column=0, rowspan=2)
+
+    def set_frame(progress, count):
         # Capture the frame/image
         _, img = vc.read()
         # Copy the original Image
@@ -38,37 +49,46 @@ def generateDataset(userId, userName):
         faces = faceCascade.detectMultiScale(
             gray_img, scaleFactor=1.3, minNeighbors=5, minSize=(50, 50)
         )
+        temp = []
         # Draw a rectangle at the location of the coordinates
         for (x, y, w, h) in faces:
             offset = 10
             face_offset = img[y - offset:y + h + offset, x - offset:x + w + offset]
-            face_selection = cv2.resize(face_offset, (100, 100))
+            # face_selection = cv2.resize(face_offset, (100, 100))
             cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            temp = [x, y, w, h]
             coords = [x, y, w, h]
+        # print(coords)
+        if not temp:
+            app1.destroy()
+            obj = Helper_Functions.custom_error_box.CustomBox()
+            obj.error_box('No Face Detected', 'Please stay in the well lighted room to detect your face')
+            return
+        image = Image.fromarray(img)
+        # converts image frame to tkinter compatible image
+        img_frame = ImageTk.PhotoImage(master=app1, image=image)
+        frame.img_frame = img_frame
+        frame.configure(image=img_frame)
+        # to show real time progress
+        progress += 2
+        progressbar.set(progress / 100)
 
-        # Show the image
-        cv2.imshow("Identified Face", img)
+        def sender():
+            set_frame(progress, progress / 2)
 
-        # # Wait for user keypress
-        key = cv2.waitKey(1) & 0xFF
-
-        # # Check if the pressed key is 'k' or 'q'
-        # if key == ord('s'):
-        # If count is less than 5 then save the image
-        if count <= 50:
+        if progress / 2 <= 51:
             roi_img = originalImg[
                       coords[1]: coords[1] + coords[3], coords[0]: coords[0] + coords[2]
                       ]
             save_image(roi_img, userName, userId, count)
-            count += 1
         else:
-            break
+            print("[INFO] Dataset has been created for {}".format(userName))
+            vc.release()
+            app1.destroy()
+            return
+        frame.after(20, sender)
         # If q is pressed break out of the loop
-        if key == ord('q'):
-            break
 
-    print("[INFO] Dataset has been created for {}".format(userName))
-    # Stop the video camera
-    vc.release()
-    # Close all Windows
-    cv2.destroyAllWindows()
+    prog = 0
+    set_frame(prog, counter)
+    app1.mainloop()
