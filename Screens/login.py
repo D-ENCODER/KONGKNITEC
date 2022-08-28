@@ -3,7 +3,10 @@
 # GitHub    : (https://github.com/D-ENCODER)
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
+import webbrowser
+
 import customtkinter as ctk
+from PIL import Image, ImageTk
 from Helper_Functions import otp_sender, custom_error_box
 from Facial_Recognition import generate_dataset, recognize, train_model
 
@@ -11,84 +14,60 @@ from Facial_Recognition import generate_dataset, recognize, train_model
 class Login(ctk.CTk):
     def __init__(self):
         super().__init__()
-        self.geometry("400x240")
-        self.title('Attendance With Face Recognition')
+        self.geometry("300x400")
+        self.title('Kongknitec')
+        self.resizable(False, False)
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
+        self.configure(bg='#eeeeee')
+        image = Image.open('Icons/logo.png')
+        resized_img = image.resize((85, 85), Image.ANTIALIAS)
+        self.img = ImageTk.PhotoImage(master=self, image=resized_img)
+        logo = ctk.CTkLabel(master=self, image=self.img, anchor='center')
+        # logo.grid(row=0, column=1, columnspan=4,  padx=10)
+        logo.place(relx=0, x=150, y=40, anchor='n')
+        login_label = ctk.CTkLabel(master=self, text='SIGN IN', text_font=("Times New Roman", 11, "bold"),
+                                   text_color='black')
+        login_label.place(x=150, relx=0, y=126, anchor='n')
+        login_sublabel = ctk.CTkLabel(master=self, text='USE YOUR KONGKNITEC ACCOUNT',
+                                      text_font=("Times New Roman", 9, "bold"), text_color='black', )
+        login_sublabel.place(x=150, relx=0, y=145, anchor='n')
+        email_frame = ctk.CTkFrame(master=self, fg_color='#eeeeee')
+        email_label = ctk.CTkLabel(master=email_frame, text='E-MAIL',
+                                   text_font=("Times New Roman", 9, "bold"), text_color='black', width=75)
+        email_label.pack(side='left')
+        email_entry = ctk.CTkEntry(master=email_frame, placeholder_text='Enter email here', fg_color='#eeeeee',
+                                   border_width=1,
+                                   text_font=("Times New Roman", 12), text_color='black', width=210, height=30)
+        email_entry.pack(side='left')
+        email_frame.place(x=140, relx=0, y=175, anchor='n')
+        password_frame = ctk.CTkFrame(master=self, fg_color='#eeeeee')
+        password_label = ctk.CTkLabel(master=password_frame, text='Password',
+                                      text_font=("Times New Roman", 9, "bold"), text_color='black', width=75)
+        password_label.pack(side='left', pady=15)
+        password_entry = ctk.CTkEntry(master=password_frame, placeholder_text='Enter password here', fg_color='#eeeeee',
+                                      border_width=1,
+                                      text_font=("Times New Roman", 12), text_color='black', width=210, height=30)
+        password_entry.pack(side='left')
+        password_frame.place(x=140, relx=0, y=210, anchor='n')
 
-        def generate():
-            app1 = ctk.CTk()
-            app1.title('Generate Dataset')
-            app1.geometry("400x240")
-            user_id_text = ctk.CTkLabel(master=app1, text='Enrollment No')
-            user_id_text.grid(row=1, column=0)
-            user_id = ctk.CTkEntry(master=app1, placeholder_text='Enter your Id')
-            user_id.grid(row=1, column=2, columnspan=2, pady=20, padx=20, sticky="we")
-            # user_id.place()
-            name_text = ctk.CTkLabel(master=app1, text='Name')
-            name_text.grid(row=2, column=0)
-            name = ctk.CTkEntry(master=app1, placeholder_text='Enter your Name')
-            name.grid(row=2, column=2, columnspan=2, pady=20, padx=20, sticky="we")
+        def pressed(string):
+            print(string)
 
-            def submit():
-                generate_dataset.generateDataset(user_id.get(), name.get())
-
-            submit = ctk.CTkButton(master=app1, text='Submit', command=submit)
-            submit.place(relx=0.5, rely=0.7, anchor=ctk.CENTER)
-            app1.mainloop()
-
-        user_email = ctk.CTkLabel(master=self, text="Email")
-        user_email.grid(row=1, column=0)
-        email = ctk.CTkEntry(master=self, placeholder_text='Enter Email')
-        email.grid(row=1, column=2, columnspan=2, pady=20, padx=20)
-        user_password = ctk.CTkLabel(master=self, text='Password')
-        user_password.grid(row=2, column=0)
-        password = ctk.CTkEntry(master=self, placeholder_text='Enter Password')
-        password.grid(row=2, column=2, columnspan=2, pady=20, padx=20)
-        confirm_password = ctk.CTkLabel(master=self, text='Confirm Password')
-        confirm_password.grid(row=3, column=0)
-        con_password = ctk.CTkEntry(master=self, placeholder_text='Renter Password')
-        con_password.grid(row=3, column=2, columnspan=2, pady=20, padx=20)
-
-        def sendCredentials():
-            emailid = email.get()
-            if password.get() == con_password.get():
-                user_email.destroy()
-                email.destroy()
-                user_password.destroy()
-                password.destroy()
-                confirm_password.destroy()
-                con_password.destroy()
-                submit_button.destroy()
-                # otps = otp_sender.sendOtp(emailid)
-                otps = 1234
-                user_otp = ctk.CTkLabel(master=self, text="OTP")
-                user_otp.grid(row=1, column=0)
-                otp = ctk.CTkEntry(master=self, placeholder_text='Enter OTP')
-                otp.grid(row=1, column=2, columnspan=2, pady=20, padx=20)
-
-                def verifyCredentials():
-                    if otps != otp.get():
-                        user_otp.destroy()
-                        otp.destroy()
-                        verify.destroy()
-                        button = ctk.CTkButton(master=self, text="Generate Dataset", command=generate)
-                        button.place(relx=0.5, rely=0.3, anchor=ctk.CENTER)
-                        button1 = ctk.CTkButton(master=self, text="Train Model", command=train_model.trainModel)
-                        button1.place(relx=0.5, rely=0.5, anchor=ctk.CENTER)
-                        button2 = ctk.CTkButton(master=self, text="Face Recognition", command=recognize.recognize)
-                        button2.place(relx=0.5, rely=0.7, anchor=ctk.CENTER)
-                    else:
-                        otp_error = custom_error_box.CustomBox()
-                        otp_error.error_box('ERROR', 'Invalid OTP Please try again')
-
-                verify = ctk.CTkButton(master=self, text='Verify', command=verifyCredentials)
-                verify.grid(row=4, column=1, columnspan=2)
-            else:
-                password_error = custom_error_box.CustomBox()
-                password_error.error_box('ERROR', 'Passwords Don\'t match')
-
-        submit_button = ctk.CTkButton(master=self, text='Submit', command=sendCredentials)
-        submit_button.grid(row=4, column=1, columnspan=2)
+        forgot_password = ctk.CTkButton(master=self, text='FORGOT PASSWORD ?', text_font=("Times New Roman", 9, "bold"),
+                                        text_color='#60b6f0', cursor="hand2", fg_color='#eeeeee', hover_color='#eeeeee',
+                                        command=lambda: pressed('hello'))
+        forgot_password.place(x=76, relx=0, y=260, anchor='n')
+        some_text = ctk.CTkLabel(master=self, text='SOME TEXT LIKE LEARN MORE AND ETC.',
+                                 text_font=("Times New Roman", 8, "bold"), text_color='black', )
+        some_text.place(x=122, relx=0, y=290, anchor='n')
+        button_frame = ctk.CTkFrame(master=self, fg_color='#eeeeee')
+        create_button = ctk.CTkButton(master=button_frame, text='CREATE\nACCOUNT', text_color='black', fg_color='white',
+                                      width=50, hover_color='white', text_font=("Times New Roman", 10, "bold"))
+        create_button.pack(side='left', padx=45)
+        login_button = ctk.CTkButton(master=button_frame, text='LOGIN', text_color='white', fg_color='black', width=70,
+                                     hover_color='black', height=35, text_font=("Times New Roman", 10, "bold"))
+        login_button.pack(side='left', padx=45)
+        button_frame.place(x=140, relx=0, y=340, anchor='n')
 
     def on_closing(self):
         self.destroy()

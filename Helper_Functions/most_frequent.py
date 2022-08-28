@@ -13,10 +13,5 @@ def most_frequent(arg):
             count = curr_frequency
             num = i
     num = str(num)
-    num = num.replace('_', ' ')
-    number = "1234567890"
-    num1 = ""
-    for i in num:
-        if i not in number:
-            num1 += i
-    return num1
+    _, num = num.split('_')
+    return num

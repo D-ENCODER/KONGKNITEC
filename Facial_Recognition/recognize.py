@@ -7,6 +7,9 @@ from gtts import gTTS
 
 
 def recognize():
+    """
+    Face Recognition Model
+    """
     faceCascade = cv2.CascadeClassifier("Classifiers/haarcascade_frontalface_alt.xml")
     # video_capture = cv2.VideoCapture(0)
 
@@ -19,7 +22,7 @@ def recognize():
     for users in os.listdir("Facial_Recognition/Dataset"):
         names.append(users)
 
-    names.sort()
+    names = sorted(names, key=lambda x: int(x.split("_")[0]))
     print(names)
     # img = cv2.imread("test/robert.jpeg")
     cap = cv2.VideoCapture(0)
@@ -78,14 +81,16 @@ def recognize():
 
         def send():
             show_frame(progress)
+
         if progress == 100:
             cap.release()
             app1.destroy()
-            voice_obj = gTTS(text='Welcome'+ Helper_Functions.most_frequent.most_frequent(name), lang='en', slow=False)
+            voice_obj = gTTS(text='Welcome' + Helper_Functions.most_frequent.most_frequent(name), lang='en', slow=False)
             voice_obj.save("greetings.mp3")
             os.system("start greetings.mp3")
             return
         frame.after(20, send)
+
     prog = 0
     show_frame(prog)
     app1.mainloop()
