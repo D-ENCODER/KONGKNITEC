@@ -14,7 +14,7 @@ from Facial_Recognition import generate_dataset, recognize, train_model
 class Login(ctk.CTk):
     def __init__(self):
         super().__init__()
-        self.geometry("300x400")
+        self.geometry("300x400+850+280")
         self.title('Kongknitec')
         self.resizable(False, False)
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
