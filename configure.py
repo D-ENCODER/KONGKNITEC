@@ -4,3 +4,5 @@
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
 
+window_height = 400
+window_width = 300
