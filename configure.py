@@ -6,7 +6,6 @@
 
 dominant_color = '#1de9b6'
 hyperlink_color = '#212121'
-something = '#3D77BB'
-hover_color = '#ffffff'
-non_dominant_color = '#1a1a1a'
+non_dominant_color = '#ffffff'
+hover_color = '#1a1a1a'
 font = 'Roboto-Regular'
