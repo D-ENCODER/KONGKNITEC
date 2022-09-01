@@ -47,7 +47,7 @@ class Login(ctk.CTk):
         forgot_password.grid(row=6, column=1, sticky='e')
         login_button = ctk.CTkButton(master=mainframe, text='LOGIN', width=100, height=35, fg_color=dominant_color,
                                      text_font=(font, 10, "bold"), hover_color=something, corner_radius=15,
-                                     text_color=hover_color)
+                                     text_color=hover_color, command=lambda: pressed("Welcome to Kongknitech \nYou're successfully Log in."))
         login_button.grid(row=7, column=0, columnspan=2, pady=10)
         ctk.CTkLabel(master=mainframe, text='Dont have an account?',
                      text_font=(font, 9), text_color=hover_color).grid(row=8, column=0, sticky='e')
