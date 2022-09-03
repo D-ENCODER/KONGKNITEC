@@ -4,90 +4,63 @@
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
 import customtkinter as ctk
+from PIL import Image, ImageTk
 from Helper_Functions import otp_sender, custom_error_box
 from Facial_Recognition import generate_dataset, recognize, train_model
+from configure import *
 
 
 class Login(ctk.CTk):
     def __init__(self):
         super().__init__()
-        self.geometry("400x240")
-        self.title('Attendance With Face Recognition')
+        self.title('Kongknitec')
+        self.resizable(False, False)
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
+        self.configure(bg=hover_color)
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+        self.geometry("{}x{}+{}+{}".format(screen_width, screen_height, 0, 0))
+        mainframe = ctk.CTkFrame(master=self, fg_color=hover_color)
+        image = Image.open('Icons/logo.png')
+        resized_img = image.resize((120, 120), Image.ANTIALIAS)
+        mainframe.img = ImageTk.PhotoImage(master=mainframe, image=resized_img)
+        ctk.CTkLabel(master=mainframe, image=mainframe.img, anchor='center').grid(row=0, column=0, columnspan=2)
+        ctk.CTkLabel(master=mainframe, text='Welcome to', anchor='e',
+                     text_font=(font, 10, "bold"), text_color=non_dominant_color).grid(row=1, column=0)
+        ctk.CTkLabel(master=mainframe, text='KONGKNITEC', anchor='w',
+                     text_font=(font, 10, "bold"), text_color=dominant_color).grid(row=1, column=1)
+        ctk.CTkLabel(master=mainframe, text='', anchor='center').grid(row=2, column=0, columnspan=2)
+        ctk.CTkLabel(master=mainframe, text='LOGIN', text_font=(font, 14, "bold"),
+                     anchor='w', text_color=dominant_color).grid(row=3, column=0)
+        email_entry = ctk.CTkEntry(master=mainframe, placeholder_text='Enter your email', fg_color=hyperlink_color,
+                                   border_width=0, corner_radius=10, text_font=(font, 10), width=250, height=35)
+        email_entry.grid(row=4, column=0, columnspan=2, pady=10)
+        password_entry = ctk.CTkEntry(master=mainframe, placeholder_text='Password', fg_color=hyperlink_color,
+                                      height=35, border_width=0, text_font=(font, 10), corner_radius=10, width=250)
+        password_entry.grid(row=5, column=0, columnspan=2, pady=10)
 
-        def generate():
-            app1 = ctk.CTk()
-            app1.title('Generate Dataset')
-            app1.geometry("400x240")
-            user_id_text = ctk.CTkLabel(master=app1, text='Enrollment No')
-            user_id_text.grid(row=1, column=0)
-            user_id = ctk.CTkEntry(master=app1, placeholder_text='Enter your Id')
-            user_id.grid(row=1, column=2, columnspan=2, pady=20, padx=20, sticky="we")
-            # user_id.place()
-            name_text = ctk.CTkLabel(master=app1, text='Name')
-            name_text.grid(row=2, column=0)
-            name = ctk.CTkEntry(master=app1, placeholder_text='Enter your Name')
-            name.grid(row=2, column=2, columnspan=2, pady=20, padx=20, sticky="we")
+        def pressed(string):
+            print(string)
 
-            def submit():
-                generate_dataset.generateDataset(user_id.get(), name.get())
-
-            submit = ctk.CTkButton(master=app1, text='Submit', command=submit)
-            submit.place(relx=0.5, rely=0.7, anchor=ctk.CENTER)
-            app1.mainloop()
-
-        user_email = ctk.CTkLabel(master=self, text="Email")
-        user_email.grid(row=1, column=0)
-        email = ctk.CTkEntry(master=self, placeholder_text='Enter Email')
-        email.grid(row=1, column=2, columnspan=2, pady=20, padx=20)
-        user_password = ctk.CTkLabel(master=self, text='Password')
-        user_password.grid(row=2, column=0)
-        password = ctk.CTkEntry(master=self, placeholder_text='Enter Password')
-        password.grid(row=2, column=2, columnspan=2, pady=20, padx=20)
-        confirm_password = ctk.CTkLabel(master=self, text='Confirm Password')
-        confirm_password.grid(row=3, column=0)
-        con_password = ctk.CTkEntry(master=self, placeholder_text='Renter Password')
-        con_password.grid(row=3, column=2, columnspan=2, pady=20, padx=20)
-
-        def sendCredentials():
-            emailid = email.get()
-            if password.get() == con_password.get():
-                user_email.destroy()
-                email.destroy()
-                user_password.destroy()
-                password.destroy()
-                confirm_password.destroy()
-                con_password.destroy()
-                submit_button.destroy()
-                otps = otp_sender.sendOtp(emailid)
-                user_otp = ctk.CTkLabel(master=self, text="OTP")
-                user_otp.grid(row=1, column=0)
-                otp = ctk.CTkEntry(master=self, placeholder_text='Enter OTP')
-                otp.grid(row=1, column=2, columnspan=2, pady=20, padx=20)
-
-                def verifyCredentials():
-                    if otps == otp.get():
-                        user_otp.destroy()
-                        otp.destroy()
-                        verify.destroy()
-                        button = ctk.CTkButton(master=self, text="Generate Dataset", command=generate)
-                        button.place(relx=0.5, rely=0.3, anchor=ctk.CENTER)
-                        button1 = ctk.CTkButton(master=self, text="Train Model", command=train_model.trainModel)
-                        button1.place(relx=0.5, rely=0.5, anchor=ctk.CENTER)
-                        button2 = ctk.CTkButton(master=self, text="Face Recognition", command=recognize.recognize)
-                        button2.place(relx=0.5, rely=0.7, anchor=ctk.CENTER)
-                    else:
-                        otp_error = custom_error_box.CustomBox()
-                        otp_error.error_box('ERROR', 'Invalid OTP Please try again')
-
-                verify = ctk.CTkButton(master=self, text='Verify', command=verifyCredentials)
-                verify.grid(row=4, column=1, columnspan=2)
-            else:
-                password_error = custom_error_box.CustomBox()
-                password_error.error_box('ERROR', 'Passwords Don\'t match')
-
-        submit_button = ctk.CTkButton(master=self, text='Submit', command=sendCredentials)
-        submit_button.grid(row=4, column=1, columnspan=2)
+        forgot_password = ctk.CTkButton(master=mainframe, text='FORGOT PASSWORD ?', cursor="hand2",
+                                        fg_color=hover_color, text_font=(font, 7, "bold"),
+                                        hover_color=hover_color, command=lambda: pressed('hello'),
+                                        text_color=dominant_color)
+        forgot_password.grid(row=6, column=1, sticky='e')
+        login_button = ctk.CTkButton(master=mainframe, text='LOGIN', width=100, height=35, fg_color=dominant_color,
+                                     text_font=(font, 10, "bold"), hover_color=dominant_color, corner_radius=15,
+                                     text_color=hover_color, command=lambda: pressed("Welcome to Kongknitech \nYou're successfully Log in."))
+        login_button.grid(row=7, column=0, columnspan=2, pady=10)
+        ctk.CTkLabel(master=mainframe, text='Dont have an account?',
+                     text_font=(font, 9), text_color=non_dominant_color).grid(row=8, column=0, sticky='e')
+        create_button = ctk.CTkButton(master=mainframe, text='Sign-up', width=70, height=35,
+                                      cursor="hand2", fg_color=hover_color, hover_color=hover_color,
+                                      text_color=dominant_color, text_font=(font, 10, "bold"))
+        create_button.grid(row=8, column=1, sticky='w')
+        ctk.CTkLabel(master=mainframe, text='--OR--',
+                     text_font=(font, 9, "bold"), text_color=dominant_color).grid(row=9, column=0, columnspan=2)
+        # TODO: here comes the third party login button.
+        mainframe.grid(row=0, column=0, pady=(screen_height - 500) / 2, padx=(screen_width - 300) / 2)
 
     def on_closing(self):
         self.destroy()

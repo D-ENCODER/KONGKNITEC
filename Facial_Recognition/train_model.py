@@ -10,13 +10,13 @@ def trainModel():
     path = []
 
     # Get the names of all the users
-    for users in os.listdir("Dataset"):
+    for users in os.listdir("Facial_Recognition/Dataset"):
         names.append(users)
 
     # Get the path to all the images
     for name in names:
-        for image in os.listdir("Dataset/{}".format(name)):
-            path_string = os.path.join("Dataset/{}".format(name), image)
+        for image in os.listdir("Facial_Recognition/Dataset/{}".format(name)):
+            path_string = os.path.join("Facial_Recognition/Dataset/{}".format(name), image)
             path.append(path_string)
 
     faces = []

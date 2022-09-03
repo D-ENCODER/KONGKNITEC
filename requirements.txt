@@ -1,6 +1,8 @@
 customtkinter==4.5.10
 darkdetect==0.7.1
-numpy==1.23.1
+numpy==1.23.2
 opencv-contrib-python==4.6.0.66
 opencv-python==4.6.0.66
 Pillow==9.2.0
+pyttsx3~=2.90
+gTTS~=2.2.4
