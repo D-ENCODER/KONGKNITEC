@@ -6,3 +6,5 @@ opencv-python==4.6.0.66
 Pillow==9.2.0
 pyttsx3~=2.90
 gTTS~=2.2.4
+python-dotenv~=0.20.0
+firebase~=3.0.1
