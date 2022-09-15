@@ -3,6 +3,7 @@
 # GitHub    : (https://github.com/D-ENCODER)
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
+from tkinter import IntVar
 import customtkinter as ctk
 from PIL import Image, ImageTk
 from Helper_Functions import otp_sender, custom_error_box, auth
@@ -38,13 +39,20 @@ class Login(ctk.CTk):
                                    border_width=0, corner_radius=10, text_font=(font, 10), width=250, height=35)
         email_entry.grid(row=4, column=0, columnspan=2, pady=10)
         password_entry = ctk.CTkEntry(master=mainframe, placeholder_text='Password', fg_color=hyperlink_color,
-                                      height=35, border_width=0, text_font=(font, 10), corner_radius=10, width=250)
+                                      height=35, border_width=0, text_font=(font, 10), corner_radius=10, width=250,
+                                      show='*')
         password_entry.grid(row=5, column=0, columnspan=2, pady=10)
 
         photo_frame = ctk.CTkFrame(master=self, fg_color=hyperlink_color)
         self.twitter_icon = load_image(photo_frame, "Icons/twitter.png", 27)
         ctk.CTkButton(master=photo_frame, image=self.twitter_icon, text="", width=30, fg_color=hyperlink_color,
                       hover_color=hyperlink_color, cursor='hand2').grid(row=0, column=2, padx=7, pady=10)
+
+        def show_password():
+            if temp.get() == 1:
+                password_entry.configure(show='')
+            else:
+                password_entry.configure(show='*')
 
         def pressed(string):
             print(string)
@@ -53,6 +61,15 @@ class Login(ctk.CTk):
                       fg_color=hover_color, text_font=(font, 7, "bold"),
                       hover_color=hover_color, command=lambda: pressed('hello'),
                       text_color=dominant_color).grid(row=6, column=1, sticky='e')
+        temp = IntVar(value=0)
+        ctk.CTkCheckBox(master=mainframe, text='SHOW PASSWORD', height=18, width=18,
+                        checkmark_color=dominant_color, variable=temp,
+                        fg_color=hyperlink_color, text_font=(font, 7, "bold"), corner_radius=180,
+                        hover=False,
+                        text_color=non_dominant_color, border_width=2,
+                        command=lambda: show_password()).grid(row=6,
+                                                              column=0,
+                                                              sticky='w')
         ctk.CTkButton(master=mainframe, text='LOGIN', width=100, height=35, fg_color=dominant_color,
                       text_font=(font, 10, "bold"), hover_color=dominant_color, corner_radius=15,
                       text_color=hover_color, command=lambda: pressed("Welcome to Kongknitech \nYou're "
@@ -88,7 +105,7 @@ class Login(ctk.CTk):
                       command=caller).grid(row=0, column=2, padx=7, pady=10)
         login_frame.grid(row=10, column=0, columnspan=2)
         # TODO: here comes the third party login button.
-        mainframe.grid(row=0, column=0, pady=(screen_height - 500) / 2, padx=(screen_width - 300) / 2)
+        mainframe.grid(row=0, column=0, pady=(screen_height - 600) / 2, padx=(screen_width - 300) / 2)
 
     def on_closing(self):
         self.destroy()
