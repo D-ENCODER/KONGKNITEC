@@ -33,14 +33,14 @@ class Login(ctk.CTk):
         ctk.CTkLabel(master=mainframe, text='KONGKNITEC', anchor='w',
                      text_font=(font, 10, "bold"), text_color=dominant_color).grid(row=1, column=1)
         ctk.CTkLabel(master=mainframe, text='', anchor='center').grid(row=2, column=0, columnspan=2)
-        ctk.CTkLabel(master=mainframe, text='LOGIN', text_font=(font, 20, "bold"),
+        ctk.CTkLabel(master=mainframe, text='LOGIN', text_font=(font, 18, "bold"),
                      anchor='w', text_color=dominant_color).grid(row=3, column=0)
         email_entry = ctk.CTkEntry(master=mainframe, placeholder_text='Enter your email', fg_color=hyperlink_color,
-                                   border_width=0, corner_radius=10, text_font=(font, 10), width=250, height=35)
+                                   border_width=0, corner_radius=10, text_font=(font, 10), width=290, height=35)
         email_entry.grid(row=4, column=0, columnspan=2, pady=10)
         password_entry = ctk.CTkEntry(master=mainframe, placeholder_text='Password', fg_color=hyperlink_color,
-                                      height=35, border_width=0, text_font=(font, 10), corner_radius=10, width=250,
-                                      show='*')
+                                      height=35, border_width=0, text_font=(font, 10), corner_radius=10, width=290,
+                                      show='•')
         password_entry.grid(row=5, column=0, columnspan=2, pady=10)
 
         photo_frame = ctk.CTkFrame(master=self, fg_color=hyperlink_color)
@@ -49,27 +49,30 @@ class Login(ctk.CTk):
                       hover_color=hyperlink_color, cursor='hand2').grid(row=0, column=2, padx=7, pady=10)
 
         def show_password():
-            if temp.get() == 1:
-                password_entry.configure(show='')
-            else:
-                password_entry.configure(show='*')
+            self.show_icon = load_image(password_entry, "Icons/show.png", 17)
+            ctk.CTkButton(master=mainframe, image=self.show_icon, width=10, height=3, text="", fg_color=hyperlink_color,
+                          hover=False,
+                          command=lambda: hide_password()).grid(row=5, column=1, sticky='e')
+            password_entry.configure(show='')
+
+        def hide_password():
+            self.show_icon = load_image(password_entry, "Icons/hide.png", 17)
+            ctk.CTkButton(master=mainframe, image=self.show_icon, width=10, height=3, text="", fg_color=hyperlink_color,
+                          hover=False,
+                          command=lambda: show_password()).grid(row=5, column=1, sticky='e')
+            password_entry.configure(show='•')
 
         def pressed(string):
             print(string)
 
         ctk.CTkButton(master=mainframe, text='FORGOT PASSWORD ?', cursor="hand2",
-                      fg_color=hover_color, text_font=(font, 7, "bold"),
+                      fg_color=hover_color, text_font=(font, 8, "bold"),
                       hover_color=hover_color, command=lambda: pressed('hello'),
                       text_color=dominant_color).grid(row=6, column=1, sticky='e')
-        temp = IntVar(value=0)
-        ctk.CTkCheckBox(master=mainframe, text='SHOW PASSWORD', height=18, width=18,
-                        checkmark_color=dominant_color, variable=temp,
-                        fg_color=hyperlink_color, text_font=(font, 7, "bold"), corner_radius=180,
-                        hover=False,
-                        text_color=non_dominant_color, border_width=2,
-                        command=lambda: show_password()).grid(row=6,
-                                                              column=0,
-                                                              sticky='w')
+
+        self.show_icon = load_image(password_entry, "Icons/show.png", 17)
+        ctk.CTkButton(master=mainframe, image=self.show_icon, width=10, height=3, text="", fg_color=hyperlink_color,
+                      hover=False, command=lambda: show_password()).grid(row=5, column=1, sticky='e')
         ctk.CTkButton(master=mainframe, text='LOGIN', width=100, height=35, fg_color=dominant_color,
                       text_font=(font, 10, "bold"), hover_color=dominant_color, corner_radius=15,
                       text_color=hover_color, command=lambda: pressed("Welcome to Kongknitech \nYou're "
