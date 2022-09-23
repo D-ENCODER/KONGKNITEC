@@ -98,6 +98,7 @@ class Login(ctk.CTkFrame):
         ctk.CTkButton(master=self._login_frame, image=self._git_icon, text="", width=30, hover=False, cursor='hand2',
                       fg_color=configure.hyperlink_color, command=caller).grid(row=0, column=1, padx=50, pady=10)
 
-        ctk.CTkButton(master=self._login_frame, image=self._twitter_icon, text="", width=30, hover=False, cursor='hand2'
-                      , fg_color=configure.hyperlink_color, command=caller).grid(row=0, column=2, padx=7, pady=10)
+        ctk.CTkButton(master=self._login_frame, image=self._twitter_icon, text="", width=30, hover=False,
+                      cursor='hand2', fg_color=configure.hyperlink_color, command=caller).grid(row=0, column=2, padx=7,
+                                                                                               pady=10)
         self._login_frame.grid(row=10, column=0, columnspan=2)
