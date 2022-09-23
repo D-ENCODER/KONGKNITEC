@@ -5,16 +5,15 @@
 # Version : 1.0.0
 
 import customtkinter as ctk
+
+import configure
 from Helper_Functions import otp_sender, custom_error_box
 from Facial_Recognition import generate_dataset, recognize, train_model
 
 
-class Signup(ctk.CTk):
-    def __init__(self):
-        super().__init__()
-        self.geometry("300x400")
-        self.title('Kongknitec')
-        self.protocol("WM_DELETE_WINDOW", self.on_closing)
+class Signup(ctk.CTkFrame):
+    def __init__(self, parent, controller):
+        ctk.CTkFrame.__init__(self, parent, fg_color=configure.hover_color)
 
         def generate():
             app1 = ctk.CTk()
@@ -88,7 +87,7 @@ class Signup(ctk.CTk):
                 password_error = custom_error_box.CustomBox()
                 password_error.error_box('ERROR', 'Passwords Don\'t match')
 
-        submit_button = ctk.CTkButton(master=self, text='Submit', command=sendCredentials)
+        submit_button = ctk.CTkButton(master=self, text='Submit', command=lambda: controller.show_frame('Login'))
         submit_button.grid(row=4, column=1, columnspan=2)
 
     def on_closing(self):

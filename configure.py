@@ -9,6 +9,8 @@ dominant_color = '#1de9b6'
 hyperlink_color = '#212121'
 non_dominant_color = '#ffffff'
 hover_color = '#1a1a1a'
+screen_width = 0
+screen_height = 0
 font = 'Roboto-Regular'
 config = {
             "apiKey": "AIzaSyDpP2ojp2bAUNVEpHXajw3m5jW7t6EJ8ME",
