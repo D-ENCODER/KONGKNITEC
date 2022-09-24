@@ -20,7 +20,7 @@ def footer_gui(self, label, controller, hyper_label, frame):
     # Create a frame for footer
     self._login_frame = ctk.CTkFrame(master=self, fg_color=configure.hyperlink_color, corner_radius=180)
     # load all the images used in the frame for footer
-    self._google_icon = self._load_image(self._login_frame, "Icons/goole.png", 27)
+    self._google_icon = self._load_image(self._login_frame, "Icons/google.png", 27)
     self._git_icon = self._load_image(self._login_frame, "Icons/git.png", 27)
     self._twitter_icon = self._load_image(self._login_frame, "Icons/twitter.png", 27)
     # Create a label for footer
