@@ -4,10 +4,10 @@
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
 import customtkinter as ctk
-from PIL import ImageTk, Image
 import configure
 from Backend.auth import FirebaseDatabase
 from Backend.encryptor import encrypt
+from Helper_Functions.load_image import load_image
 from Screens.Refactor.custom_widgets import CustomWidgets
 from Screens.Refactor.footer_gui import footer_gui
 from Screens.Refactor.header_gui import header_gui
@@ -28,25 +28,17 @@ class Signup(ctk.CTkFrame):
         ctk.CTkFrame.__init__(self, parent, fg_color=configure.hover_color)
         # Enlarging the scope of the controller so that it can be used in other functions
         self._controller = controller
+        # Initializing the error handlers
+        self.email_error_label = ctk.CTkLabel()
+        self.password_error_label = ctk.CTkLabel()
+        self.confirm_password_error_label = ctk.CTkLabel()
         # Enlarging the scope of the database object so that it can be used in other functions
         self._obj = FirebaseDatabase()
         # Loading the show and hide icons so that it can be used further
-        self._show_icon = self._load_image(self, "Icons/hide.png", 17)
-        self._hide_icon = self._load_image(self, "Icons/show.png", 17)
+        self._show_icon = load_image(self, "Icons/hide.png", 17)
+        self._hide_icon = load_image(self, "Icons/show.png", 17)
         # Calling the sign-up GUI function
         self._signupGUI()
-
-    @staticmethod
-    def _load_image(frame, path, image_size):
-        """
-        This function is used to load the image
-        :param frame: frame in which the image is to be loaded
-        :param path: path of the image
-        :param image_size: size of the image
-        :return: image
-        """
-        # TODO: to refactor this function as this function is present in multiple files(login and signup)
-        return ImageTk.PhotoImage(master=frame, image=Image.open(path).resize((image_size, image_size)))
 
     def _signupGUI(self):
         """
@@ -55,55 +47,90 @@ class Signup(ctk.CTkFrame):
         """
         header_gui(self)
         # Calling the header label
-        CustomWidgets.customHeaderLabel(self, 'SIGN UP').grid(row=3, column=0)
+        CustomWidgets.customHeaderLabel(self, 'SIGN-UP').grid(row=3, column=0)
+        # Creating a frame for email and error box label
+        email_frame = ctk.CTkFrame(master=self, fg_color=configure.hover_color)
         # Calling the email entry label
-        email_entry = CustomWidgets.customEntry(self, 'E-mail address')
-        # Placing the email entry label
-        email_entry.grid(row=4, column=0, columnspan=2, pady=10)
+        email_entry = CustomWidgets.customEntry(email_frame, 'E-mail address')
+        # Placing the email entry in the grid layout
+        email_entry.grid(row=0, column=0, columnspan=2)
+        # Placing the email frame into the grid layout
+        email_frame.grid(row=4, column=0, columnspan=2, pady=10)
 
-        def _validate_email(event):
+        def _validate_email(event=None):
             """
-            This function is used to validate the email address entered by the user
-            :param event: event which is triggered when the user presses the enter key
+            This is the function which is used to validate the email address when the focus pops out of the entry
+            :param event: The event which is used to get the focus out of the entry
             :return: None
             """
-            # Validating the email address entered by the user
-            if Validator.validate_email(email_entry.get()):
-                # If the email address is valid then the email entry label is set to the default color
+            if Validator.validate_email(email_entry.get())[0]:
+                # If the email is valid then the error label is destroyed
+                self.email_error_label.destroy()
+                # The email is stored in the controller
                 email_entry.configure(border_color=configure.hyperlink_color)
+                return True
             else:
-                # If the email address is invalid then the email entry label is set to the error color
+                # checks if the error label is already present or not
+                if self.email_error_label.winfo_exists():
+                    # if the error label is already present then it will destroy the error label
+                    self.email_error_label.destroy()
+                # Calling the custom error label
+                self.email_error_label = CustomWidgets.customErrorLabel(email_frame,
+                                                                        Validator.validate_email(email_entry.get())[1])
+                # Placing the error label in the grid layout
+                self.email_error_label.grid(row=1, column=0, columnspan=2)
+                # Changing the border color of the entry
                 email_entry.configure(border_color=configure.dominant_color)
+                return False
 
         # Binding the validate email function to the email entry label
         email_entry.bind('<FocusOut>', _validate_email)
+        # Creating a frame for password and error box label
+        password_frame = ctk.CTkFrame(master=self, fg_color=configure.hover_color)
         # Calling the password entry label
-        password_entry = CustomWidgets.customEntry(self, 'Password', obfuscated=True)
+        password_entry = CustomWidgets.customEntry(password_frame, 'Password', obfuscated=True)
         # Placing the password entry label
-        password_entry.grid(row=5, column=0, columnspan=2, pady=10)
+        password_entry.grid(row=0, column=0, columnspan=2)
+        # Placing the password frame into the grid layout
+        password_frame.grid(row=5, column=0, columnspan=2, pady=10)
+        # Creating a frame for confirm password and error box label
+        confirm_password_frame = ctk.CTkFrame(master=self, fg_color=configure.hover_color)
         # Calling the show password button
-        confirm_password_entry = CustomWidgets.customEntry(self, 'Confirm Password', obfuscated=True)
+        confirm_password_entry = CustomWidgets.customEntry(confirm_password_frame, 'Confirm Password', obfuscated=True)
         # Placing the confirm password entry label
-        confirm_password_entry.grid(row=6, column=0, columnspan=2, pady=10)
+        confirm_password_entry.grid(row=0, column=0, columnspan=2)
+        # Placing the confirm password frame into the grid layout
+        confirm_password_frame.grid(row=6, column=0, columnspan=2, pady=10)
 
-        def _validate_password(event):
+        def _validate_password(event=None):
             """
-            This function is used to validate the password entered by the user
-            :param event: event which is triggered when the user presses the enter key
+            This is the function which is used to validate the password when the focus pops out of the entry
+            :param event: The event which is used to get the focus out of the entry
             :return: None
             """
-            # Validating the password entered by the user
-            if Validator.validate_password(password_entry.get()):
-                # If the password is valid then the password entry label is set to the default color
+            if Validator.validate_password(password_entry.get())[0]:
+                self.password_error_label.destroy()
                 password_entry.configure(border_color=configure.hyperlink_color)
+                return True
             else:
-                # If the password is invalid then the password entry label is set to the error color
+                # checks if the error label is already present or not
+                if self.password_error_label.winfo_exists():
+                    # if the error label is already present then it destroys the error label
+                    self.password_error_label.destroy()
+                # Calling the custom error label function
+                self.password_error_label = CustomWidgets.customErrorLabel(password_frame,
+                                                                           Validator.validate_password(
+                                                                               password_entry.get())[1])
+                # Placing the error label into the grid layout
+                self.password_error_label.grid(row=1, column=0, columnspan=2)
+                # Changing the border color of the entry
                 password_entry.configure(border_color=configure.dominant_color)
+                return False
 
         # Binding the validate password function to the password entry label
         password_entry.bind('<FocusOut>', _validate_password)
 
-        def _validate_confirm_password(event):
+        def _validate_confirm_password(event=None):
             """
             This function is used to validate the confirm password entered by the user
             :param event: event which is triggered when the user presses the enter key
@@ -111,11 +138,22 @@ class Signup(ctk.CTkFrame):
             """
             # Validating the confirm password entered by the user
             if password_entry.get() == confirm_password_entry.get():
+                self.confirm_password_error_label.destroy()
                 # If the confirm password is valid then the confirm password entry label is set to the default color
                 confirm_password_entry.configure(border_color=configure.hyperlink_color)
             else:
+                # checks if the error label is already present or not
+                if self.confirm_password_error_label.winfo_exists():
+                    # if the error label is already present then it destroys the error label
+                    self.confirm_password_error_label.destroy()
+                # Calling the custom error label function
+                self.confirm_password_error_label = CustomWidgets.customErrorLabel(confirm_password_frame,
+                                                                                   'Password does not match')
+                # Placing the error label into the grid layout
+                self.confirm_password_error_label.grid(row=1, column=0, columnspan=2)
                 # If the confirm password is invalid then the confirm password entry label is set to the error color
                 confirm_password_entry.configure(border_color=configure.dominant_color)
+
         # Binding the validate confirm password function to the confirm password entry label
         confirm_password_entry.bind('<FocusOut>', _validate_confirm_password)
 
@@ -149,29 +187,29 @@ class Signup(ctk.CTkFrame):
             :return:
             """
             # Validating the email address, password and confirm password entered by the user
-            if Validator.validate_email(email_entry.get()) and Validator.validate_password(password_entry.get()) \
-                    and password_entry.get() == confirm_password_entry.get() and password_entry.get() != '':
+            if _validate_email() and _validate_password() and _validate_confirm_password():
                 password, key = encrypt(password_entry.get())
                 self._obj.dbSignUp(email_entry.get(), password, key)
             else:
                 # If the email address, password or confirm password is invalid then the error message is displayed
-                if not Validator.validate_email(email_entry.get()):
+                if not _validate_email():
                     # If the email address is invalid then the error message is displayed
-                    email_entry.configure(border_color=configure.dominant_color)
+                    _validate_email()
                 # If the password is invalid then the error message is displayed
-                if not Validator.validate_password(password_entry.get()):
+                if not _validate_password():
                     # If the password is invalid then the error message is displayed
-                    password_entry.configure(border_color=configure.dominant_color)
+                    _validate_password()
                 # If the confirm password is invalid then the error message is displayed
-                if password_entry.get() != confirm_password_entry.get() or password_entry.get() == '':
+                if _validate_confirm_password():
                     # If the confirm password is invalid then the error message is displayed
-                    confirm_password_entry.configure(border_color=configure.dominant_color)
+                    _validate_confirm_password()
+
         # Calling the show password button
-        button = ctk.CTkButton(master=self, image=self._hide_icon, width=20, height=20, text="",
+        button = ctk.CTkButton(master=password_frame, image=self._hide_icon, width=20, height=20, text="",
                                fg_color=configure.hyperlink_color, corner_radius=180, cursor="hand2", border=False,
                                hover=False, command=lambda: _show_password())
         # Placing the show password button
-        button.grid(row=5, column=1, sticky='e', padx=10)
+        button.grid(row=0, column=1, sticky='e', padx=10)
         # Calling the sign-up button and placing it in the grid layout
         CustomWidgets.customButton(self, 'SIGN-UP', lambda: _verifySignup()).grid(row=7, column=0, columnspan=2,
                                                                                   pady=10)

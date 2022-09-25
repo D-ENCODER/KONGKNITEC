@@ -12,6 +12,7 @@ class CustomWidgets:
     This class contains all the custom widgets used in the application
     these widgets are used to make the application look more attractive.
     """
+
     @staticmethod
     def customEntry(self, placeholder, obfuscated=False):
         """
@@ -55,3 +56,15 @@ class CustomWidgets:
                                       text_color=configure.hover_color,
                                       command=command)
         return custom_button
+
+    @staticmethod
+    def customErrorLabel(self, error_text):
+        """
+        This method is used to create a custom error label widget.
+        :param self: The object of the class in which this method is called.
+        :param error_text: The text to be displayed in the error label.
+        :return: The custom error label widget.
+        """
+        custom_error_label = ctk.CTkLabel(master=self, text=error_text, text_font=(configure.font, 8, "bold"),
+                                          text_color=configure.dominant_color, bg_color=configure.hover_color)
+        return custom_error_label

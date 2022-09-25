@@ -5,6 +5,7 @@
 # Version : 1.0.0
 import customtkinter as ctk
 import configure
+from Helper_Functions.load_image import load_image
 
 
 def footer_gui(self, label, controller, hyper_label, frame):
@@ -20,9 +21,9 @@ def footer_gui(self, label, controller, hyper_label, frame):
     # Create a frame for footer
     self._login_frame = ctk.CTkFrame(master=self, fg_color=configure.hyperlink_color, corner_radius=180)
     # load all the images used in the frame for footer
-    self._google_icon = self._load_image(self._login_frame, "Icons/google.png", 27)
-    self._git_icon = self._load_image(self._login_frame, "Icons/git.png", 27)
-    self._twitter_icon = self._load_image(self._login_frame, "Icons/twitter.png", 27)
+    self._google_icon = load_image(self._login_frame, "Icons/google.png", 27)
+    self._git_icon = load_image(self._login_frame, "Icons/git.png", 27)
+    self._twitter_icon = load_image(self._login_frame, "Icons/twitter.png", 27)
     # Create a label for footer
     ctk.CTkLabel(master=self, text=label,
                  text_font=(configure.font, 9), text_color=configure.non_dominant_color).grid(row=8, column=0,
