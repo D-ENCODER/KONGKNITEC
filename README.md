@@ -1,5 +1,5 @@
 ![Face Recognition Banner](https://user-images.githubusercontent.com/86153190/184497475-a5e6d0e4-5704-4f01-ad75-e69ea6556744.png)
-# ATTENDANCE WITH FACE RECOGNITION
+# KONGKNITEC
 
 ## What is Face Recognition?
 - Facial recognition is a way of identifying or confirming an individual’s identity using their face. Facial recognition systems can be used to identify people in photos, videos, or in real-time. Facial recognition is a category of biometric security. Other forms of biometric software include voice recognition, fingerprint recognition, and eye retina or iris recognition. The technology is mostly used for security and law enforcement, though there is increasing interest in other areas of use.
