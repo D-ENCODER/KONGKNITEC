@@ -4,63 +4,168 @@
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
 import customtkinter as ctk
-from PIL import Image, ImageTk
-from Helper_Functions import otp_sender, custom_error_box
-from Facial_Recognition import generate_dataset, recognize, train_model
-from configure import *
+import configure
+from Helper_Functions.load_image import load_image
+from Screens.Refactor.custom_widgets import CustomWidgets
+from Screens.Refactor.footer_gui import footer_gui
+from Screens.Refactor.header_gui import header_gui
+from Screens.Validator.validator import Validator
 
 
-class Login(ctk.CTk):
-    def __init__(self):
-        super().__init__()
-        self.title('Kongknitec')
-        self.resizable(False, False)
-        self.protocol("WM_DELETE_WINDOW", self.on_closing)
-        self.configure(bg=hover_color)
-        screen_width = self.winfo_screenwidth()
-        screen_height = self.winfo_screenheight()
-        self.geometry("{}x{}+{}+{}".format(screen_width, screen_height, 0, 0))
-        mainframe = ctk.CTkFrame(master=self, fg_color=hover_color)
-        image = Image.open('Icons/logo.png')
-        resized_img = image.resize((120, 120), Image.ANTIALIAS)
-        mainframe.img = ImageTk.PhotoImage(master=mainframe, image=resized_img)
-        ctk.CTkLabel(master=mainframe, image=mainframe.img, anchor='center').grid(row=0, column=0, columnspan=2)
-        ctk.CTkLabel(master=mainframe, text='Welcome to', anchor='e',
-                     text_font=(font, 10, "bold"), text_color=non_dominant_color).grid(row=1, column=0)
-        ctk.CTkLabel(master=mainframe, text='KONGKNITEC', anchor='w',
-                     text_font=(font, 10, "bold"), text_color=dominant_color).grid(row=1, column=1)
-        ctk.CTkLabel(master=mainframe, text='', anchor='center').grid(row=2, column=0, columnspan=2)
-        ctk.CTkLabel(master=mainframe, text='LOGIN', text_font=(font, 14, "bold"),
-                     anchor='w', text_color=dominant_color).grid(row=3, column=0)
-        email_entry = ctk.CTkEntry(master=mainframe, placeholder_text='Enter your email', fg_color=hyperlink_color,
-                                   border_width=0, corner_radius=10, text_font=(font, 10), width=250, height=35)
-        email_entry.grid(row=4, column=0, columnspan=2, pady=10)
-        password_entry = ctk.CTkEntry(master=mainframe, placeholder_text='Password', fg_color=hyperlink_color,
-                                      height=35, border_width=0, text_font=(font, 10), corner_radius=10, width=250)
-        password_entry.grid(row=5, column=0, columnspan=2, pady=10)
+class Login(ctk.CTkFrame):
+    """
+    This is the login frame which is used to log in into the application and holds all the widgets and functions
+    """
 
-        def pressed(string):
-            print(string)
+    def __init__(self, parent, controller):
+        """
+        This is the constructor of the class which is used to initialize the class variables and call the login GUI
+        :param parent: The parent of the frame which is the main frame
+        :param controller: The controller of the frame
+        """
+        ctk.CTkFrame.__init__(self, parent, fg_color=configure.hover_color)
+        # Initializing the error handlers
+        self.email_error_label = ctk.CTkLabel()
+        self.password_error_label = ctk.CTkLabel()
+        # Enlarging the scope og the controller variable
+        self._controller = controller
+        # Load the show password icon and hide password icon
+        self._show_icon = load_image(self, "Icons/hide.png", 17)
+        self._hide_icon = load_image(self, "Icons/show.png", 17)
+        # Call the login GUI
+        self._loginGUI()
 
-        forgot_password = ctk.CTkButton(master=mainframe, text='FORGOT PASSWORD ?', cursor="hand2",
-                                        fg_color=hover_color, text_font=(font, 7, "bold"),
-                                        hover_color=hover_color, command=lambda: pressed('hello'),
-                                        text_color=dominant_color)
-        forgot_password.grid(row=6, column=1, sticky='e')
-        login_button = ctk.CTkButton(master=mainframe, text='LOGIN', width=100, height=35, fg_color=dominant_color,
-                                     text_font=(font, 10, "bold"), hover_color=dominant_color, corner_radius=15,
-                                     text_color=hover_color, command=lambda: pressed("Welcome to Kongknitech \nYou're successfully Log in."))
-        login_button.grid(row=7, column=0, columnspan=2, pady=10)
-        ctk.CTkLabel(master=mainframe, text='Dont have an account?',
-                     text_font=(font, 9), text_color=non_dominant_color).grid(row=8, column=0, sticky='e')
-        create_button = ctk.CTkButton(master=mainframe, text='Sign-up', width=70, height=35,
-                                      cursor="hand2", fg_color=hover_color, hover_color=hover_color,
-                                      text_color=dominant_color, text_font=(font, 10, "bold"))
-        create_button.grid(row=8, column=1, sticky='w')
-        ctk.CTkLabel(master=mainframe, text='--OR--',
-                     text_font=(font, 9, "bold"), text_color=dominant_color).grid(row=9, column=0, columnspan=2)
-        # TODO: here comes the third party login button.
-        mainframe.grid(row=0, column=0, pady=(screen_height - 500) / 2, padx=(screen_width - 300) / 2)
+    def _loginGUI(self):
+        """
+        This is the method which is used to create the login GUI and holds most values of the GUI
+        """
+        # Call the header GUI
+        header_gui(self)
+        # Create the header label
+        CustomWidgets.customHeaderLabel(self, 'LOGIN').grid(row=3, column=0)
+        # Creating a frame for email and error box label
+        email_frame = ctk.CTkFrame(master=self, fg_color=configure.hover_color)
+        # Create the email entry
+        email_entry = CustomWidgets.customEntry(email_frame, 'E-mail address')
+        # Placing the email entry in the grid layout
+        email_entry.grid(row=0, column=0, columnspan=2)
+        # Placing the email frame into the grid layout
+        email_frame.grid(row=4, column=0, columnspan=2, pady=10)
 
-    def on_closing(self):
-        self.destroy()
+        # This function is used to validate the email address when the focus pops out of the entry
+        def _validate_email(event=None):
+            """
+            This is the function which is used to validate the email address when the focus pops out of the entry
+            :param event: The event which is used to get the focus out of the entry
+            :return: None
+            """
+            if Validator.validate_email(email_entry.get())[0]:
+                # If the email is valid then remove the error label
+                self.email_error_label.destroy()
+                # reset the color of the entry to default
+                email_entry.configure(border_color=configure.hyperlink_color)
+                return True
+            else:
+                # checks if the error label is already present or not
+                if self.email_error_label.winfo_exists():
+                    # If the error label is already present then destroy it
+                    self.email_error_label.destroy()
+                # Create the custom error label
+                self.email_error_label = CustomWidgets.customErrorLabel(email_frame,
+                                                                        Validator.validate_email(email_entry.get())[1])
+                # Place the error label in the grid layout
+                self.email_error_label.grid(row=1, column=0, columnspan=2)
+                # Change the color of the entry to dominant color
+                email_entry.configure(border_color=configure.dominant_color)
+                return False
+
+        # Binding the function to the entry widget to validate the email address
+        email_entry.bind('<FocusOut>', _validate_email)
+        # Creating a frame for password and error box label
+        password_frame = ctk.CTkFrame(master=self, fg_color=configure.hover_color)
+        # Create the password entry
+        password_entry = CustomWidgets.customEntry(password_frame, 'Password', obfuscated=True)
+        # Placing the password entry in the grid layout
+        password_entry.grid(row=0, column=0, columnspan=2)
+        # Placing the password entry in the grid layout
+        password_frame.grid(row=5, column=0, columnspan=2, pady=10)
+
+        def _validate_password(event=None):
+            """
+            This is the function which is used to validate the password when the focus pops out of the entry
+            :param event: The event which is used to get the focus out of the entry
+            :return: None
+            """
+            if Validator.validate_password(password_entry.get())[0]:
+                # If the password is valid then remove the error label
+                self.password_error_label.destroy()
+                # reset the color of the entry to default
+                password_entry.configure(border_color=configure.hyperlink_color)
+                return True
+            else:
+                # checks if the error label is already present or not
+                if self.password_error_label.winfo_exists():
+                    # If the error label is already present then destroy it
+                    self.password_error_label.destroy()
+                # Create the custom error label
+                self.password_error_label = CustomWidgets.customErrorLabel(password_frame,
+                                                                           Validator.validate_password(
+                                                                               password_entry.get())[1])
+                # Place the error label in the grid layout
+                self.password_error_label.grid(row=1, column=0, columnspan=2)
+                # Change the color of the entry to dominant color
+                password_entry.configure(border_color=configure.dominant_color)
+                return False
+
+        password_entry.bind('<FocusOut>', _validate_password)
+
+        # This is the show password button and this adds the functionality to the show password button
+        def _show_password():
+            """
+            This is the function which is used to show the password when the show password button is clicked
+            :return: None
+            """
+            password_entry.configure(show='')
+            # Change the image of the button to hide password icon
+            button.configure(image=self._show_icon, command=lambda: _hide_password())
+
+        # This is the hide password button and this adds the functionality to the hide password button
+        def _hide_password():
+            """
+            This is the function which is used to hide the password when the hide password button is clicked
+            :return: None
+            """
+            password_entry.configure(show='•')
+            # Change the image of the button to show password icon
+            button.configure(image=self._hide_icon, command=lambda: _show_password())
+
+        # This is the verifyLogin function which is used to verify the login credentials and make sure that they
+        # are valid and legit
+        def _verifyLogin():
+            # if email is valid and password is valid then login
+            if _validate_password() and _validate_email():
+                self._controller.show_frame("Home")
+            else:
+                # if email is not valid then show the error message
+                if not _validate_password():
+                    # Invoke the error message
+                    _validate_password()
+                # if password is not valid then show the error message
+                if not _validate_email():
+                    # Invoke the error message
+                    _validate_email()
+
+        # Create the show password button and placing on the same entry box
+        button = ctk.CTkButton(master=password_frame, image=self._hide_icon, width=20, height=20, text="",
+                               fg_color=configure.hyperlink_color, corner_radius=180, cursor="hand2", border=False,
+                               hover=False, command=lambda: _show_password())
+        button.grid(row=0, column=1, sticky='e', padx=10)
+        # Creating the forgot password hyper label and placing it in the grid layout
+        ctk.CTkButton(master=self, text='FORGOT PASSWORD ?', cursor="hand2",
+                      fg_color=configure.hover_color, text_font=(configure.font, 8, "bold"),
+                      hover_color=configure.hover_color,
+                      text_color=configure.dominant_color).grid(row=6, column=1, sticky='e')
+        # Creating the login button and placing it in the grid layout
+        CustomWidgets.customButton(self, 'LOGIN', lambda: _verifyLogin()).grid(row=7, column=0, columnspan=2, pady=10)
+        # Creating the signup hyper label and placing it in the grid layout
+        footer_gui(self, "Don't have an account? ", self._controller, "Sign-up", "Signup")

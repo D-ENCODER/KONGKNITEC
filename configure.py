@@ -8,4 +8,6 @@ dominant_color = '#1de9b6'
 hyperlink_color = '#212121'
 non_dominant_color = '#ffffff'
 hover_color = '#1a1a1a'
+screen_width = 0
+screen_height = 0
 font = 'Roboto-Regular'
