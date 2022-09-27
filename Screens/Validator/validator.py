@@ -17,13 +17,18 @@ class Validator:
         :return: True if email is valid else False
         """
         # check if email contains @ and . or not
-        if '@' in email and '.' in email:
+        if '@' not in email or '.' not in email:
             # return True if email is valid else False
-            return [True]
+            return [False, 'Invalid email address']
+        if email.count("@")>1:
+            return [False, '@ can be more than one']
         if email == '':
             return [False, 'Email cannot be empty']
         else:
-            return [False, 'Invalid email address']
+            return [True]
+
+        
+
 
     @staticmethod
     def validate_password(password):
