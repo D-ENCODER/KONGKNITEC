@@ -6,7 +6,7 @@
 from tkinter import PhotoImage
 import customtkinter as ctk
 import configure
-from Screens import login, signup
+from Screens import login, signup, forgot_password, verify
 
 
 class Authenticator(ctk.CTk):
@@ -41,8 +41,9 @@ class Authenticator(ctk.CTk):
         container.grid(row=0, column=0, sticky='nsew', pady=(configure.screen_height - 600) / 2,
                        padx=(configure.screen_width - 300) / 2)
         self.frames = {}
+        self.frame_stack = (login.Login, signup.Signup, forgot_password.ForgotPassword, verify.Verify)
         # to add the frames to the stack
-        for window in (login.Login, signup.Signup):
+        for window in self.frame_stack:
             page_name = window.__name__
             # to take the first frame and place it on the main frame
             frame = window(parent=container, controller=self)

@@ -16,6 +16,6 @@ def sendOtp(emailid):
     message = OTP + " use this otp to login"
     s = smtplib.SMTP("smtp.gmail.com", 587)
     s.starttls()
-    s.login("facioaide2022@gmail.com", "zajtyiewzpnokcrd")
-    s.sendmail("facioaide2022@gmail.com", emailid, message)
+    s.login("kongknitec0000@gmail.com", "icmakjglgfgwmgcj")
+    s.sendmail("kongknitec0000@gmail.com", emailid, message)
     return OTP
