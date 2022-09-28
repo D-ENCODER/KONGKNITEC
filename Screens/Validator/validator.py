@@ -9,6 +9,7 @@ class Validator:
     This class is used to validate the user input.
     this contains many functions like validate email and password and so on.
     """
+
     @staticmethod
     def validate_email(email):
         """
@@ -17,18 +18,15 @@ class Validator:
         :return: True if email is valid else False
         """
         # check if email contains @ and . or not
+        if email == '':
+            return [False, 'Email cannot be empty']
         if '@' not in email or '.' not in email:
             # return True if email is valid else False
             return [False, 'Invalid email address']
-        if email.count("@")>1:
-            return [False, '@ can be more than one']
-        if email == '':
-            return [False, 'Email cannot be empty']
+        if email.count("@") > 1 or email.count(".") > 1:
+            return [False, 'Email address cannot contain \nmore than one @ or .']
         else:
             return [True]
-
-        
-
 
     @staticmethod
     def validate_password(password):
@@ -45,21 +43,21 @@ class Validator:
             return [False, 'Password cannot be empty']
         # check if password contains at least 8 digit
         if len(password) < 8:
-            return [False, 'length should be at least 8']
+            return [False, 'Length should be at least 8']
         # check if password contains less than 20 digit
         if len(password) > 20:
-            return [False, 'length should be not be greater than 20']
+            return [False, 'Length should be not be greater \nthan 20']
         # check if password contains at least one number
         if not any(char.isdigit() for char in password):
-            return [False, 'Password should have at least one numeral']
+            return [False, 'Password should have at least \none numeral']
         # check if password contains at least one uppercase letter
         if not any(char.isupper() for char in password):
-            return [False, 'Password should have at least one uppercase letter']
+            return [False, 'Password should have at least \none uppercase letter']
         # check if password contains at least one lowercase letter
         if not any(char.islower() for char in password):
-            return [False, 'Password should have at least one lowercase letter']
+            return [False, 'Password should have at least \none lowercase letter']
         # check if password contains at least one special character
         if not any(char in SpecialSym for char in password):
-            return[False, 'Password should have at least \none of the symbols $@#%!^&*()-_+=']
+            return [False, 'Password should have at least \none of the symbols $@#%!^&*()-_+=']
         else:
             return [val, '']
