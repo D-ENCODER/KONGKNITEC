@@ -46,7 +46,7 @@ class Login(ctk.CTkFrame):
         # Creating a frame for email and error box label
         self.email_frame = ctk.CTkFrame(master=self, fg_color=configure.hover_color)
         # Create the email entry
-        self.email_entry = CustomWidgets.customEntry(self.email_frame, 'E-mail address')
+        self.email_entry = CustomWidgets.customEntry(parent=self.email_frame, placeholder='E-mail address')
         # Placing the email entry in the grid layout
         self.email_entry.grid(row=0, column=0, columnspan=2)
         # Placing the email frame into the grid layout
@@ -57,7 +57,8 @@ class Login(ctk.CTkFrame):
         # Creating a frame for password and error box label
         self.password_frame = ctk.CTkFrame(master=self, fg_color=configure.hover_color)
         # Create the password entry
-        self.password_entry = CustomWidgets.customEntry(self.password_frame, 'Password', obfuscated=True)
+        self.password_entry = CustomWidgets.customEntry(parent=self.password_frame, placeholder='Password',
+                                                        obfuscated=True)
         # Placing the password entry in the grid layout
         self.password_entry.grid(row=0, column=0, columnspan=2)
         # Placing the password entry in the grid layout

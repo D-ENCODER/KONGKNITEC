@@ -51,7 +51,7 @@ class Signup(ctk.CTkFrame):
         # Creating a frame for email and error box label
         self.email_frame = ctk.CTkFrame(master=self, fg_color=configure.hover_color)
         # Calling the email entry label
-        self.email_entry = CustomWidgets.customEntry(self.email_frame, 'E-mail address')
+        self.email_entry = CustomWidgets.customEntry(parent=self.email_frame, placeholder='E-mail address')
         # Placing the email entry in the grid layout
         self.email_entry.grid(row=0, column=0, columnspan=2)
         # Placing the email frame into the grid layout
@@ -61,7 +61,8 @@ class Signup(ctk.CTkFrame):
         # Creating a frame for password and error box label
         self.password_frame = ctk.CTkFrame(master=self, fg_color=configure.hover_color)
         # Calling the password entry label
-        self.password_entry = CustomWidgets.customEntry(self.password_frame, 'Password', obfuscated=True)
+        self.password_entry = CustomWidgets.customEntry(parent=self.password_frame, placeholder='Password',
+                                                        obfuscated=True)
         # Placing the password entry label
         self.password_entry.grid(row=0, column=0, columnspan=2)
         # Placing the password frame into the grid layout
@@ -69,7 +70,8 @@ class Signup(ctk.CTkFrame):
         # Creating a frame for confirm password and error box label
         self.confirm_password_frame = ctk.CTkFrame(master=self, fg_color=configure.hover_color)
         # Calling the show password button
-        self.confirm_password_entry = CustomWidgets.customEntry(self.confirm_password_frame, 'Confirm Password', obfuscated=True)
+        self.confirm_password_entry = CustomWidgets.customEntry(parent=self.confirm_password_frame,
+                                                                placeholder='Confirm Password', obfuscated=True)
         # Placing the confirm password entry label
         self.confirm_password_entry.grid(row=0, column=0, columnspan=2)
         # Placing the confirm password frame into the grid layout

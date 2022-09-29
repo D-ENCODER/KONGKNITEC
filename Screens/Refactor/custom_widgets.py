@@ -14,18 +14,19 @@ class CustomWidgets:
     """
 
     @staticmethod
-    def customEntry(self, placeholder, obfuscated=False):
+    def customEntry(**kwargs):
         """
         This method is used to create a custom entry widget.
-        :param self: The object of the class in which this method is called.
-        :param placeholder: The placeholder text for the entry widget.
-        :param obfuscated: If True, the text in the entry widget will be obfuscated.
         :return: The custom entry widget.
         """
-        custom_entry = ctk.CTkEntry(master=self, placeholder_text=placeholder,
+        defaultKwargs = {'width': 290, 'height': 35, 'font_size': 10, 'obfuscated': False, 'font_weight': 'normal'}
+        kwargs = {**defaultKwargs, **kwargs}
+        custom_entry = ctk.CTkEntry(master=kwargs['parent'], placeholder_text=kwargs['placeholder'],
                                     fg_color=configure.hyperlink_color, border_color=configure.hyperlink_color,
-                                    border_width=1.5, corner_radius=10, text_font=(configure.font, 10), width=290,
-                                    height=35, show='•' if obfuscated else '')
+                                    border_width=1.5, corner_radius=10, text_font=(configure.font, kwargs['font_size'],
+                                                                                   kwargs['font_weight']),
+                                    width=kwargs['width'],
+                                    height=kwargs['height'], show='•' if kwargs['obfuscated'] else '')
         return custom_entry
 
     @staticmethod

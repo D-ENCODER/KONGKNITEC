@@ -30,7 +30,7 @@ class ForgotPassword(ctk.CTkFrame):
         header_gui(self)
         CustomWidgets.customHeaderLabel(self, 'RECOVERY').grid(row=3, column=0)
         self.email_frame = ctk.CTkFrame(master=self, fg_color=configure.hover_color)
-        self.email_entry = CustomWidgets.customEntry(self.email_frame, 'E-mail address')
+        self.email_entry = CustomWidgets.customEntry(parent=self.email_frame, placeholder='E-mail address')
         self.email_entry.grid(row=0, column=0, columnspan=2)
         self.email_frame.grid(row=4, column=0, columnspan=2, pady=10)
         self.email_entry.bind('<FocusOut>', lambda event: validate_email(parent=self))
