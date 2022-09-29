@@ -160,5 +160,5 @@ class Verify(ForgotPassword):
         self.otp_entry6.bind('<KeyRelease>', lambda event: self._switcher(6, event))
         self.otp_entry6.bind('<Return>', verify)
         self.otp_frame.grid(row=4, column=0, columnspan=2, pady=10)
-
-        CustomWidgets.customButton(self, 'VERIFY', verify).grid(row=5, column=0, columnspan=2, pady=10)
+        self.otp_frame = ctk.CTkFrame(master=self, fg_color=configure.hover_color)
+        CustomWidgets.customButton(self, 'VERIFY', verify).grid(row=6, column=0, columnspan=2, pady=10)

@@ -51,7 +51,7 @@ class Authenticator(ctk.CTk):
             self.frames[page_name] = frame
             # to place the frame on the main frame
             frame.grid(row=0, column=0, sticky='nsew')
-        self.show_frame("Verify")
+        self.show_frame("Login")
 
     def show_frame(self, page_name):
         """
