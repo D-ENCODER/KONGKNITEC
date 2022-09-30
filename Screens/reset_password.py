@@ -1,4 +1,4 @@
-# Date    : 26/08/22 6:55 pm
+# Date    : 30/09/22 6:12 pm
 # Author  : dencoder (hetcjoshi1684@gmail.com)
 # GitHub    : (https://github.com/D-ENCODER)
 # Twitter    : (https://twitter.com/Hetjoshi1684)
@@ -9,56 +9,24 @@ from Backend.auth import FirebaseDatabase
 from Backend.encryptor import encrypt
 from Helper_Functions.load_image import load_image
 from Screens.Refactor.custom_widgets import CustomWidgets
-from Screens.Refactor.footer_gui import footer_gui
 from Screens.Refactor.header_gui import header_gui
-from Screens.Validator.validator import validate_email, validate_password
+from Screens.Validator.validator import validate_password
 
 
-class Signup(ctk.CTkFrame):
-    """
-    This function is used to load the sign-up frame
-    """
-
+class ResetPassword(ctk.CTkFrame):
     def __init__(self, **kwargs):
-        """
-        This function is used to initialize the sign-up frame
-        :param parent: parent frame which is the main frame
-        :param controller: controller which is the main controller
-        """
         ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.hover_color)
-        # Enlarging the scope of the controller so that it can be used in other functions
         self._controller = kwargs['controller']
-        # Initializing the error handlers
-        self.email_error_label = ctk.CTkLabel()
         self.password_error_label = ctk.CTkLabel()
-        self.confirm_password_error_label = ctk.CTkLabel()
-        # Enlarging the scope of the database object so that it can be used in other functions
-        self._obj = FirebaseDatabase(name='signup')
-        # Loading the show and hide icons so that it can be used further
         self._show_icon = load_image(self, "Icons/hide.png", 17)
         self._hide_icon = load_image(self, "Icons/show.png", 17)
-        # Calling the sign-up GUI function
-        self._signupGUI()
+        self._obj = FirebaseDatabase(name='reset')
+        self.confirm_password_error_label = ctk.CTkLabel()
+        self._resetPasswordGUI()
 
-    def _signupGUI(self):
-        """
-        This function is used to load the sign-up GUI and holds the logic of the sign-up GUI
-        :return: None
-        """
+    def _resetPasswordGUI(self):
         header_gui(self)
-        # Calling the header label
-        CustomWidgets.customHeaderLabel(self, 'SIGN-UP').grid(row=3, column=0)
-        # Creating a frame for email and error box label
-        self.email_frame = ctk.CTkFrame(master=self, fg_color=configure.hover_color)
-        # Calling the email entry label
-        self.email_entry = CustomWidgets.customEntry(parent=self.email_frame, placeholder='E-mail address')
-        # Placing the email entry in the grid layout
-        self.email_entry.grid(row=0, column=0, columnspan=2)
-        # Placing the email frame into the grid layout
-        self.email_frame.grid(row=4, column=0, columnspan=2, pady=10)
-        # Binding the validate email function to the email entry label
-        self.email_entry.bind('<FocusOut>', lambda event: validate_email(parent=self))
-        # Creating a frame for password and error box label
+        CustomWidgets.customHeaderLabel(self, 'RESET').grid(row=3, column=0)
         self.password_frame = ctk.CTkFrame(master=self, fg_color=configure.hover_color)
         # Calling the password entry label
         self.password_entry = CustomWidgets.customEntry(parent=self.password_frame, placeholder='Password',
@@ -77,7 +45,7 @@ class Signup(ctk.CTkFrame):
         # Placing the confirm password frame into the grid layout
         self.confirm_password_frame.grid(row=6, column=0, columnspan=2, pady=10)
         # Binding the validate password function to the password entry label
-        self.password_entry.bind('<FocusOut>', validate_password)
+        self.password_entry.bind('<FocusOut>', lambda event: validate_password(parent=self))
 
         def validate_confirm_password(event=None):
             """
@@ -103,7 +71,6 @@ class Signup(ctk.CTkFrame):
                 # If the confirm password is invalid then the confirm password entry label is set to the error color
                 self.confirm_password_entry.configure(border_color=configure.dominant_color)
 
-        # Binding the validate confirm password function to the confirm password entry label
         self.confirm_password_entry.bind('<FocusOut>', validate_confirm_password)
 
         def show_password():
@@ -130,24 +97,21 @@ class Signup(ctk.CTkFrame):
             # Changing the hide password button to the show password button
             button.configure(image=self._hide_icon, command=lambda: show_password())
 
-        def _verifySignup():
+        def _verifyReset():
             """
             This function is used to verify the sign-up details entered by the user
             :return:
             """
             # Validating the email address, password and confirm password entered by the user
-            if validate_email() and validate_password() and validate_confirm_password():
-                password, key = encrypt(self.password_entry.get())
-                self._obj.dbSignUp(self.email_entry.get(), password, key)
+            if validate_password(parent=self) and validate_confirm_password():
+                # password, key = encrypt(self.password_entry.get())
+                print('hello')
+                # self._obj.dbSignUp(password, key)
             else:
-                # If the email address, password or confirm password is invalid then the error message is displayed
-                if not validate_email():
-                    # If the email address is invalid then the error message is displayed
-                    validate_email()
                 # If the password is invalid then the error message is displayed
-                if not validate_password():
+                if not validate_password(parent=self):
                     # If the password is invalid then the error message is displayed
-                    validate_password()
+                    validate_password(parent=self)
                 # If the confirm password is invalid then the error message is displayed
                 if validate_confirm_password():
                     # If the confirm password is invalid then the error message is displayed
@@ -159,8 +123,5 @@ class Signup(ctk.CTkFrame):
                                hover=False, command=lambda: show_password())
         # Placing the show password button
         button.grid(row=0, column=1, sticky='e', padx=10)
-        # Calling the sign-up button and placing it in the grid layout
-        CustomWidgets.customButton(self, 'SIGN-UP', lambda: _verifySignup()).grid(row=7, column=0, columnspan=2,
-                                                                                  pady=10)
-        # Calling the footer gui function to display the footer
-        footer_gui(self, "Already have an account?", self._controller, "Login", "Login")
+        CustomWidgets.customButton(self, 'RESET PASSWORD', lambda: _verifyReset()).grid(row=7, column=0, columnspan=2,
+                                                                                        pady=10)

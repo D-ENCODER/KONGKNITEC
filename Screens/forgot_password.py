@@ -15,7 +15,8 @@ class ForgotPassword(ctk.CTkFrame):
     """
     Frame to show the forgot password screen
     """
-    otp = 0
+    otp = None
+    email = None
 
     def __init__(self, **kwargs):
         """
@@ -38,6 +39,7 @@ class ForgotPassword(ctk.CTkFrame):
         def validate():
             if validate_email(parent=self):
                 ForgotPassword.otp = sendOtp(self.email_entry.get())
+                ForgotPassword.email = self.email_entry.get()
                 self._controller.show_frame('Verify')
             else:
                 validate_email(parent=self)

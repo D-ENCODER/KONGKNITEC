@@ -12,7 +12,6 @@ from Screens.Validator.validator_logic import Validator
 def validate_email(**kwargs):
     """
     This is the function which is used to validate the email address when the focus pops out of the entry
-    :param event: The event which is used to get the focus out of the entry
     :return: None
     """
     if Validator.validate_email(kwargs['parent'].email_entry.get())[0]:
@@ -27,8 +26,8 @@ def validate_email(**kwargs):
             # If the error label is already present then destroy it
             kwargs['parent'].email_error_label.destroy()
         # Create the custom error label
-        kwargs['parent'].email_error_label = CustomWidgets.customErrorLabel(kwargs['parent'].email_frame,
-                                                                            Validator.validate_email(
+        kwargs['parent'].email_error_label = CustomWidgets.customErrorLabel(self=kwargs['parent'].email_frame,
+                                                                            error_text=Validator.validate_email(
                                                                                 kwargs['parent'].email_entry.get())[1])
         # Place the error label in the grid layout
         kwargs['parent'].email_error_label.grid(row=1, column=0, columnspan=2)
@@ -40,7 +39,6 @@ def validate_email(**kwargs):
 def validate_password(**kwargs):
     """
     This is the function which is used to validate the password when the focus pops out of the entry
-    :param event: The event which is used to get the focus out of the entry
     :return: None
     """
     if Validator.validate_password(kwargs['parent'].password_entry.get())[0]:
@@ -55,8 +53,8 @@ def validate_password(**kwargs):
             # If the error label is already present then destroy it
             kwargs['parent'].password_error_label.destroy()
         # Create the custom error label
-        kwargs['parent'].password_error_label = CustomWidgets.customErrorLabel(kwargs['parent'].password_frame,
-                                                                               Validator.validate_password(
+        kwargs['parent'].password_error_label = CustomWidgets.customErrorLabel(self=kwargs['parent'].password_frame,
+                                                                               error_text=Validator.validate_password(
                                                                                    kwargs[
                                                                                        'parent'].password_entry.get())[
                                                                                    1])
