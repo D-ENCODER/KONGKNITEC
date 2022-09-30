@@ -142,11 +142,10 @@ class Verify(ForgotPassword):
                                                     font_weight='bold', font_size=15)
         self.otp_entry6.grid(row=0, column=5)
 
-        def verify(event):
-            unvarified_otp = self.otp_entry1.get() + self.otp_entry2.get() + self.otp_entry3.get() + \
-                             self.otp_entry4.get() + self.otp_entry5.get() + self.otp_entry6.get()
-            print(unvarified_otp)
-            if self.otp == unvarified_otp:
+        def verify(event=None):
+            self.otp = self.otp_entry1.get() + self.otp_entry2.get() + self.otp_entry3.get() + self.otp_entry4.get() + \
+                       self.otp_entry5.get() + self.otp_entry6.get()
+            if ForgotPassword.otp == self.otp:
                 print('success 200')
             else:
                 print('failed 400')
@@ -161,4 +160,18 @@ class Verify(ForgotPassword):
         self.otp_entry6.bind('<Return>', verify)
         self.otp_frame.grid(row=4, column=0, columnspan=2, pady=10)
         self.otp_frame = ctk.CTkFrame(master=self, fg_color=configure.hover_color)
-        CustomWidgets.customButton(self, 'VERIFY', verify).grid(row=6, column=0, columnspan=2, pady=10)
+
+        def countdown(time_sec):
+            minutes, seconds = divmod(time_sec, 60)
+            timeformat = '{:02d}:{:02d}'.format(minutes, seconds)
+            self.timer.configure(text=str(timeformat))
+            if time_sec > 0:
+                self.timer_frame.after(1000, countdown, time_sec - 1)
+            else:
+                return True
+        self.timer_frame = ctk.CTkFrame(self, fg_color=configure.hover_color)
+        self.timer = CustomWidgets.customErrorLabel(self.timer_frame, '01:30')
+        self.timer.grid(row=0, column=0)
+        self.timer_frame.grid(row=6, column=0, columnspan=2)
+        self.bool = countdown(90)
+        CustomWidgets.customButton(self, 'VERIFY', verify).grid(row=7, column=0, columnspan=2, pady=10)
