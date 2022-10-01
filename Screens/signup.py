@@ -26,6 +26,7 @@ class Signup(ctk.CTkFrame):
         :param controller: controller which is the main controller
         """
         ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.hover_color)
+        kwargs['parent'].grid_configure(padx=(configure.screen_width - 300) / 2)
         # Enlarging the scope of the controller so that it can be used in other functions
         self._controller = kwargs['controller']
         # Initializing the error handlers

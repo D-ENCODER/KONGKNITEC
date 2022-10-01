@@ -16,6 +16,7 @@ from Screens.Validator.validator import validate_password
 class ResetPassword(ctk.CTkFrame):
     def __init__(self, **kwargs):
         ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.hover_color)
+        kwargs['parent'].grid_configure(padx=(configure.screen_width - 300) / 2)
         self._controller = kwargs['controller']
         self.password_error_label = ctk.CTkLabel()
         self._show_icon = load_image(self, "Icons/hide.png", 17)

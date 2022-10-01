@@ -24,6 +24,7 @@ class Login(ctk.CTkFrame):
         :param controller: The controller of the frame
         """
         ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.hover_color)
+        kwargs['parent'].grid_configure(padx=(configure.screen_width - 300) / 2)
         # Initializing the error handlers
         self.email_error_label = ctk.CTkLabel()
         self.password_error_label = ctk.CTkLabel()

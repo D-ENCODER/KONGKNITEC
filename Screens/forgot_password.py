@@ -23,6 +23,7 @@ class ForgotPassword(ctk.CTkFrame):
         constructor of the class to initialize the frame
         """
         super().__init__(kwargs['parent'], fg_color=configure.hover_color)
+        kwargs['parent'].grid_configure(padx=(configure.screen_width - 300) / 2)
         self._controller = kwargs['controller']
         self.email_error_label = ctk.CTkLabel()
         self._forgotPasswordGUI()

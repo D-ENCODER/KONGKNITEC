@@ -14,6 +14,7 @@ from Screens.forgot_password import ForgotPassword
 class Verify(ForgotPassword):
     def __init__(self, **kwargs):
         ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.hover_color)
+        kwargs['parent'].grid_configure(padx=(configure.screen_width - 300) / 2)
         self._controller = kwargs['controller']
         self._verifyGUI()
 
