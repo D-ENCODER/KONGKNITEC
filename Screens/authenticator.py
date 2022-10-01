@@ -6,7 +6,7 @@
 from tkinter import PhotoImage
 import customtkinter as ctk
 import configure
-from Screens import login, signup, forgot_password, verify, reset_password, splash
+from Screens import login, signup, forgot_password, verify, reset_password
 
 
 class Authenticator(ctk.CTk):

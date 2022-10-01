@@ -63,3 +63,4 @@ def validate_password(**kwargs):
         # Change the color of the entry to dominant color
         kwargs['parent'].password_entry.configure(border_color=configure.dominant_color)
         return False
+
