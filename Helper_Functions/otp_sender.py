@@ -16,7 +16,7 @@ def sendOtp(emailid):
 
     m1 = "Dear Customer,\n\nYou request for change password for your KONGKNITEC account.\nYour One Time Password " \
          "(OTP) is:\n\n"
-    m2 = "\n\nNote: This is an auto-generated email; \n So please do not reply to this mail\n\nThank you,\n\n" \
+    m2 = "\n\nNote: This is an auto-generated email; so please do not reply to this mail\n\nThank you,\n\n" \
          "KONGKNITEC Team"
     message = '''Subject:Recovery Password OTP\n''' + m1 + OTP + m2
 
