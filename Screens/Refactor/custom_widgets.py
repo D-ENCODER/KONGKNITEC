@@ -20,11 +20,11 @@ class CustomWidgets:
         :param kwargs: This is a dictionary of all the parameters required to create a custom entry widget.
         :return: The custom entry widget.
         """
-        defaultKwargs = {'width': 290, 'height': 35, 'font_size': 10, 'obfuscated': False, 'font_weight': 'normal',
-                         'border_color': configure.hyperlink_color}
+        defaultKwargs = {'width': 290, 'height': 35, 'font_size': 12, 'obfuscated': False, 'font_weight': 'normal',
+                         'border_color': configure.dark_gray}
         kwargs = {**defaultKwargs, **kwargs}
         custom_entry = ctk.CTkEntry(master=kwargs['parent'], placeholder_text=kwargs['placeholder'],
-                                    fg_color=configure.hyperlink_color, border_color=kwargs['border_color'],
+                                    fg_color=configure.dark_gray, border_color=kwargs['border_color'],
                                     border_width=1.5, corner_radius=10, text_font=(configure.font, kwargs['font_size'],
                                                                                    kwargs['font_weight']),
                                     width=kwargs['width'],
@@ -40,24 +40,24 @@ class CustomWidgets:
         :param text: The text to be displayed in the header label.
         :return: The header label widget.
         """
-        custom_label = ctk.CTkLabel(master=self, text=text, text_font=(configure.font, 18, "bold"),
-                                    anchor='w', text_color=configure.dominant_color)
+        custom_label = ctk.CTkLabel(master=self, text=text, text_font=configure.header_fontstyle,
+                                    anchor='w', text_color=configure.light_cyan)
         return custom_label
 
     @staticmethod
-    def customButton(self, text, command=None):
+    def customButton(**kwargs):
         """
         This method is used to create a custom button widget.
-        :param self: The object of the class in which this method is called.
-        :param text: The text to be displayed on the button.
-        :param command: The command to be executed when the button is clicked.
         :return: The custom button widget.
         """
-        custom_button = ctk.CTkButton(master=self, text=text, width=100, height=35,
-                                      fg_color=configure.dominant_color,
-                                      text_font=(configure.font, 10, "bold"), hover=False, corner_radius=15,
-                                      text_color=configure.hover_color,
-                                      command=command)
+        defaultKwargs = {'hover_color': configure.vivid_cyan, 'fg_color': configure.light_cyan, 'command': None,
+                         'text_color': configure.very_dark_gray}
+        kwargs = {**defaultKwargs, **kwargs}
+        custom_button = ctk.CTkButton(master=kwargs['self'], text=kwargs['text'], width=100, height=35,
+                                      fg_color=kwargs['fg_color'], hover_color=kwargs['hover_color'],
+                                      text_font=(configure.font, 12, "bold"), corner_radius=15,
+                                      text_color=kwargs['text_color'],
+                                      command=kwargs['command'])
         return custom_button
 
     @staticmethod
@@ -67,11 +67,11 @@ class CustomWidgets:
         :param kwargs: The keyword arguments to be passed to the label.
         :return: The custom error label widget.
         """
-        defaultKwargs = {'color': configure.dominant_color, 'anchor': 'center'}
+        defaultKwargs = {'color': configure.light_cyan, 'anchor': 'center'}
         kwargs = {**defaultKwargs, **kwargs}
         custom_error_label = ctk.CTkLabel(master=kwargs['self'], text=kwargs['error_text'],
-                                          text_font=(configure.font, 8, "bold"),
-                                          text_color=kwargs['color'], bg_color=configure.hover_color,
+                                          text_font=(configure.font, 10, "bold"),
+                                          text_color=kwargs['color'], bg_color=configure.very_dark_gray,
                                           anchor=kwargs['anchor'])
         return custom_error_label
 
@@ -82,11 +82,11 @@ class CustomWidgets:
         :param kwargs: The keyword arguments to be passed to the label.
         :return: The custom hyperlink label widget.
         """
-        defaultKwargs = {'color': configure.hyperlink_color, 'anchor': 'center'}
+        defaultKwargs = {'color': configure.dark_gray, 'anchor': 'center'}
         kwargs = {**defaultKwargs, **kwargs}
         custom_hyperlink_label = ctk.CTkButton(master=kwargs['self'], text=kwargs['text'], cursor="hand2",
-                                               fg_color=configure.hover_color, text_font=(configure.font, 8, "bold"),
-                                               hover_color=configure.hover_color,
+                                               fg_color=configure.very_dark_gray, text_font=(configure.font, 12, "bold"),
+                                               hover_color=configure.very_dark_gray,
                                                command=kwargs['command'],
-                                               text_color=configure.dominant_color)
+                                               text_color=configure.light_cyan)
         return custom_hyperlink_label

@@ -6,7 +6,7 @@
 from tkinter import PhotoImage
 import customtkinter as ctk
 import configure
-from Screens import login, signup, forgot_password, verify, reset_password
+from Screens import login, signup, forgot_password, verify, reset_password, personal_info
 
 
 class Authenticator(ctk.CTk):
@@ -29,20 +29,20 @@ class Authenticator(ctk.CTk):
         # to call the function when the close button is pressed
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
         # to set the background color of the application
-        self.configure(bg=configure.hover_color)
+        self.configure(bg=configure.very_dark_gray)
         # to save the size of the current screen in global variable to use it later
         configure.screen_width = self.winfo_screenwidth()
         configure.screen_height = self.winfo_screenheight()
         # to set the size of the application and so set the invoking location of the window
         self.geometry("{}x{}+{}+{}".format(configure.screen_width, configure.screen_height, 0, 0))
         # to initialise the stacking frame to hold the frames
-        container = ctk.CTkFrame(self, fg_color=configure.hover_color)
+        container = ctk.CTkFrame(self, fg_color=configure.very_dark_gray)
         # placing the stacking frame on the main frame
         container.grid(row=0, column=0, sticky='nsew', pady=(configure.screen_height - 600) / 2,
                        padx=(configure.screen_width - 300) / 2)
         self.frames = {}
         self.frame_stack = (login.Login, signup.Signup, forgot_password.ForgotPassword, verify.Verify,
-                            reset_password.ResetPassword)
+                            reset_password.ResetPassword, personal_info.PersonalInfo)
         # to add the frames to the stack
         for window in self.frame_stack:
             page_name = window.__name__

@@ -23,8 +23,7 @@ class Login(ctk.CTkFrame):
         :param parent: The parent of the frame which is the main frame
         :param controller: The controller of the frame
         """
-        ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.hover_color)
-        kwargs['parent'].grid_configure(padx=(configure.screen_width - 300) / 2)
+        ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.very_dark_gray)
         # Initializing the error handlers
         self.email_error_label = ctk.CTkLabel()
         self.password_error_label = ctk.CTkLabel()
@@ -45,7 +44,7 @@ class Login(ctk.CTkFrame):
         # Create the header label
         CustomWidgets.customHeaderLabel(self, 'LOGIN').grid(row=3, column=0)
         # Creating a frame for email and error box label
-        self.email_frame = ctk.CTkFrame(master=self, fg_color=configure.hover_color)
+        self.email_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
         # Create the email entry
         self.email_entry = CustomWidgets.customEntry(parent=self.email_frame, placeholder='E-mail address')
         # Placing the email entry in the grid layout
@@ -56,7 +55,7 @@ class Login(ctk.CTkFrame):
         # Binding the function to the entry widget to validate the email address
         self.email_entry.bind('<FocusOut>', lambda event: validate_email(parent=self))
         # Creating a frame for password and error box label
-        self.password_frame = ctk.CTkFrame(master=self, fg_color=configure.hover_color)
+        self.password_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
         # Create the password entry
         self.password_entry = CustomWidgets.customEntry(parent=self.password_frame, placeholder='Password',
                                                         obfuscated=True)
@@ -105,7 +104,7 @@ class Login(ctk.CTkFrame):
 
         # Create the show password button and placing on the same entry box
         button = ctk.CTkButton(master=self.password_frame, image=self._hide_icon, width=20, height=20, text="",
-                               fg_color=configure.hyperlink_color, corner_radius=180, cursor="hand2", border=False,
+                               fg_color=configure.dark_gray, corner_radius=180, cursor="hand2", border=False,
                                hover=False, command=lambda: _show_password())
         button.grid(row=0, column=1, sticky='e', padx=10)
         # Creating the forgot password hyper label and placing it in the grid layout
@@ -113,6 +112,6 @@ class Login(ctk.CTkFrame):
                                            command=lambda: self._controller.show_frame("ForgotPassword")). \
             grid(row=6, column=1, sticky='e')
         # Creating the login button and placing it in the grid layout
-        CustomWidgets.customButton(self, 'LOGIN', lambda: _verifyLogin()).grid(row=7, column=0, columnspan=2, pady=10)
+        CustomWidgets.customButton(self=self, text='LOGIN', command=lambda: _verifyLogin()).grid(row=7, column=0, columnspan=2, pady=10)
         # Creating the signup hyper label and placing it in the grid layout
         footer_gui(self, "Don't have an account? ", self._controller, "Sign-up", "Signup")

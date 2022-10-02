@@ -9,6 +9,17 @@ from Screens.Validator.validator_logic import Validator
 
 
 # This function is used to validate the email address when the focus pops out of the entry
+def validate_fields(**kwargs):
+    """
+    This function is used to validate the fields when the focus pops out of the entry
+    :return: None
+    """
+    if kwargs['parent'].get() != "":
+        return True
+    else:
+        return False
+
+
 def validate_email(**kwargs):
     """
     This is the function which is used to validate the email address when the focus pops out of the entry
@@ -18,7 +29,7 @@ def validate_email(**kwargs):
         # If the email is valid then remove the error label
         kwargs['parent'].email_error_label.destroy()
         # reset the color of the entry to default
-        kwargs['parent'].email_entry.configure(border_color=configure.hyperlink_color)
+        kwargs['parent'].email_entry.configure(border_color=configure.dark_gray)
         return True
     else:
         # checks if the error label is already present or not
@@ -32,7 +43,7 @@ def validate_email(**kwargs):
         # Place the error label in the grid layout
         kwargs['parent'].email_error_label.grid(row=1, column=0, columnspan=2)
         # Change the color of the entry to dominant color
-        kwargs['parent'].email_entry.configure(border_color=configure.dominant_color)
+        kwargs['parent'].email_entry.configure(border_color=configure.light_cyan)
         return False
 
 
@@ -45,7 +56,7 @@ def validate_password(**kwargs):
         # If the password is valid then remove the error label
         kwargs['parent'].password_error_label.destroy()
         # reset the color of the entry to default
-        kwargs['parent'].password_entry.configure(border_color=configure.hyperlink_color)
+        kwargs['parent'].password_entry.configure(border_color=configure.dark_gray)
         return True
     else:
         # checks if the error label is already present or not
@@ -61,6 +72,5 @@ def validate_password(**kwargs):
         # Place the error label in the grid layout
         kwargs['parent'].password_error_label.grid(row=1, column=0, columnspan=2)
         # Change the color of the entry to dominant color
-        kwargs['parent'].password_entry.configure(border_color=configure.dominant_color)
+        kwargs['parent'].password_entry.configure(border_color=configure.light_cyan)
         return False
-

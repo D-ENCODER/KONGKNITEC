@@ -6,17 +6,29 @@
 from customtkinter import *
 from PIL import ImageTk, Image
 
+import configure
+from Helper_Functions.load_image import load_image
 
-class CustomBox(CTk):
+
+class CustomBox(CTkToplevel):
     def error_box(self, title, message):
         self.title(title)
         self.resizable(False, False)
-        self.geometry("330x100")
-        image = Image.open('Icons/error.png')
-        resized_img = image.resize((75, 75), Image.ANTIALIAS)
-        img = ImageTk.PhotoImage(master=self, image=resized_img)
-        error_image = CTkLabel(master=self, image=img, anchor='w')
-        error_image.grid(row=0, column=0, padx=10)
-        label = CTkLabel(master=self, text=message, anchor='w', justify='left', wraplength=75)
-        label.grid(row=0, column=1)
+        self.configure(bg=configure.very_dark_gray)
+        self.geometry("350x175+{}+{}".format(configure.screen_height / 2, configure.screen_width / 2))
+        img = load_image(self, 'Icons/error.png', 35)
+        self.iconphoto(False, img)
+        error_image = CTkLabel(master=self, image=img, anchor='nw')
+        error_image.place(x=10, y=15)
+        label = CTkTextbox(master=self, width=300, height=100, state='normal', text_font=configure.welcome_fontstyle,
+                           border_color=configure.very_dark_gray, fg_color=configure.very_dark_gray,
+                           text_color=configure.white)
+        label.place(x=50, y=10)
+        label.insert('end', message)
+        label.configure(state='disabled')
+        button = CTkButton(master=self, text='OK', width=100, height=35, text_font=configure.welcome_fontstyle,
+                           fg_color=configure.light_cyan, text_color=configure.very_dark_gray,
+                           border_color=configure.white, hover_color=configure.vivid_cyan,
+                           command=self.destroy, corner_radius=15)
+        button.place(x=125, y=130)
         self.mainloop()

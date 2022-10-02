@@ -4,7 +4,6 @@
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
 import hashlib
-import os
 
 
 def encrypt(plain_text):
@@ -13,7 +12,7 @@ def encrypt(plain_text):
     arguments include plain text and returns list containing key and plain text
     """
     # Generate a random key
-    key = os.urandom(32)
+    key = b'tV\xfcz\t\xd4p$\xc5\xed=&z\xf7\xc1 (\xb8\x10\xb8\n\x13E\xc7\xf5\xe2\xbc_P\x7f\xd2C'
     # Encrypt the plain text using SHA256 algorithm
     encrypted_text = hashlib.pbkdf2_hmac(
         'sha256',  # The hash digest algorithm for HMAC
@@ -23,4 +22,4 @@ def encrypt(plain_text):
         dklen=128  # Get a 128 byte key
     )
     # Return the encrypted text and key
-    return encrypted_text, key
+    return encrypted_text

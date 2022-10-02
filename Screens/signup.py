@@ -18,6 +18,8 @@ class Signup(ctk.CTkFrame):
     """
     This function is used to load the sign-up frame
     """
+    email = None
+    password = None
 
     def __init__(self, **kwargs):
         """
@@ -25,16 +27,13 @@ class Signup(ctk.CTkFrame):
         :param parent: parent frame which is the main frame
         :param controller: controller which is the main controller
         """
-        ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.hover_color)
-        kwargs['parent'].grid_configure(padx=(configure.screen_width - 300) / 2)
+        ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.very_dark_gray)
         # Enlarging the scope of the controller so that it can be used in other functions
         self._controller = kwargs['controller']
         # Initializing the error handlers
         self.email_error_label = ctk.CTkLabel()
         self.password_error_label = ctk.CTkLabel()
         self.confirm_password_error_label = ctk.CTkLabel()
-        # Enlarging the scope of the database object so that it can be used in other functions
-        self._obj = FirebaseDatabase(name='signup')
         # Loading the show and hide icons so that it can be used further
         self._show_icon = load_image(self, "Icons/hide.png", 17)
         self._hide_icon = load_image(self, "Icons/show.png", 17)
@@ -48,9 +47,9 @@ class Signup(ctk.CTkFrame):
         """
         header_gui(self)
         # Calling the header label
-        CustomWidgets.customHeaderLabel(self, 'SIGN-UP').grid(row=3, column=0)
+        CustomWidgets.customHeaderLabel(self, 'SIGN-UP').grid(row=3, column=0, sticky='w')
         # Creating a frame for email and error box label
-        self.email_frame = ctk.CTkFrame(master=self, fg_color=configure.hover_color)
+        self.email_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
         # Calling the email entry label
         self.email_entry = CustomWidgets.customEntry(parent=self.email_frame, placeholder='E-mail address')
         # Placing the email entry in the grid layout
@@ -60,7 +59,7 @@ class Signup(ctk.CTkFrame):
         # Binding the validate email function to the email entry label
         self.email_entry.bind('<FocusOut>', lambda event: validate_email(parent=self))
         # Creating a frame for password and error box label
-        self.password_frame = ctk.CTkFrame(master=self, fg_color=configure.hover_color)
+        self.password_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
         # Calling the password entry label
         self.password_entry = CustomWidgets.customEntry(parent=self.password_frame, placeholder='Password',
                                                         obfuscated=True)
@@ -69,7 +68,7 @@ class Signup(ctk.CTkFrame):
         # Placing the password frame into the grid layout
         self.password_frame.grid(row=5, column=0, columnspan=2, pady=10)
         # Creating a frame for confirm password and error box label
-        self.confirm_password_frame = ctk.CTkFrame(master=self, fg_color=configure.hover_color)
+        self.confirm_password_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
         # Calling the show password button
         self.confirm_password_entry = CustomWidgets.customEntry(parent=self.confirm_password_frame,
                                                                 placeholder='Confirm Password', obfuscated=True)
@@ -78,7 +77,7 @@ class Signup(ctk.CTkFrame):
         # Placing the confirm password frame into the grid layout
         self.confirm_password_frame.grid(row=6, column=0, columnspan=2, pady=10)
         # Binding the validate password function to the password entry label
-        self.password_entry.bind('<FocusOut>', validate_password)
+        self.password_entry.bind('<FocusOut>', lambda event: validate_password(parent=self))
 
         def validate_confirm_password(event=None):
             """
@@ -90,7 +89,8 @@ class Signup(ctk.CTkFrame):
             if self.password_entry.get() == self.confirm_password_entry.get():
                 self.confirm_password_error_label.destroy()
                 # If the confirm password is valid then the confirm password entry label is set to the default color
-                self.confirm_password_entry.configure(border_color=configure.hyperlink_color)
+                self.confirm_password_entry.configure(border_color=configure.dark_gray)
+                return True
             else:
                 # checks if the error label is already present or not
                 if self.confirm_password_error_label.winfo_exists():
@@ -102,7 +102,8 @@ class Signup(ctk.CTkFrame):
                 # Placing the error label into the grid layout
                 self.confirm_password_error_label.grid(row=1, column=0, columnspan=2)
                 # If the confirm password is invalid then the confirm password entry label is set to the error color
-                self.confirm_password_entry.configure(border_color=configure.dominant_color)
+                self.confirm_password_entry.configure(border_color=configure.light_cyan)
+                return False
 
         # Binding the validate confirm password function to the confirm password entry label
         self.confirm_password_entry.bind('<FocusOut>', validate_confirm_password)
@@ -137,18 +138,20 @@ class Signup(ctk.CTkFrame):
             :return:
             """
             # Validating the email address, password and confirm password entered by the user
-            if validate_email() and validate_password() and validate_confirm_password():
-                password, key = encrypt(self.password_entry.get())
-                self._obj.dbSignUp(self.email_entry.get(), password, key)
+            if validate_email(parent=self) and validate_password(parent=self) and validate_confirm_password():
+                self.password = encrypt(self.password_entry.get())
+                Signup.email = self.email_entry.get()
+                Signup.password = self.password
+                self._controller.show_frame('PersonalInfo')
             else:
                 # If the email address, password or confirm password is invalid then the error message is displayed
-                if not validate_email():
+                if not validate_email(parent=self):
                     # If the email address is invalid then the error message is displayed
-                    validate_email()
+                    validate_email(parent=self)
                 # If the password is invalid then the error message is displayed
-                if not validate_password():
+                if not validate_password(parent=self):
                     # If the password is invalid then the error message is displayed
-                    validate_password()
+                    validate_password(parent=self)
                 # If the confirm password is invalid then the error message is displayed
                 if validate_confirm_password():
                     # If the confirm password is invalid then the error message is displayed
@@ -156,12 +159,13 @@ class Signup(ctk.CTkFrame):
 
         # Calling the show password button
         button = ctk.CTkButton(master=self.password_frame, image=self._hide_icon, width=20, height=20, text="",
-                               fg_color=configure.hyperlink_color, corner_radius=180, cursor="hand2", border=False,
+                               fg_color=configure.dark_gray, corner_radius=180, cursor="hand2", border=False,
                                hover=False, command=lambda: show_password())
         # Placing the show password button
         button.grid(row=0, column=1, sticky='e', padx=10)
         # Calling the sign-up button and placing it in the grid layout
-        CustomWidgets.customButton(self, 'SIGN-UP', lambda: _verifySignup()).grid(row=7, column=0, columnspan=2,
-                                                                                  pady=10)
+        CustomWidgets.customButton(self=self, text='NEXT', command=lambda: _verifySignup()).grid(row=7, column=0,
+                                                                                                    columnspan=2,
+                                                                                                    pady=10)
         # Calling the footer gui function to display the footer
         footer_gui(self, "Already have an account?", self._controller, "Login", "Login")

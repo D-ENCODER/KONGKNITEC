@@ -11,10 +11,10 @@ class FirebaseDatabase:
     """
     class for executing backend queries and database related functions.
     """
-    def __init__(self, **kwargs):
+    def __init__(self):
         # Using jason file to initialize an app instance in the constructor
         cred = credentials.Certificate("Backend/serviceAccountKey.json")
-        firebase_admin.initialize_app(cred, name=kwargs['name'])
+        firebase_admin.initialize_app(cred)
 
     @staticmethod
     def _check_exists(collection, email):
@@ -32,7 +32,7 @@ class FirebaseDatabase:
                 return True
         return False
 
-    def dbSignUp(self, email, password, key):
+    def dbSignUp(self, email, password):
         """
         adds the user to the database if the user does not already exist.
         takes email password and key as arguments.
@@ -42,7 +42,6 @@ class FirebaseDatabase:
         if not self._check_exists('users', email):
             # add the user to the database
             db.collection('users').document().set({
-                'email': email, 'password': password, 'key': key})
+                'email': email, 'password': password})
         else:
             print('already exists')
-
