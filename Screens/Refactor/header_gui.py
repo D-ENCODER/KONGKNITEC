@@ -20,11 +20,13 @@ def header_gui(self):
     ctk.CTkLabel(master=self, image=self._img, anchor='center').grid(row=0, column=0,
                                                                      columnspan=2)
     # Creating a label for the title of the application
-    ctk.CTkLabel(master=self, text='Welcome to ', anchor='e',
-                 text_font=(configure.font, 10, "bold"), text_color=configure.non_dominant_color).grid(row=1,
-                                                                                                       column=0)
+    frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
+    frame.grid(row=1, column=0, columnspan=2)
+    ctk.CTkLabel(master=frame, text='Welcome To ', anchor='e',
+                 text_font=configure.welcome_fontstyle, text_color=configure.white).grid(row=1,
+                                                                                         column=0)
     # Creating a label for the title of the application in different colour
-    ctk.CTkLabel(master=self, text='KONGKNITEC', anchor='w',
-                 text_font=(configure.font, 10, "bold"), text_color=configure.dominant_color).grid(row=1, column=1)
+    ctk.CTkLabel(master=frame, text='KONGKNITEC', anchor='w',
+                 text_font=configure.welcome_fontstyle, text_color=configure.light_cyan).grid(row=1, column=1)
     # Creating a label for the subtitle of the application
     ctk.CTkLabel(master=self, text='', anchor='center').grid(row=2, column=0, columnspan=2)

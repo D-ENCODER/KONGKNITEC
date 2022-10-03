@@ -1,60 +1,84 @@
-# Date    : 24/09/22 11:02 am
+# Date    : 28/09/22 9:06 pm
 # Author  : dencoder (hetcjoshi1684@gmail.com)
 # GitHub    : (https://github.com/D-ENCODER)
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
+from numpy.core.defchararray import strip
+import configure
+from Screens.Refactor.custom_widgets import CustomWidgets
+from Screens.Validator.validator_logic import Validator
 
-class Validator:
-    """
-    This class is used to validate the user input.
-    this contains many functions like validate email and password and so on.
-    """
-    @staticmethod
-    def validate_email(email):
-        """
-        This function is used to validate the email address.
-        :param email: email address that is to be validated.
-        :return: True if email is valid else False
-        """
-        # check if email contains @ and . or not
-        if '@' in email and '.' in email:
-            # return True if email is valid else False
-            return [True]
-        if email == '':
-            return [False, 'Email cannot be empty']
-        else:
-            return [False, 'Invalid email address']
 
-    @staticmethod
-    def validate_password(password):
-        """
-        This function is used to validate the password.
-        :param password: password that is to be validated
-        :return: True if password is valid else False
-        """
-        # check if password contains at least one special character
-        SpecialSym = ['$', '@', '#', '%', '!', '^', '&', '*', '(', ')', '-', '_', '+', '=']
-        val = [True]
-        # check if password is not empty
-        if password == '':
-            return [False, 'Password cannot be empty']
-        # check if password contains at least 8 digit
-        if len(password) < 8:
-            return [False, 'length should be at least 8']
-        # check if password contains less than 20 digit
-        if len(password) > 20:
-            return [False, 'length should be not be greater than 20']
-        # check if password contains at least one number
-        if not any(char.isdigit() for char in password):
-            return [False, 'Password should have at least one numeral']
-        # check if password contains at least one uppercase letter
-        if not any(char.isupper() for char in password):
-            return [False, 'Password should have at least one uppercase letter']
-        # check if password contains at least one lowercase letter
-        if not any(char.islower() for char in password):
-            return [False, 'Password should have at least one lowercase letter']
-        # check if password contains at least one special character
-        if not any(char in SpecialSym for char in password):
-            return[False, 'Password should have at least \none of the symbols $@#%!^&*()-_+=']
-        else:
-            return [val, '']
+# This function is used to validate the email address when the focus pops out of the entry
+def validate_fields(**kwargs):
+    """
+    This function is used to validate the fields when the focus pops out of the entry
+    :return: None
+    """
+    if strip(kwargs['widget'].get()) != "":
+        kwargs['error_widget'].destroy()
+        print('hello')
+        # reset the color of the entry to default
+        kwargs['widget'].configure(border_color=configure.dark_gray)
+        return True
+    else:
+        # Place the error label in the grid layout
+        kwargs['error_widget'].grid(row=1, column=0, columnspan=2)
+        kwargs['widget'].configure(border_color=configure.light_cyan)
+        return False
+
+
+def validate_email(**kwargs):
+    """
+    This is the function which is used to validate the email address when the focus pops out of the entry
+    :return: None
+    """
+    if Validator.validate_email(kwargs['parent'].email_entry.get())[0]:
+        # If the email is valid then remove the error label
+        kwargs['parent'].email_error_label.destroy()
+        # reset the color of the entry to default
+        kwargs['parent'].email_entry.configure(border_color=configure.dark_gray)
+        return True
+    else:
+        # checks if the error label is already present or not
+        if kwargs['parent'].email_error_label.winfo_exists():
+            # If the error label is already present then destroy it
+            kwargs['parent'].email_error_label.destroy()
+        # Create the custom error label
+        kwargs['parent'].email_error_label = CustomWidgets.customErrorLabel(self=kwargs['parent'].email_frame,
+                                                                            error_text=Validator.validate_email(
+                                                                                kwargs['parent'].email_entry.get())[1])
+        # Place the error label in the grid layout
+        kwargs['parent'].email_error_label.grid(row=1, column=0, columnspan=2)
+        # Change the color of the entry to dominant color
+        kwargs['parent'].email_entry.configure(border_color=configure.light_cyan)
+        return False
+
+
+def validate_password(**kwargs):
+    """
+    This is the function which is used to validate the password when the focus pops out of the entry
+    :return: None
+    """
+    if Validator.validate_password(kwargs['parent'].password_entry.get())[0]:
+        # If the password is valid then remove the error label
+        kwargs['parent'].password_error_label.destroy()
+        # reset the color of the entry to default
+        kwargs['parent'].password_entry.configure(border_color=configure.dark_gray)
+        return True
+    else:
+        # checks if the error label is already present or not
+        if kwargs['parent'].password_error_label.winfo_exists():
+            # If the error label is already present then destroy it
+            kwargs['parent'].password_error_label.destroy()
+        # Create the custom error label
+        kwargs['parent'].password_error_label = CustomWidgets.customErrorLabel(self=kwargs['parent'].password_frame,
+                                                                               error_text=Validator.validate_password(
+                                                                                   kwargs[
+                                                                                       'parent'].password_entry.get())[
+                                                                                   1])
+        # Place the error label in the grid layout
+        kwargs['parent'].password_error_label.grid(row=1, column=0, columnspan=2)
+        # Change the color of the entry to dominant color
+        kwargs['parent'].password_entry.configure(border_color=configure.light_cyan)
+        return False

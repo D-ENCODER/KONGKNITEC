@@ -32,7 +32,7 @@ class FirebaseDatabase:
                 return True
         return False
 
-    def dbSignUp(self, email, password, key):
+    def dbSignUp(self, email, password):
         """
         adds the user to the database if the user does not already exist.
         takes email password and key as arguments.
@@ -42,6 +42,6 @@ class FirebaseDatabase:
         if not self._check_exists('users', email):
             # add the user to the database
             db.collection('users').document().set({
-                'email': email, 'password': password, 'key': key})
+                'email': email, 'password': password})
         else:
             print('already exists')

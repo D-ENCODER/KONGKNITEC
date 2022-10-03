@@ -1,8 +1,6 @@
 customtkinter==4.6.3
-darkdetect==0.7.1
+firebase_admin==5.4.0
+gTTS==2.2.4
 numpy==1.23.3
-opencv-contrib-python==4.6.0.66
-opencv-python==4.6.0.66
+opencv_contrib_python==4.6.0.66
 Pillow==9.2.0
-pyttsx3~=2.90
-gTTS~=2.2.4
