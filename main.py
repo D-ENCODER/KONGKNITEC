@@ -4,10 +4,10 @@
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
 import customtkinter as ctk
-from Screens.authenticator import Authenticator
+from Screens.stockpile import StackPile
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
 # initialize the root window
-app = Authenticator()
+app = StackPile()
 # start the application
 app.mainloop()

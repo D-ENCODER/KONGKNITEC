@@ -3,6 +3,7 @@
 # GitHub    : (https://github.com/D-ENCODER)
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
+from numpy.core.defchararray import strip
 import configure
 from Screens.Refactor.custom_widgets import CustomWidgets
 from Screens.Validator.validator_logic import Validator
@@ -14,9 +15,16 @@ def validate_fields(**kwargs):
     This function is used to validate the fields when the focus pops out of the entry
     :return: None
     """
-    if kwargs['parent'].get() != "":
+    if strip(kwargs['widget'].get()) != "":
+        kwargs['error_widget'].destroy()
+        print('hello')
+        # reset the color of the entry to default
+        kwargs['widget'].configure(border_color=configure.dark_gray)
         return True
     else:
+        # Place the error label in the grid layout
+        kwargs['error_widget'].grid(row=1, column=0, columnspan=2)
+        kwargs['widget'].configure(border_color=configure.light_cyan)
         return False
 
 

@@ -9,7 +9,7 @@ import configure
 from Screens import login, signup, forgot_password, verify, reset_password, personal_info
 
 
-class Authenticator(ctk.CTk):
+class StackPile(ctk.CTk):
     """
     main frame of the application used to switch between different frames and hold the frames in a stack
     """
@@ -52,7 +52,7 @@ class Authenticator(ctk.CTk):
             self.frames[page_name] = frame
             # to place the frame on the main frame
             frame.grid(row=0, column=0, sticky='nsew')
-        self.show_frame("Login")
+        self.show_frame("PersonalInfo")
 
     def show_frame(self, page_name):
         """
