@@ -45,7 +45,7 @@ class ForgotPassword(ctk.CTkFrame):
                     self._controller.show_frame('Verify')
                 except Exception as e:
                     obj = CustomBox()
-                    obj.error_box('Error', 'Something went wrong' + '(' + str(e.args[0]) + ')')
+                    obj.error_box('Error', 'Something went wrong ' + '(' + str(e.args[0]) + ')')
             else:
                 validate_email(parent=self)
 

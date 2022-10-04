@@ -17,15 +17,16 @@ def validate_fields(**kwargs):
     """
     if strip(kwargs['widget'].get()) != "":
         kwargs['error_widget'].destroy()
-        print('hello')
         # reset the color of the entry to default
         kwargs['widget'].configure(border_color=configure.dark_gray)
-        return True
+        kwargs['bool'] = True
+        return kwargs['bool']
     else:
         # Place the error label in the grid layout
         kwargs['error_widget'].grid(row=1, column=0, columnspan=2)
         kwargs['widget'].configure(border_color=configure.light_cyan)
-        return False
+        kwargs['bool'] = False
+        return kwargs['bool']
 
 
 def validate_email(**kwargs):
