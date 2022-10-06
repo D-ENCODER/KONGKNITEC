@@ -18,8 +18,7 @@ class Signup(ctk.CTkFrame):
     """
     This function is used to load the sign-up frame
     """
-    email = None
-    password = None
+    credentials = {}
 
     def __init__(self, **kwargs):
         """
@@ -140,9 +139,9 @@ class Signup(ctk.CTkFrame):
             # Validating the email address, password and confirm password entered by the user
             if validate_email(parent=self) and validate_password(parent=self) and validate_confirm_password():
                 self.password = encrypt(self.password_entry.get())
-                Signup.email = self.email_entry.get()
-                Signup.password = self.password
-                self._controller.show_frame('PersonalInfo')
+                Signup.credentials['email'] = self.email_entry.get()
+                Signup.credentials['password'] = self.password
+                self._controller.show_frame('UserDetailsStack')
             else:
                 # If the email address, password or confirm password is invalid then the error message is displayed
                 if not validate_email(parent=self):
@@ -164,7 +163,7 @@ class Signup(ctk.CTkFrame):
         # Placing the show password button
         button.grid(row=0, column=1, sticky='e', padx=10)
         # Calling the sign-up button and placing it in the grid layout
-        CustomWidgets.customButton(self=self, text='NEXT', command=lambda: _verifySignup()).grid(row=7, column=0,
+        CustomWidgets.customButton(parent=self, text='NEXT', command=lambda: _verifySignup()).grid(row=7, column=0,
                                                                                                     columnspan=2,
                                                                                                     pady=10)
         # Calling the footer gui function to display the footer

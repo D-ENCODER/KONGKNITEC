@@ -3,6 +3,8 @@
 # GitHub    : (https://github.com/D-ENCODER)
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
+from numpy.core.defchararray import strip
+
 
 class Validator:
     """
@@ -18,7 +20,7 @@ class Validator:
         :return: True if email is valid else False
         """
         # check if email contains @ and . or not
-        if email == '':
+        if strip(email) == '':
             return [False, 'Email cannot be empty']
         if '@' not in email or '.' not in email:
             # return True if email is valid else False
@@ -39,7 +41,7 @@ class Validator:
         SpecialSym = ['$', '@', '#', '%', '!', '^', '&', '*', '(', ')', '-', '_', '+', '=']
         val = [True]
         # check if password is not empty
-        if password == '':
+        if strip(password) == '':
             return [False, 'Password cannot be empty']
         # check if password contains at least 8 digit
         if len(password) < 8:

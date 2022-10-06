@@ -4,17 +4,26 @@
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
 import customtkinter as ctk
+import requests
 import configure
+from Helper_Functions.custom_error_box import CustomBox
 from Helper_Functions.otp_sender import sendOtp
 from Screens.Refactor.custom_widgets import CustomWidgets
 from Screens.Refactor.header_gui import header_gui
 from Screens.forgot_password import ForgotPassword
+from Screens.personal_info import ContactInfo
 
 
-class Verify(ForgotPassword):
+class Verify(ForgotPassword, ContactInfo):
+    credentials = {}
+
     def __init__(self, **kwargs):
         ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.very_dark_gray)
         self._controller = kwargs['controller']
+        if 'otp' in ForgotPassword.credentials:
+            Verify.credentials = ForgotPassword.credentials
+        else:
+            Verify.credentials = ContactInfo.credentials
         self._verifyGUI()
 
     def _switcher(self, index, event=None):
@@ -122,10 +131,26 @@ class Verify(ForgotPassword):
         def verify(event=None):
             self.otp = self.otp_entry1.get() + self.otp_entry2.get() + self.otp_entry3.get() + self.otp_entry4.get() + \
                        self.otp_entry5.get() + self.otp_entry6.get()
-            if ForgotPassword.otp == self.otp:
-                self._controller.show_frame('ResetPassword')
+            if Verify.credentials['otp'] == self.otp:
+                if len(Verify.credentials) == 2:
+                    self._controller.show_frame('ResetPassword')
+                else:
+                    request = requests.get('https://google.com')
+                    if request.status_code != 200:
+                        obj = CustomBox()
+                        obj.error_box('No Internet Connection', 'Please check your internet connection and try again')
+                    else:
+                        # try:
+                        print(Verify.credentials)
+                        configure.obj.dbSignUp(Verify.credentials)
+                        print('success')
+                        # except Exception as e:
+                        #     obj = CustomBox()
+                        #     obj.error_box('Error', 'Something went wrong' + '(' + e.args[0] + ')')
+                    # self._controller.show_frame('Dashboard')
             else:
-                print('failed 400')
+                obj = CustomBox()
+                obj.error_box('Invalid OTP', 'Please enter a valid OTP')
 
         self._switcher(0)
         self.otp_entry1.bind('<KeyRelease>', lambda event: self._switcher(1, event))
@@ -145,22 +170,33 @@ class Verify(ForgotPassword):
 
             def sender():
                 resend.destroy()
-                ForgotPassword.otp = sendOtp(ForgotPassword.email)
-                countdown(90)
+                request = requests.get('https://google.com')
+                if request.status_code != 200:
+                    obj = CustomBox()
+                    obj.error_box('No Internet', 'Please check your internet connection')
+                else:
+                    try:
+                        Verify.credentials['otp'] = sendOtp(Verify.credentials['email'])
+                    except Exception as e:
+                        obj = CustomBox()
+                        obj.error_box('Error', 'Something went wrong. Please try again later' + e.args[0])
+                        self._controller.show_frame('Login')
+                    countdown(90)
 
             if time_sec > 0:
                 self.timer_frame.after(1000, countdown, time_sec - 1)
             else:
-                resend = CustomWidgets.customHyperlinkLabel(self=self.timer_frame, text='Resend OTP',
+                resend = CustomWidgets.customHyperlinkLabel(parent=self.timer_frame, text='Resend OTP',
                                                             color=configure.light_cyan,
                                                             command=lambda: sender())
                 resend.grid(row=0, column=1)
 
         self.timer_frame = ctk.CTkFrame(self, fg_color=configure.very_dark_gray)
-        CustomWidgets.customErrorLabel(self=self.timer_frame, error_text='Resend OTP in ', anchor='e',
+        CustomWidgets.customErrorLabel(parent=self.timer_frame, error_text='Resend OTP in ', anchor='e',
                                        color=configure.white).grid(row=0, column=0)
-        self.timer = CustomWidgets.customErrorLabel(self=self.timer_frame, error_text='01:30')
+        self.timer = CustomWidgets.customErrorLabel(parent=self.timer_frame, error_text='01:30')
         self.timer.grid(row=0, column=1)
         self.timer_frame.grid(row=6, column=0, columnspan=2)
         countdown(90)
-        CustomWidgets.customButton(self=self, text='VERIFY', command=verify).grid(row=7, column=0, columnspan=2, pady=10)
+        CustomWidgets.customButton(parent=self, text='VERIFY', command=verify).grid(row=7, column=0, columnspan=2,
+                                                                                    pady=10)

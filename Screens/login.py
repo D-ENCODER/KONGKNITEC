@@ -108,10 +108,10 @@ class Login(ctk.CTkFrame):
                                hover=False, command=lambda: _show_password())
         button.grid(row=0, column=1, sticky='e', padx=10)
         # Creating the forgot password hyper label and placing it in the grid layout
-        CustomWidgets.customHyperlinkLabel(self=self, text='FORGOT PASSWORD ?',
+        CustomWidgets.customHyperlinkLabel(parent=self, text='FORGOT PASSWORD ?',
                                            command=lambda: self._controller.show_frame("ForgotPassword")). \
             grid(row=6, column=1, sticky='e')
         # Creating the login button and placing it in the grid layout
-        CustomWidgets.customButton(self=self, text='LOGIN', command=lambda: _verifyLogin()).grid(row=7, column=0, columnspan=2, pady=10)
+        CustomWidgets.customButton(parent=self, text='LOGIN', command=lambda: _verifyLogin()).grid(row=7, column=0, columnspan=2, pady=10)
         # Creating the signup hyper label and placing it in the grid layout
         footer_gui(self, "Don't have an account? ", self._controller, "Sign-up", "Signup")

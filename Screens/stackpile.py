@@ -42,7 +42,7 @@ class StackPile(ctk.CTk):
                        padx=(configure.screen_width - 300) / 2)
         self.frames = {}
         self.frame_stack = (login.Login, signup.Signup, forgot_password.ForgotPassword, verify.Verify,
-                            reset_password.ResetPassword, personal_info.PersonalInfo)
+                            reset_password.ResetPassword, personal_info.UserDetailsStack)
         # to add the frames to the stack
         for window in self.frame_stack:
             page_name = window.__name__
@@ -52,7 +52,7 @@ class StackPile(ctk.CTk):
             self.frames[page_name] = frame
             # to place the frame on the main frame
             frame.grid(row=0, column=0, sticky='nsew')
-        self.show_frame("PersonalInfo")
+        self.show_frame("Login")
 
     def show_frame(self, page_name):
         """

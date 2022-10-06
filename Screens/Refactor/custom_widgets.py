@@ -53,7 +53,7 @@ class CustomWidgets:
         defaultKwargs = {'hover_color': configure.vivid_cyan, 'fg_color': configure.light_cyan, 'command': None,
                          'text_color': configure.very_dark_gray}
         kwargs = {**defaultKwargs, **kwargs}
-        custom_button = ctk.CTkButton(master=kwargs['self'], text=kwargs['text'], width=100, height=35,
+        custom_button = ctk.CTkButton(master=kwargs['parent'], text=kwargs['text'], width=100, height=35,
                                       fg_color=kwargs['fg_color'], hover_color=kwargs['hover_color'],
                                       text_font=(configure.font, 12, "bold"), corner_radius=15,
                                       text_color=kwargs['text_color'],
@@ -69,7 +69,7 @@ class CustomWidgets:
         """
         defaultKwargs = {'color': configure.light_cyan, 'anchor': 'center'}
         kwargs = {**defaultKwargs, **kwargs}
-        custom_error_label = ctk.CTkLabel(master=kwargs['self'], text=kwargs['error_text'],
+        custom_error_label = ctk.CTkLabel(master=kwargs['parent'], text=kwargs['error_text'],
                                           text_font=(configure.font, 10, "bold"),
                                           text_color=kwargs['color'], bg_color=configure.very_dark_gray,
                                           anchor=kwargs['anchor'])
@@ -84,7 +84,7 @@ class CustomWidgets:
         """
         defaultKwargs = {'color': configure.dark_gray, 'anchor': 'center'}
         kwargs = {**defaultKwargs, **kwargs}
-        custom_hyperlink_label = ctk.CTkButton(master=kwargs['self'], text=kwargs['text'], cursor="hand2",
+        custom_hyperlink_label = ctk.CTkButton(master=kwargs['parent'], text=kwargs['text'], cursor="hand2",
                                                fg_color=configure.very_dark_gray, text_font=(configure.font, 12, "bold"),
                                                hover_color=configure.very_dark_gray,
                                                command=kwargs['command'],

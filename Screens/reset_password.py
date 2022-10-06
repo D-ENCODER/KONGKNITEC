@@ -121,5 +121,5 @@ class ResetPassword(ctk.CTkFrame):
                                hover=False, command=lambda: show_password())
         # Placing the show password button
         button.grid(row=0, column=1, sticky='e', padx=10)
-        CustomWidgets.customButton(self=self, text='RESET PASSWORD', command=lambda: _verifyReset()).grid(row=7, column=0, columnspan=2,
+        CustomWidgets.customButton(parent=self, text='RESET PASSWORD', command=lambda: _verifyReset()).grid(row=7, column=0, columnspan=2,
                                                                                         pady=10)

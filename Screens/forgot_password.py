@@ -4,6 +4,8 @@
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
 import customtkinter as ctk
+import requests
+
 import configure
 from Helper_Functions.custom_error_box import CustomBox
 from Helper_Functions.otp_sender import sendOtp
@@ -16,8 +18,7 @@ class ForgotPassword(ctk.CTkFrame):
     """
     Frame to show the forgot password screen
     """
-    otp = None
-    email = None
+    credentials = {}
 
     def __init__(self, **kwargs):
         """
@@ -39,17 +40,22 @@ class ForgotPassword(ctk.CTkFrame):
 
         def validate():
             if validate_email(parent=self):
-                try:
-                    ForgotPassword.otp = sendOtp(self.email_entry.get())
-                    ForgotPassword.email = self.email_entry.get()
-                    self._controller.show_frame('Verify')
-                except Exception as e:
+                request = requests.get('https://google.com')
+                if request.status_code != 200:
                     obj = CustomBox()
-                    obj.error_box('Error', 'Something went wrong ' + '(' + str(e.args[0]) + ')')
+                    obj.error_box('No internet', 'Please check your internet connection')
+                else:
+                    try:
+                        ForgotPassword.credentials['otp'] = sendOtp(self.email_entry.get())
+                        ForgotPassword.credentials['email'] = self.email_entry.get()
+                        self._controller.show_frame('Verify')
+                    except Exception as e:
+                        obj = CustomBox()
+                        obj.error_box('Error', 'Something went wrong ' + '(' + str(e.args[0]) + ')')
             else:
                 validate_email(parent=self)
 
-        CustomWidgets.customButton(self=self, text='BACK', command=lambda: self._controller.show_frame('Login'),
+        CustomWidgets.customButton(parent=self, text='BACK', command=lambda: self._controller.show_frame('Login'),
                                    fg_color=configure.dark_gray, text_color=configure.white,
                                    hover_color=configure.very_dark_gray).grid(row=5, column=0, pady=10)
-        CustomWidgets.customButton(self=self, text='SEND', command=validate).grid(row=5, column=1, pady=10)
+        CustomWidgets.customButton(parent=self, text='SEND', command=validate).grid(row=5, column=1, pady=10)

@@ -6,6 +6,8 @@
 from firebase_admin import firestore, credentials
 import firebase_admin
 
+from Helper_Functions.custom_error_box import CustomBox
+
 
 class FirebaseDatabase:
     """
@@ -24,24 +26,22 @@ class FirebaseDatabase:
         """
         db = firestore.client()
         # get all the documents in the collection
-        doc = db.collection(collection).get()
-        # iterate through the documents
-        for i in range(len(doc)):
-            # check if the email is already present in the database
-            if doc[i].to_dict()['email'] == email:
-                return True
+        doc = db.collection(collection).where('email', '==', email).get()
+        if len(doc) > 0:
+            return True
         return False
 
-    def dbSignUp(self, email, password):
+    def dbSignUp(self, credential):
         """
         adds the user to the database if the user does not already exist.
         takes email password and key as arguments.
         """
         db = firestore.client()
         # check if the user already exists
-        if not self._check_exists('users', email):
+        if not self._check_exists('users', credential['email']):
             # add the user to the database
-            db.collection('users').document().set({
-                'email': email, 'password': password})
+            db.collection('users').document().set(credential)
         else:
-            print('already exists')
+            obj = CustomBox()
+            obj.error_box('ERROR', 'User already exists')
+
