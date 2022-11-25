@@ -9,7 +9,7 @@ from numpy.core.defchararray import strip
 from phonenumbers import parse, carrier, NumberParseException
 import configure
 from Helper_Functions.custom_error_box import CustomBox
-from Helper_Functions.otp_sender import sendOtp
+from Backend.smtp_services import sendVerifyOtp
 from Screens.Refactor.custom_widgets import CustomWidgets
 from Screens.Refactor.header_gui import header_gui
 from Screens.signup import Signup
@@ -177,7 +177,7 @@ class PersonalInfo(UserDetailsStack):
 
         self.button_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
         CustomWidgets.customButton(parent=self.button_frame, text='BACK', fg_color=configure.dark_gray,
-                                   command=lambda: self._parent_controller.show_frame('Signup'),
+                                   command=lambda: self._parent_controller.show_frame('Signup', self),
                                    text_color=configure.white,
                                    hover_color=configure.very_dark_gray).grid(row=0, column=0, sticky='nsew', padx=10)
         CustomWidgets.customButton(parent=self.button_frame, text='NEXT', command=lambda: _verify()).grid(row=0,
@@ -243,27 +243,29 @@ class ContactInfo(PersonalInfo):
                     return True
             case 1:
                 enroll = self.enroll_entry.get()
+                if len(enroll) == 6 and enroll != configure.obj.getAdminCode():
+                    if self.enroll_error_label.winfo_exists():
+                        self.enroll_error_label.destroy()
+                    self.enroll_error_label = CustomWidgets.customErrorLabel(parent=self.enroll_frame,
+                                                                             error_text='Wrong Admin Code')
+                    self.enroll_error_label.grid(row=1, column=0, columnspan=2)
+                    self.enroll_entry.configure(border_color=configure.light_cyan)
+                    return False
                 if strip(enroll) == '':
                     if self.enroll_error_label.winfo_exists():
                         self.enroll_error_label.destroy()
                     self.enroll_error_label = CustomWidgets.customErrorLabel(parent=self.enroll_frame,
-                                                                             error_text='Enrollment number is required')
+                                                                             error_text='Admin Code/Application Id/\n'
+                                                                                        'Enrollment number is required')
                     self.enroll_error_label.grid(row=1, column=0, columnspan=2)
                     self.enroll_entry.configure(border_color=configure.light_cyan)
                     return False
-                if not enroll.isdigit():
+                if len(enroll) < 6 or len(enroll) > 12:
                     if self.enroll_error_label.winfo_exists():
                         self.enroll_error_label.destroy()
                     self.enroll_error_label = CustomWidgets.customErrorLabel(parent=self.enroll_frame,
-                                                                             error_text='Invalid enrollment format')
-                    self.enroll_error_label.grid(row=1, column=0, columnspan=2)
-                    self.enroll_entry.configure(border_color=configure.light_cyan)
-                    return False
-                if len(enroll) < 12:
-                    if self.enroll_error_label.winfo_exists():
-                        self.enroll_error_label.destroy()
-                    self.enroll_error_label = CustomWidgets.customErrorLabel(parent=self.enroll_frame,
-                                                                             error_text='Enrollment number is too short')
+                                                                             error_text='Invalid Enrollment No/ Admin '
+                                                                                        'Code')
                     self.enroll_error_label.grid(row=1, column=0, columnspan=2)
                     self.enroll_entry.configure(border_color=configure.light_cyan)
                     return False
@@ -280,26 +282,26 @@ class ContactInfo(PersonalInfo):
         self.phone_entry.bind('<FocusOut>', lambda event: self._validate_fields(0))
         self.phone_frame.grid(row=4, column=0, columnspan=2, pady=10)
         self.enroll_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
-        self.enroll_entry = CustomWidgets.customEntry(parent=self.enroll_frame, placeholder='Enrollment Number')
+        self.enroll_entry = CustomWidgets.customEntry(parent=self.enroll_frame,
+                                                      placeholder='Admin Code/Application Id/Enrollment Number')
         self.enroll_entry.grid(row=0, column=0, columnspan=2)
         self.enroll_entry.bind('<FocusOut>', lambda event: self._validate_fields(1))
         self.enroll_frame.grid(row=5, column=0, columnspan=2, pady=10)
 
         def _verify():
             if self._validate_fields(0) and self._validate_fields(1):
-                request = requests.get('https://google.com')
-                if request.status_code != 200:
-                    obj = CustomBox()
-                    obj.error_box('No internet', 'Please check your internet connection')
-                else:
+                try:
+                    requests.get('https://google.com')
                     try:
-                        Signup.credentials['otp'] = sendOtp(Signup.credentials['email'])
+                        Signup.credentials['otp'] = sendVerifyOtp(Signup.credentials['email'])
                         Signup.credentials['phone number'] = self.phone_entry.get()
-                        Signup.credentials['enrollment number'] = self.enroll_entry.get()
-                        self._parent_controller.show_frame('Verify')
+                        Signup.credentials['enrollment'] = self.enroll_entry.get()
+                        self._parent_controller.show_frame('Verify', self)
                     except Exception as e:
                         obj = CustomBox()
-                        obj.error_box('Error', 'Something went wrong ' + '(' + e.args[0] + ')')
+                        obj.error_box('Error', 'Something went wrong ' + '(' + str(e) + ')')
+                except requests.exceptions.ConnectionError as e:
+                    self._parent_controller.show_frame('NoInternet', self)
             else:
                 self._validate_fields(0)
                 self._validate_fields(1)

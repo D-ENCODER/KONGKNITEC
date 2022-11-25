@@ -8,10 +8,10 @@ import requests
 
 import configure
 from Helper_Functions.custom_error_box import CustomBox
-from Helper_Functions.otp_sender import sendOtp
+from Backend.smtp_services import sendVerifyOtp, sendResetOtp
 from Screens.Refactor.custom_widgets import CustomWidgets
 from Screens.Refactor.header_gui import header_gui
-from Screens.Validator.validator import validate_email
+from Screens.Validator.validator import validate_email, validate_enrollment
 
 
 class ForgotPassword(ctk.CTkFrame):
@@ -36,26 +36,21 @@ class ForgotPassword(ctk.CTkFrame):
         self.email_entry = CustomWidgets.customEntry(parent=self.email_frame, placeholder='E-mail address')
         self.email_entry.grid(row=0, column=0, columnspan=2)
         self.email_frame.grid(row=4, column=0, columnspan=2, pady=10)
-        self.email_entry.bind('<FocusOut>', lambda event: validate_email(parent=self))
 
         def validate():
-            if validate_email(parent=self):
-                request = requests.get('https://google.com')
-                if request.status_code != 200:
+            try:
+                requests.get('https://google.com')
+                try:
+                    ForgotPassword.credentials['otp'] = sendResetOtp(self.email_entry.get())
+                    ForgotPassword.credentials['email'] = self.email_entry.get()
+                    self._controller.show_frame('Verify', self)
+                except Exception as e:
                     obj = CustomBox()
-                    obj.error_box('No internet', 'Please check your internet connection')
-                else:
-                    try:
-                        ForgotPassword.credentials['otp'] = sendOtp(self.email_entry.get())
-                        ForgotPassword.credentials['email'] = self.email_entry.get()
-                        self._controller.show_frame('Verify')
-                    except Exception as e:
-                        obj = CustomBox()
-                        obj.error_box('Error', 'Something went wrong ' + '(' + str(e.args[0]) + ')')
-            else:
-                validate_email(parent=self)
+                    obj.error_box('Error', 'Something went wrong ' + '(' + str(e.args[0]) + ')')
+            except requests.exceptions.ConnectionError:
+                self._controller.show_frame('NoInternet', self)
 
-        CustomWidgets.customButton(parent=self, text='BACK', command=lambda: self._controller.show_frame('Login'),
+        CustomWidgets.customButton(parent=self, text='BACK', command=lambda: self._controller.show_frame('Login', self),
                                    fg_color=configure.dark_gray, text_color=configure.white,
                                    hover_color=configure.very_dark_gray).grid(row=5, column=0, pady=10)
         CustomWidgets.customButton(parent=self, text='SEND', command=validate).grid(row=5, column=1, pady=10)

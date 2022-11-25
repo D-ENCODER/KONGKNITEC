@@ -141,7 +141,7 @@ class Signup(ctk.CTkFrame):
                 self.password = encrypt(self.password_entry.get())
                 Signup.credentials['email'] = self.email_entry.get()
                 Signup.credentials['password'] = self.password
-                self._controller.show_frame('UserDetailsStack')
+                self._controller.show_frame('UserDetailsStack', self)
             else:
                 # If the email address, password or confirm password is invalid then the error message is displayed
                 if not validate_email(parent=self):

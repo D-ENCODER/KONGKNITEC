@@ -3,12 +3,13 @@ from pathlib import Path
 from PIL import Image, ImageTk
 import customtkinter as ctk
 
-import Helper_Functions.custom_error_box
+
+# import Helper_Functions.custom_error_box
 
 
 def generateDataset(userId, userName):
     # Initialize the classifier
-    faceCascade = cv2.CascadeClassifier("Classifiers/haarcascade_frontalface_alt.xml")
+    faceCascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
     # Start the video camera
     vc = cv2.VideoCapture(0)
     # Get the userId and userName
@@ -21,12 +22,12 @@ def generateDataset(userId, userName):
     # Function to save the image
     def save_image(image, username, userid, imgid):
         # Create a folder with the name as userName
-        Path("Facial_Recognition/Dataset/{}".format(userid + "_" + username)).mkdir(
+        Path("Dataset/{}".format(userid + "_" + username)).mkdir(
             parents=True, exist_ok=True
         )
         # Save the images inside the previously created folder
         cv2.imwrite(
-            "Facial_Recognition/Dataset/{}/{}_{}.jpg".format(userid + "_" + username, userid, imgid), image
+            "Dataset/{}/{}_{}.jpg".format(userid + "_" + username, userid, imgid), image
         )
         print("[INFO] Image {} has been saved in folder : {}".format(imgid, username))
 
@@ -70,13 +71,13 @@ def generateDataset(userId, userName):
         frame.img_frame = img_frame
         frame.configure(image=img_frame)
         # to show real time progress
-        progress += 2
+        progress += 4
         progressbar.set(progress / 100)
 
         def sender():
-            set_frame(progress, progress / 2)
+            set_frame(progress, progress / 4)
 
-        if progress / 2 <= 51:
+        if progress / 4 <= 26:
             roi_img = originalImg[
                       coords[1]: coords[1] + coords[3], coords[0]: coords[0] + coords[2]
                       ]
@@ -92,3 +93,6 @@ def generateDataset(userId, userName):
     prog = 0
     set_frame(prog, counter)
     app1.mainloop()
+
+
+generateDataset('3', 'Het')

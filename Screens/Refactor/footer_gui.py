@@ -31,9 +31,9 @@ def footer_gui(self, label, controller, hyper_label, frame):
                                                                                               sticky='e')
     # Create a hyperlink label for footer
     ctk.CTkButton(master=footerframe, text=hyper_label, width=70, height=35, text_font=(configure.font, 12,
-                                                                                  "bold"),
+                                                                                        "bold"),
                   cursor="hand2", fg_color=configure.very_dark_gray, hover=False,
-                  command=lambda: controller.show_frame(frame),
+                  command=lambda: controller.show_frame(frame, self),
                   text_color=configure.light_cyan).grid(row=0, column=1, sticky='w')
     footerframe.grid(row=8, column=0, columnspan=2, sticky='ew')
 

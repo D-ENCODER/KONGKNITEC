@@ -6,13 +6,15 @@
 from tkinter import PhotoImage
 import customtkinter as ctk
 import configure
-from Screens import login, signup, forgot_password, verify, reset_password, personal_info
+from Screens import login, signup, forgot_password, verify, reset_password, personal_info, splash_screen, no_internet, \
+    dashboard
 
 
 class StackPile(ctk.CTk):
     """
     main frame of the application used to switch between different frames and hold the frames in a stack
     """
+
     def __init__(self):
         """
         constructor of the class to initialize the main frame and configure main settings like app name and icon
@@ -41,8 +43,11 @@ class StackPile(ctk.CTk):
         container.grid(row=0, column=0, sticky='nsew', pady=(configure.screen_height - 600) / 2,
                        padx=(configure.screen_width - 300) / 2)
         self.frames = {}
-        self.frame_stack = (login.Login, signup.Signup, forgot_password.ForgotPassword, verify.Verify,
-                            reset_password.ResetPassword, personal_info.UserDetailsStack)
+        self.previous = ''
+        self.frame_stack = (
+            no_internet.NoInternet, login.Login, signup.Signup, forgot_password.ForgotPassword, verify.Verify,
+            reset_password.ResetPassword, personal_info.UserDetailsStack, dashboard.Dashboard,
+            splash_screen.SplashScreen)
         # to add the frames to the stack
         for window in self.frame_stack:
             page_name = window.__name__
@@ -52,14 +57,22 @@ class StackPile(ctk.CTk):
             self.frames[page_name] = frame
             # to place the frame on the main frame
             frame.grid(row=0, column=0, sticky='nsew')
-        self.show_frame("Login")
+        self.show_frame("SplashScreen", self)
 
-    def show_frame(self, page_name):
+    def show_frame(self, page_name, previous):
         """
         Show a frame for the given page name
         """
+        self.previous = previous.__class__.__name__
         frame = self.frames[page_name]
         frame.tkraise()
+
+    def goto_previous(self):
+        frame = self.frames[self.previous]
+        frame.tkraise()
+
+    def get_previous(self):
+        return self.previous
 
     def on_closing(self):
         self.destroy()

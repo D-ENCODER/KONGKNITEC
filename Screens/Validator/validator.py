@@ -35,6 +35,33 @@ def validate_email(**kwargs):
         return False
 
 
+def validate_enrollment(**kwargs):
+    """
+    This is the function which is used to validate the email address when the focus pops out of the entry
+    :return: None
+    """
+    if 13 > len(kwargs['parent'].enrollment_entry.get()) > 0:
+        # If the email is valid then remove the error label
+        kwargs['parent'].enrollment_error_label.destroy()
+        # reset the color of the entry to default
+        kwargs['parent'].enrollment_entry.configure(border_color=configure.dark_gray)
+        return True
+    else:
+        # checks if the error label is already present or not
+        if kwargs['parent'].enrollment_error_label.winfo_exists():
+            # If the error label is already present then destroy it
+            kwargs['parent'].enrollment_error_label.destroy()
+        # Create the custom error label
+        kwargs['parent'].enrollment_error_label = CustomWidgets.customErrorLabel(
+            parent=kwargs['parent'].enrollment_frame,
+            error_text='Invalid Admin Code/\nApplication No./Enrollment No.')
+        # Place the error label in the grid layout
+        kwargs['parent'].enrollment_error_label.grid(row=1, column=0, columnspan=2)
+        # Change the color of the entry to dominant color
+        kwargs['parent'].enrollment_entry.configure(border_color=configure.light_cyan)
+        return False
+
+
 def validate_password(**kwargs):
     """
     This is the function which is used to validate the password when the focus pops out of the entry

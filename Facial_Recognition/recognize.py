@@ -10,7 +10,7 @@ def recognize():
     """
     Face Recognition Model
     """
-    faceCascade = cv2.CascadeClassifier("Classifiers/haarcascade_frontalface_alt.xml")
+    faceCascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
     # video_capture = cv2.VideoCapture(0)
 
     # Call the trained model yml file to recognize faces
@@ -19,7 +19,7 @@ def recognize():
 
     # Names corresponding to each user_id
     names = []
-    for users in os.listdir("Facial_Recognition/Dataset"):
+    for users in os.listdir("Dataset"):
         names.append(users)
 
     names = sorted(names, key=lambda x: int(x.split("_")[0]))
@@ -94,3 +94,5 @@ def recognize():
     prog = 0
     show_frame(prog)
     app1.mainloop()
+
+recognize()

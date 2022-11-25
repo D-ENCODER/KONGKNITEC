@@ -15,7 +15,7 @@ class CustomBox(CTkToplevel):
         self.title(title)
         self.resizable(False, False)
         self.configure(bg=configure.very_dark_gray)
-        self.geometry("350x175+{}+{}".format(configure.screen_height / 2, configure.screen_width / 2))
+        self.geometry("350x175+{}+{}".format(0, 0))
         img = load_image(self, 'Icons/error.png', 35)
         self.iconphoto(False, img)
         error_image = CTkLabel(master=self, image=img, anchor='nw')

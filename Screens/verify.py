@@ -7,7 +7,7 @@ import customtkinter as ctk
 import requests
 import configure
 from Helper_Functions.custom_error_box import CustomBox
-from Helper_Functions.otp_sender import sendOtp
+from Backend.smtp_services import sendVerifyOtp, sendAdminId, sendWelcome, sendResetOtp
 from Screens.Refactor.custom_widgets import CustomWidgets
 from Screens.Refactor.header_gui import header_gui
 from Screens.forgot_password import ForgotPassword
@@ -20,10 +20,6 @@ class Verify(ForgotPassword, ContactInfo):
     def __init__(self, **kwargs):
         ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.very_dark_gray)
         self._controller = kwargs['controller']
-        if 'otp' in ForgotPassword.credentials:
-            Verify.credentials = ForgotPassword.credentials
-        else:
-            Verify.credentials = ContactInfo.credentials
         self._verifyGUI()
 
     def _switcher(self, index, event=None):
@@ -104,53 +100,57 @@ class Verify(ForgotPassword, ContactInfo):
         CustomWidgets.customHeaderLabel(self, 'VERIFY').grid(row=3, column=0, sticky='w')
         self.otp_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
         self.otp_entry1 = CustomWidgets.customEntry(parent=self.otp_frame, placeholder='', width=20, height=45,
-                                                    font_weight='bold', font_size=17,
-                                                    border_color=configure.light_cyan)
+                                                    font_weight='bold', font_size=17)
         self.otp_entry1.grid(row=0, column=0, padx=10)
         self.otp_entry2 = CustomWidgets.customEntry(parent=self.otp_frame, placeholder='', width=20, height=45,
-                                                    font_weight='bold', font_size=17,
-                                                    border_color=configure.light_cyan)
+                                                    font_weight='bold', font_size=17)
         self.otp_entry2.grid(row=0, column=1)
         self.otp_entry3 = CustomWidgets.customEntry(parent=self.otp_frame, placeholder='', width=20, height=45,
-                                                    font_weight='bold', font_size=17,
-                                                    border_color=configure.light_cyan)
+                                                    font_weight='bold', font_size=17)
         self.otp_entry3.grid(row=0, column=2, padx=10)
         self.otp_entry4 = CustomWidgets.customEntry(parent=self.otp_frame, placeholder='', width=20, height=45,
-                                                    font_weight='bold', font_size=17,
-                                                    border_color=configure.light_cyan)
+                                                    font_weight='bold', font_size=17)
         self.otp_entry4.grid(row=0, column=3)
         self.otp_entry5 = CustomWidgets.customEntry(parent=self.otp_frame, placeholder='', width=20, height=45,
-                                                    font_weight='bold', font_size=17,
-                                                    border_color=configure.light_cyan)
+                                                    font_weight='bold', font_size=17)
         self.otp_entry5.grid(row=0, column=4, padx=10)
         self.otp_entry6 = CustomWidgets.customEntry(parent=self.otp_frame, placeholder='', width=20, height=45,
-                                                    font_weight='bold', font_size=17,
-                                                    border_color=configure.light_cyan)
+                                                    font_weight='bold', font_size=17)
         self.otp_entry6.grid(row=0, column=5)
 
         def verify(event=None):
             self.otp = self.otp_entry1.get() + self.otp_entry2.get() + self.otp_entry3.get() + self.otp_entry4.get() + \
                        self.otp_entry5.get() + self.otp_entry6.get()
-            if Verify.credentials['otp'] == self.otp:
-                if len(Verify.credentials) == 2:
-                    self._controller.show_frame('ResetPassword')
-                else:
-                    request = requests.get('https://google.com')
-                    if request.status_code != 200:
-                        obj = CustomBox()
-                        obj.error_box('No Internet Connection', 'Please check your internet connection and try again')
-                    else:
-                        # try:
-                        print(Verify.credentials)
-                        configure.obj.dbSignUp(Verify.credentials)
-                        print('success')
-                        # except Exception as e:
-                        #     obj = CustomBox()
-                        #     obj.error_box('Error', 'Something went wrong' + '(' + e.args[0] + ')')
-                    # self._controller.show_frame('Dashboard')
+            if self._controller.get_previous() == 'ForgotPassword':
+                Verify.credentials = ForgotPassword.credentials
+                if Verify.credentials['otp'] == self.otp:
+                    self._controller.show_frame('ResetPassword', self)
             else:
-                obj = CustomBox()
-                obj.error_box('Invalid OTP', 'Please enter a valid OTP')
+                Verify.credentials = ContactInfo.credentials
+                if Verify.credentials['otp'] == self.otp:
+                    try:
+                        requests.get('https://google.com')
+                        try:
+                            Verify.credentials.pop('otp')
+                            if len(Verify.credentials['enrollment']) == 6:
+                                Verify.credentials['enrollment'] = sendAdminId(Verify.credentials['email'])
+                                sendWelcome(Verify.credentials['email'], Verify.credentials['first name'] +
+                                            ' ' + Verify.credentials['last name'], True)
+                                configure.obj.dbSignUp(Verify.credentials, 'Admin_details')
+                            else:
+                                Verify.credentials['enrollment'] = int(Verify.credentials['enrollment'])
+                                sendWelcome(Verify.credentials['email'], Verify.credentials['first name'] +
+                                            ' ' + Verify.credentials['last name'], False)
+                                configure.obj.dbSignUp(Verify.credentials, 'User_details')
+                            self._controller.show_frame('Login', self)
+                        except Exception as e:
+                            obj = CustomBox()
+                            obj.error_box('Error', 'Something went wrong' + '(' + e.args[0] + ')')
+                    except requests.exceptions.ConnectionError as e:
+                        self._controller.show_frame('NoInternet', self)
+                else:
+                    obj = CustomBox()
+                    obj.error_box('Error', 'Invalid OTP')
 
         self._switcher(0)
         self.otp_entry1.bind('<KeyRelease>', lambda event: self._switcher(1, event))
@@ -170,18 +170,20 @@ class Verify(ForgotPassword, ContactInfo):
 
             def sender():
                 resend.destroy()
-                request = requests.get('https://google.com')
-                if request.status_code != 200:
-                    obj = CustomBox()
-                    obj.error_box('No Internet', 'Please check your internet connection')
-                else:
+                try:
+                    requests.get('https://google.com')
                     try:
-                        Verify.credentials['otp'] = sendOtp(Verify.credentials['email'])
+                        if self._controller.get_previous() == 'ForgotPassword':
+                            ForgotPassword.credentials['otp'] = sendResetOtp(Verify.credentials['email'])
+                        else:
+                            ContactInfo.credentials['otp'] = sendVerifyOtp(Verify.credentials['email'])
                     except Exception as e:
                         obj = CustomBox()
                         obj.error_box('Error', 'Something went wrong. Please try again later' + e.args[0])
-                        self._controller.show_frame('Login')
+                        self._controller.show_frame('Login', self)
                     countdown(90)
+                except requests.exceptions.ConnectionError as e:
+                    self._controller.show_frame('NoInternet', self)
 
             if time_sec > 0:
                 self.timer_frame.after(1000, countdown, time_sec - 1)

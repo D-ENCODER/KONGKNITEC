@@ -5,6 +5,8 @@
 # Version : 1.0.0
 from numpy.core.defchararray import strip
 
+import configure
+
 
 class Validator:
     """
@@ -22,11 +24,13 @@ class Validator:
         # check if email contains @ and . or not
         if strip(email) == '':
             return [False, 'Email cannot be empty']
+        if configure.obj.check_email_exists('Admin_details', email) or configure.obj.check_email_exists('User_details', email):
+            return [False, 'Email already exists']
         if '@' not in email or '.' not in email:
             # return True if email is valid else False
             return [False, 'Invalid email address']
         if email.count("@") > 1:
-            return [False, 'Email address cannot contain \nmore than one @ or .']
+            return [False, 'Email address cannot contain \nmore than one @']
         else:
             return [True]
 

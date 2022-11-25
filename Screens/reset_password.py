@@ -4,15 +4,19 @@
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
 import customtkinter as ctk
+import requests
+
 import configure
 from Backend.encryptor import encrypt
+from Backend.smtp_services import sendPasswordChanged
 from Helper_Functions.load_image import load_image
 from Screens.Refactor.custom_widgets import CustomWidgets
 from Screens.Refactor.header_gui import header_gui
 from Screens.Validator.validator import validate_password
+from Screens.forgot_password import ForgotPassword
 
 
-class ResetPassword(ctk.CTkFrame):
+class ResetPassword(ForgotPassword):
     def __init__(self, **kwargs):
         ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.very_dark_gray)
         self._controller = kwargs['controller']
@@ -24,7 +28,7 @@ class ResetPassword(ctk.CTkFrame):
 
     def _resetPasswordGUI(self):
         header_gui(self)
-        CustomWidgets.customHeaderLabel(self, 'RESET').grid(row=3, column=0)
+        CustomWidgets.customHeaderLabel(self, 'RESET').grid(row=3, column=0, sticky='w')
         self.password_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
         # Calling the password entry label
         self.password_entry = CustomWidgets.customEntry(parent=self.password_frame, placeholder='Password',
@@ -56,18 +60,20 @@ class ResetPassword(ctk.CTkFrame):
                 self.confirm_password_error_label.destroy()
                 # If the confirm password is valid then the confirm password entry label is set to the default color
                 self.confirm_password_entry.configure(border_color=configure.dark_gray)
+                return True
             else:
                 # checks if the error label is already present or not
                 if self.confirm_password_error_label.winfo_exists():
                     # if the error label is already present then it destroys the error label
                     self.confirm_password_error_label.destroy()
                 # Calling the custom error label function
-                self.confirm_password_error_label = CustomWidgets.customErrorLabel(self=self.confirm_password_frame,
+                self.confirm_password_error_label = CustomWidgets.customErrorLabel(parent=self.confirm_password_frame,
                                                                                    error_text='Password does not match')
                 # Placing the error label into the grid layout
                 self.confirm_password_error_label.grid(row=1, column=0, columnspan=2)
                 # If the confirm password is invalid then the confirm password entry label is set to the error color
                 self.confirm_password_entry.configure(border_color=configure.light_cyan)
+                return False
 
         self.confirm_password_entry.bind('<FocusOut>', validate_confirm_password)
 
@@ -102,9 +108,19 @@ class ResetPassword(ctk.CTkFrame):
             """
             # Validating the email address, password and confirm password entered by the user
             if validate_password(parent=self) and validate_confirm_password():
-                password, key = encrypt(self.password_entry.get())
-                # print('hello')
-                configure.obj.dbSignUp(password, key)
+                password = encrypt(self.password_entry.get())
+                try:
+                    requests.get('https://google.com')
+                    if configure.obj.check_email_exists('Admin_details', ForgotPassword.credentials['email']):
+                        configure.obj.dbUpdatePassword(ForgotPassword.credentials['email'], password, True)
+                        sendPasswordChanged(ForgotPassword.credentials['email'])
+                        self._controller.show_frame('Login', self)
+                    elif configure.obj.check_email_exists('User_details', ForgotPassword.credentials['email']):
+                        configure.obj.dbUpdatePassword(ForgotPassword.credentials['email'], password, False)
+                        sendPasswordChanged(ForgotPassword.credentials['email'])
+                        self._controller.show_frame('Login')
+                except requests.exceptions.ConnectionError:
+                    self._controller.show_frame('NoInternet', self)
             else:
                 # If the password is invalid then the error message is displayed
                 if not validate_password(parent=self):

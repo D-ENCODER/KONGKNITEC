@@ -4,12 +4,16 @@
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
 import customtkinter as ctk
+import requests
+
 import configure
+from Backend.encryptor import encrypt
+from Helper_Functions.custom_error_box import CustomBox
 from Helper_Functions.load_image import load_image
 from Screens.Refactor.custom_widgets import CustomWidgets
 from Screens.Refactor.footer_gui import footer_gui
 from Screens.Refactor.header_gui import header_gui
-from Screens.Validator.validator import validate_email, validate_password
+from Screens.Validator.validator import validate_enrollment, validate_password
 
 
 class Login(ctk.CTkFrame):
@@ -24,8 +28,9 @@ class Login(ctk.CTkFrame):
         :param controller: The controller of the frame
         """
         ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.very_dark_gray)
+        self._parent = kwargs['parent']
         # Initializing the error handlers
-        self.email_error_label = ctk.CTkLabel()
+        self.enrollment_error_label = ctk.CTkLabel()
         self.password_error_label = ctk.CTkLabel()
         # Enlarging the scope og the controller variable
         self._controller = kwargs['controller']
@@ -39,21 +44,24 @@ class Login(ctk.CTkFrame):
         """
         This is the method which is used to create the login GUI and holds most values of the GUI
         """
+        self._parent.grid_configure(pady=(configure.screen_height - 600) / 2,
+                                    padx=(configure.screen_width - 300) / 2)
         # Call the header GUI
         header_gui(self)
         # Create the header label
-        CustomWidgets.customHeaderLabel(self, 'LOGIN').grid(row=3, column=0)
+        CustomWidgets.customHeaderLabel(self, 'LOGIN').grid(row=3, column=0, sticky='w')
         # Creating a frame for email and error box label
-        self.email_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
+        self.enrollment_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
         # Create the email entry
-        self.email_entry = CustomWidgets.customEntry(parent=self.email_frame, placeholder='E-mail address')
+        self.enrollment_entry = CustomWidgets.customEntry(parent=self.enrollment_frame,
+                                                          placeholder='Admin Code/Application No/Enrollment No')
         # Placing the email entry in the grid layout
-        self.email_entry.grid(row=0, column=0, columnspan=2)
+        self.enrollment_entry.grid(row=0, column=0, columnspan=2)
         # Placing the email frame into the grid layout
-        self.email_frame.grid(row=4, column=0, columnspan=2, pady=10)
+        self.enrollment_frame.grid(row=4, column=0, columnspan=2, pady=10)
 
         # Binding the function to the entry widget to validate the email address
-        self.email_entry.bind('<FocusOut>', lambda event: validate_email(parent=self))
+        self.enrollment_entry.bind('<FocusOut>', lambda event: validate_enrollment(parent=self))
         # Creating a frame for password and error box label
         self.password_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
         # Create the password entry
@@ -90,17 +98,33 @@ class Login(ctk.CTkFrame):
         # are valid and legit
         def _verifyLogin():
             # if email is valid and password is valid then login
-            if validate_password(parent=self) and validate_email(parent=self):
-                self._controller.show_frame("Home")
+            if validate_password(parent=self) and validate_enrollment(parent=self):
+                try:
+                    requests.get('https://google.com')
+                    if self.enrollment_entry.get().startswith('314'):
+                        dbpassword = configure.obj.getLoginDetails(self.enrollment_entry.get(), True)
+                    else:
+                        dbpassword = configure.obj.getLoginDetails(self.enrollment_entry.get(), False)
+                    if dbpassword is None:
+                        obj = CustomBox()
+                        obj.error_box('ERROR', 'No user found with this enrollment number')
+                    elif dbpassword == encrypt(self.password_entry.get()):
+                        configure.obj.dbLogin(int(self.enrollment_entry.get()))
+                        self._controller.show_frame('Dashboard', self)
+                    else:
+                        obj = CustomBox()
+                        obj.error_box('ERROR', 'Invalid credentials')
+                except requests.exceptions.ConnectionError:
+                    self._controller.show_frame('NoInternet', self)
             else:
                 # if email is not valid then show the error message
                 if not validate_password(parent=self):
                     # Invoke the error message
                     validate_password(parent=self)
                 # if password is not valid then show the error message
-                if not validate_email(parent=self):
+                if not validate_enrollment(parent=self):
                     # Invoke the error message
-                    validate_email(parent=self)
+                    validate_enrollment(parent=self)
 
         # Create the show password button and placing on the same entry box
         button = ctk.CTkButton(master=self.password_frame, image=self._hide_icon, width=20, height=20, text="",
@@ -109,9 +133,11 @@ class Login(ctk.CTkFrame):
         button.grid(row=0, column=1, sticky='e', padx=10)
         # Creating the forgot password hyper label and placing it in the grid layout
         CustomWidgets.customHyperlinkLabel(parent=self, text='FORGOT PASSWORD ?',
-                                           command=lambda: self._controller.show_frame("ForgotPassword")). \
+                                           command=lambda: self._controller.show_frame("ForgotPassword", self)). \
             grid(row=6, column=1, sticky='e')
         # Creating the login button and placing it in the grid layout
-        CustomWidgets.customButton(parent=self, text='LOGIN', command=lambda: _verifyLogin()).grid(row=7, column=0, columnspan=2, pady=10)
+        CustomWidgets.customButton(parent=self, text='LOGIN', command=lambda: _verifyLogin()).grid(row=7, column=0,
+                                                                                                   columnspan=2,
+                                                                                                   pady=10)
         # Creating the signup hyper label and placing it in the grid layout
         footer_gui(self, "Don't have an account? ", self._controller, "Sign-up", "Signup")
