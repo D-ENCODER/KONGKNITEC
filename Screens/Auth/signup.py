@@ -1,34 +1,66 @@
-# Date    : 30/09/22 6:12 pm
+# Date    : 26/08/22 6:55 pm
 # Author  : dencoder (hetcjoshi1684@gmail.com)
 # GitHub    : (https://github.com/D-ENCODER)
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
 import customtkinter as ctk
-import requests
-
 import configure
 from Backend.encryptor import encrypt
-from Backend.smtp_services import sendPasswordChanged
+from Backend.sqlite_services import SqliteServices
+from Helper_Functions.custom_error_box import CustomBox
 from Helper_Functions.load_image import load_image
 from Screens.Refactor.custom_widgets import CustomWidgets
-from Screens.Refactor.header_gui import header_gui
-from Screens.Validator.validator import validate_password
-from Screens.forgot_password import ForgotPassword
+from Screens.Refactor.loginFooterGUI import loginFooterGUI
+from Screens.Refactor.loginHeaderGUI import loginHeaderGUI
+from Screens.Validator.validator import validate_email, validate_password
 
 
-class ResetPassword(ForgotPassword):
+class Signup(ctk.CTkFrame):
+    """
+    This function is used to load the sign-up frame
+    """
+    credentials = {}
+
     def __init__(self, **kwargs):
+        """
+        This function is used to initialize the sign-up frame
+        :param parent: parent frame which is the main frame
+        :param controller: controller which is the main controller
+        """
         ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.very_dark_gray)
+        # Enlarging the scope of the controller so that it can be used in other functions
         self._controller = kwargs['controller']
+        # Initializing the error handlers
+        self.email_error_label = ctk.CTkLabel()
         self.password_error_label = ctk.CTkLabel()
-        self._show_icon = load_image(self, "Icons/hide.png", 17)
-        self._hide_icon = load_image(self, "Icons/show.png", 17)
         self.confirm_password_error_label = ctk.CTkLabel()
-        self._resetPasswordGUI()
+        # Loading the show and hide icons so that it can be used further
+        self._show_icon = load_image(self, "Assets/hide.png", 17)
+        self._hide_icon = load_image(self, "Assets/show.png", 17)
+        # Local database object
+        self.sql = SqliteServices()
+        # Calling the sign-up GUI function
+        self._signupGUI()
 
-    def _resetPasswordGUI(self):
-        header_gui(self)
-        CustomWidgets.customHeaderLabel(self, 'RESET').grid(row=3, column=0, sticky='w')
+    def _signupGUI(self):
+        """
+        This function is used to load the sign-up GUI and holds the logic of the sign-up GUI
+        :return: None
+        """
+        loginHeaderGUI(self)
+        # Calling the header label
+        CustomWidgets.customHeaderLabel(self, 'SIGN-UP').grid(row=3, column=0, sticky='w')
+        # Creating a frame for email and error box label
+        self.email_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
+        # Calling the email entry label
+        self.email_entry = CustomWidgets.customEntry(parent=self.email_frame, placeholder='E-mail address')
+        # Placing the email entry in the grid layout
+        self.email_entry.grid(row=0, column=0, columnspan=2)
+        # Placing the email frame into the grid layout
+        self.email_frame.grid(row=4, column=0, columnspan=2, pady=10)
+        # Binding the validate email function to the email entry label
+        self.email_entry.bind('<FocusOut>', lambda event: validate_email(parent=self))
+        # Creating a frame for password and error box label
         self.password_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
         # Calling the password entry label
         self.password_entry = CustomWidgets.customEntry(parent=self.password_frame, placeholder='Password',
@@ -75,6 +107,7 @@ class ResetPassword(ForgotPassword):
                 self.confirm_password_entry.configure(border_color=configure.light_cyan)
                 return False
 
+        # Binding the validate confirm password function to the confirm password entry label
         self.confirm_password_entry.bind('<FocusOut>', validate_confirm_password)
 
         def show_password():
@@ -101,27 +134,29 @@ class ResetPassword(ForgotPassword):
             # Changing the hide password button to the show password button
             button.configure(image=self._hide_icon, command=lambda: show_password())
 
-        def _verifyReset():
+        def _verifySignup():
             """
             This function is used to verify the sign-up details entered by the user
             :return:
             """
             # Validating the email address, password and confirm password entered by the user
-            if validate_password(parent=self) and validate_confirm_password():
-                password = encrypt(self.password_entry.get())
-                try:
-                    requests.get('https://google.com')
-                    if configure.obj.check_email_exists('Admin_details', ForgotPassword.credentials['email']):
-                        configure.obj.dbUpdatePassword(ForgotPassword.credentials['email'], password, True)
-                        sendPasswordChanged(ForgotPassword.credentials['email'])
-                        self._controller.show_frame('Login', self)
-                    elif configure.obj.check_email_exists('User_details', ForgotPassword.credentials['email']):
-                        configure.obj.dbUpdatePassword(ForgotPassword.credentials['email'], password, False)
-                        sendPasswordChanged(ForgotPassword.credentials['email'])
-                        self._controller.show_frame('Login')
-                except requests.exceptions.ConnectionError:
-                    self._controller.show_frame('NoInternet', self)
+            if validate_email(parent=self) and validate_password(parent=self) and validate_confirm_password():
+                if configure.obj.check_email_exists('Admin_details', self.email_entry.get()) or \
+                        configure.obj.check_email_exists('User_details', self.email_entry.get()):
+                    # Custom messagebox object
+                    self.obj = CustomBox()
+                    self.obj.error_box('ERROR', 'Email already exists')
+                else:
+                    self.password = encrypt(self.password_entry.get())
+                    Signup.credentials['email'] = self.email_entry.get()
+                    Signup.credentials['password'] = self.password
+                    self.sql.insertSignupDetails(self.email_entry.get(), self.password_entry.get())
+                    self._controller.show_frame('UserDetailsStack', self)
             else:
+                # If the email address, password or confirm password is invalid then the error message is displayed
+                if not validate_email(parent=self):
+                    # If the email address is invalid then the error message is displayed
+                    validate_email(parent=self)
                 # If the password is invalid then the error message is displayed
                 if not validate_password(parent=self):
                     # If the password is invalid then the error message is displayed
@@ -137,5 +172,9 @@ class ResetPassword(ForgotPassword):
                                hover=False, command=lambda: show_password())
         # Placing the show password button
         button.grid(row=0, column=1, sticky='e', padx=10)
-        CustomWidgets.customButton(parent=self, text='RESET PASSWORD', command=lambda: _verifyReset()).grid(row=7, column=0, columnspan=2,
-                                                                                        pady=10)
+        # Calling the sign-up button and placing it in the grid layout
+        CustomWidgets.customButton(parent=self, text='NEXT', command=lambda: _verifySignup()).grid(row=7, column=0,
+                                                                                                    columnspan=2,
+                                                                                                    pady=10)
+        # Calling the footer gui function to display the footer
+        loginFooterGUI(self, "Already have an account?", self._controller, "Login", "Login")

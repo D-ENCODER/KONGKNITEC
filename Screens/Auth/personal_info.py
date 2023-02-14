@@ -8,11 +8,12 @@ import requests
 from numpy.core.defchararray import strip
 from phonenumbers import parse, carrier, NumberParseException
 import configure
+from Backend.sqlite_services import SqliteServices
 from Helper_Functions.custom_error_box import CustomBox
 from Backend.smtp_services import sendVerifyOtp
 from Screens.Refactor.custom_widgets import CustomWidgets
-from Screens.Refactor.header_gui import header_gui
-from Screens.signup import Signup
+from Screens.Refactor.loginHeaderGUI import loginHeaderGUI
+from Screens.Auth.signup import Signup
 
 
 class UserDetailsStack(Signup):
@@ -21,7 +22,7 @@ class UserDetailsStack(Signup):
         ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.very_dark_gray)
         self._controller = kwargs['controller']
         self.container = ctk.CTkFrame(self, fg_color=configure.very_dark_gray)
-        header_gui(self.container)
+        loginHeaderGUI(self.container)
         CustomWidgets.customHeaderLabel(self.container, 'Personal Info').grid(row=3, column=0, sticky='w')
         self.container.grid(row=0, column=0, sticky='nsew')
         self.frames = {}
@@ -46,6 +47,7 @@ class PersonalInfo(UserDetailsStack):
         self._parent_controller = kwargs['parent_controller']
         self.first_error_label = ctk.CTkLabel()
         self.last_error_label = ctk.CTkLabel()
+        self.sql = SqliteServices()
         self._personalInfoGUI()
 
     def validate_date(self):
@@ -162,13 +164,15 @@ class PersonalInfo(UserDetailsStack):
             if self._validate_fields(0) and self._validate_fields(1) and self.validate_date():
                 Signup.credentials['first name'] = self.firstname_entry.get()
                 Signup.credentials['last name'] = self.lastname_entry.get()
-                Signup.credentials['date of birth'] = self.day.get() + '/' + self.month.get() + '/' + self.year.get()
+                Signup.credentials['date of birth'] = self.day.get() + '-' + self.month.get() + '-' + self.year.get()
                 if self.gender_val.get() == 1:
                     Signup.credentials['gender'] = 'Male'
                 elif self.gender_val.get() == 2:
                     Signup.credentials['gender'] = 'Female'
                 else:
                     Signup.credentials['gender'] = 'None'
+                self.sql.insertPersonalDetails(self.firstname_entry.get(), self.lastname_entry.get(),
+                                               Signup.credentials['date of birth'], Signup.credentials['gender'])
                 self._controller.show_frame('ContactInfo')
             else:
                 self._validate_fields(0)
@@ -197,6 +201,7 @@ class ContactInfo(PersonalInfo):
         self._controller = kwargs['controller']
         self._parent_controller = kwargs['parent_controller']
         self.phone_error_label = ctk.CTkLabel()
+        self.sql = SqliteServices()
         self._contactInfoGUI()
 
     def _validate_fields(self, index):
@@ -296,10 +301,12 @@ class ContactInfo(PersonalInfo):
                         Signup.credentials['otp'] = sendVerifyOtp(Signup.credentials['email'])
                         Signup.credentials['phone number'] = self.phone_entry.get()
                         Signup.credentials['enrollment'] = self.enroll_entry.get()
+                        self.sql.insertContactDetails(self.phone_entry.get(), self.enroll_entry.get())
                         self._parent_controller.show_frame('Verify', self)
                     except Exception as e:
-                        obj = CustomBox()
-                        obj.error_box('Error', 'Something went wrong ' + '(' + str(e) + ')')
+                        # Custom messagebox object
+                        self.obj = CustomBox()
+                        self.obj.error_box('Error', 'Something went wrong ' + '(' + str(e) + ')')
                 except requests.exceptions.ConnectionError as e:
                     self._parent_controller.show_frame('NoInternet', self)
             else:

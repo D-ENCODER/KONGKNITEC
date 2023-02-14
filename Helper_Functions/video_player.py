@@ -4,10 +4,13 @@
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
 import threading
+from time import sleep
+
 import imageio
 from PIL import Image, ImageTk
 
 import configure
+from Backend.sqlite_services import SqliteServices
 
 
 class VideoPlayer:
@@ -15,9 +18,9 @@ class VideoPlayer:
         Main class of tkVideo. Handles loading and playing
         the video inside the selected label.
 
-        :keyword path:
+        :param path:
             Path of video file
-        :keyword label:
+        :param label:
             Name of label that will house the player
         :param loop:
             If equal to 0, the video only plays once,
@@ -28,42 +31,50 @@ class VideoPlayer:
 
     """
 
-    def __init__(self, path, label, loop=0, size=(640, 360), controller=None, parent=None):
+    def __init__(self, path, label, loop=0, size=(600, 350), controller=None, parent=None):
+        self.imgFrames = []
         self.path = path
         self.label = label
         self.loop = loop
         self.size = size
         self.controller = controller
         self.parent = parent
+        self.frame_data = imageio.get_reader(self.path)
+        # resizes the video's frames and stores them in a list
+        for image in self.frame_data.iter_data():
+            self.imgFrames.append(ImageTk.PhotoImage(Image.fromarray(image).resize(self.size)))
 
-    def load(self, path, label, loop):
+    def load(self, label, loop):
         """
             Loads the video's frames recursively onto the selected label widget's image parameter.
             Loop parameter controls whether the function will run in an infinite loop
             or once.
         """
-        frame_data = imageio.get_reader(path)
-
         if loop == 1:
             while True:
-                for image in frame_data.iter_data():
-                    frame_image = ImageTk.PhotoImage(Image.fromarray(image).resize(self.size))
-                    label.configure(image=frame_image)
-                    label.image = frame_image
+                for image in self.imgFrames:
+                    label.configure(image=image)
+                    label.image = image
+                    sleep(0.05)
         else:
-            for image in frame_data.iter_data():
-                frame_image = ImageTk.PhotoImage(Image.fromarray(image).resize(self.size))
-                label.configure(image=frame_image)
-                label.image = frame_image
-            self.parent.grid_configure(pady=(configure.screen_height - 600) / 2,
-                                       padx=(configure.screen_width - 300) / 2)
-            self.controller.show_frame("Login", self)
+            for image in self.imgFrames:
+                label.configure(image=image)
+                label.image = image
+                sleep(0.05)
+            obj = SqliteServices()
+            if obj.checkLogin() == [(0,)]:
+                self.parent.grid_configure(pady=(configure.screen_height - 600) / 2,
+                                           padx=(configure.screen_width - 300) / 2)
+                self.controller.show_frame("Login", self)
+            else:
+                self.parent.grid_configure(pady=0, padx=0)
+                self.controller.show_frame("Dashboard", self)
 
     def play(self):
         """
             Creates and starts a thread as a daemon that plays the video by rapidly going through
             the video's frames.
         """
-        thread = threading.Thread(target=self.load, args=(self.path, self.label, self.loop))
+        thread = threading.Thread(target=self.load, args=(self.label, self.loop))
         thread.daemon = 1
         thread.start()

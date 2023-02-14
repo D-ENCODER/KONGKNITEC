@@ -3,16 +3,19 @@
 # GitHub    : (https://github.com/D-ENCODER)
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
+import datetime
+
 import customtkinter as ctk
 import requests
 
 import configure
 from Backend.encryptor import encrypt
+from Backend.sqlite_services import SqliteServices
 from Helper_Functions.custom_error_box import CustomBox
 from Helper_Functions.load_image import load_image
 from Screens.Refactor.custom_widgets import CustomWidgets
-from Screens.Refactor.footer_gui import footer_gui
-from Screens.Refactor.header_gui import header_gui
+from Screens.Refactor.loginFooterGUI import loginFooterGUI
+from Screens.Refactor.loginHeaderGUI import loginHeaderGUI
 from Screens.Validator.validator import validate_enrollment, validate_password
 
 
@@ -35,8 +38,10 @@ class Login(ctk.CTkFrame):
         # Enlarging the scope og the controller variable
         self._controller = kwargs['controller']
         # Load the show password icon and hide password icon
-        self._show_icon = load_image(self, "Icons/hide.png", 17)
-        self._hide_icon = load_image(self, "Icons/show.png", 17)
+        self._show_icon = load_image(self, "Assets/hide.png", 17)
+        self._hide_icon = load_image(self, "Assets/show.png", 17)
+        # Local Database Object
+        self.sql = SqliteServices()
         # Call the login GUI
         self._loginGUI()
 
@@ -47,7 +52,7 @@ class Login(ctk.CTkFrame):
         self._parent.grid_configure(pady=(configure.screen_height - 600) / 2,
                                     padx=(configure.screen_width - 300) / 2)
         # Call the header GUI
-        header_gui(self)
+        loginHeaderGUI(self)
         # Create the header label
         CustomWidgets.customHeaderLabel(self, 'LOGIN').grid(row=3, column=0, sticky='w')
         # Creating a frame for email and error box label
@@ -106,14 +111,17 @@ class Login(ctk.CTkFrame):
                     else:
                         dbpassword = configure.obj.getLoginDetails(self.enrollment_entry.get(), False)
                     if dbpassword is None:
-                        obj = CustomBox()
-                        obj.error_box('ERROR', 'No user found with this enrollment number')
+                        # Custom messagebox object
+                        self.obj = CustomBox()
+                        self.obj.error_box('ERROR', 'No user found with this enrollment number')
                     elif dbpassword == encrypt(self.password_entry.get()):
                         configure.obj.dbLogin(int(self.enrollment_entry.get()))
+                        self.sql.login(self.enrollment_entry.get(), datetime.datetime.now())
                         self._controller.show_frame('Dashboard', self)
                     else:
-                        obj = CustomBox()
-                        obj.error_box('ERROR', 'Invalid credentials')
+                        # Custom messagebox object
+                        self.obj = CustomBox()
+                        self.obj.error_box('ERROR', 'Invalid credentials')
                 except requests.exceptions.ConnectionError:
                     self._controller.show_frame('NoInternet', self)
             else:
@@ -140,4 +148,4 @@ class Login(ctk.CTkFrame):
                                                                                                    columnspan=2,
                                                                                                    pady=10)
         # Creating the signup hyper label and placing it in the grid layout
-        footer_gui(self, "Don't have an account? ", self._controller, "Sign-up", "Signup")
+        loginFooterGUI(self, "Don't have an account? ", self._controller, "Sign-up", "Signup")

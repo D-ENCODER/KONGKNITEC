@@ -8,7 +8,7 @@ import configure
 from Helper_Functions.load_image import load_image
 
 
-def footer_gui(self, label, controller, hyper_label, frame):
+def loginFooterGUI(self, label, controller, hyper_label, frame):
     """
     This function is used to create footer for the given frame
     :param self: object of the class
@@ -21,9 +21,9 @@ def footer_gui(self, label, controller, hyper_label, frame):
     # Create a frame for footer
     self._login_frame = ctk.CTkFrame(master=self, fg_color=configure.dark_gray, corner_radius=180)
     # load all the images used in the frame for footer
-    self._google_icon = load_image(self._login_frame, "Icons/google.png", 27)
-    self._git_icon = load_image(self._login_frame, "Icons/git.png", 27)
-    self._twitter_icon = load_image(self._login_frame, "Icons/twitter.png", 27)
+    self._google_icon = load_image(self._login_frame, "Assets/google.png", 27)
+    self._git_icon = load_image(self._login_frame, "Assets/git.png", 27)
+    self._twitter_icon = load_image(self._login_frame, "Assets/twitter.png", 27)
     # Create a label for footer
     footerframe = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
     ctk.CTkLabel(master=footerframe, text=label,

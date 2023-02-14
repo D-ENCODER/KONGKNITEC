@@ -10,7 +10,7 @@ import configure
 from Helper_Functions.custom_error_box import CustomBox
 from Backend.smtp_services import sendVerifyOtp, sendResetOtp
 from Screens.Refactor.custom_widgets import CustomWidgets
-from Screens.Refactor.header_gui import header_gui
+from Screens.Refactor.loginHeaderGUI import loginHeaderGUI
 from Screens.Validator.validator import validate_email, validate_enrollment
 
 
@@ -30,7 +30,7 @@ class ForgotPassword(ctk.CTkFrame):
         self._forgotPasswordGUI()
 
     def _forgotPasswordGUI(self):
-        header_gui(self)
+        loginHeaderGUI(self)
         CustomWidgets.customHeaderLabel(self, 'RECOVERY').grid(row=3, column=0, sticky='w')
         self.email_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
         self.email_entry = CustomWidgets.customEntry(parent=self.email_frame, placeholder='E-mail address')

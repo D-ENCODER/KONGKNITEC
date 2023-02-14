@@ -7,6 +7,7 @@
 from Helper_Functions.video_player import VideoPlayer
 import customtkinter as ctk
 import configure
+import os
 
 
 class SplashScreen(ctk.CTkFrame):
@@ -18,10 +19,10 @@ class SplashScreen(ctk.CTkFrame):
         self._splashGUI()
 
     def _splashGUI(self):
-        splash = ctk.CTkLabel(self, text='', height=configure.screen_height, width=configure.screen_width,
+        splash = ctk.CTkLabel(self, text='', height=350, width=600,
                               bg=configure.very_dark_gray, anchor='center')
-        splash.grid(row=0, column=0, padx=0, pady=0, columnspan=2)
-        splashscreen = VideoPlayer("Icons/splash.mp4", splash, size=(configure.screen_width, configure.screen_height),
+        splash.pack(padx=((configure.screen_width-600)/2), pady=((configure.screen_height-350)/2))
+        splashscreen = VideoPlayer("Assets/splash.gif", splash,
                                    controller=self._controller, parent=self._parent)
         splashscreen.play()
 

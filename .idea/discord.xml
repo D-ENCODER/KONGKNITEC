@@ -2,6 +2,8 @@
 <project version="4">
   <component name="DiscordProjectSettings">
     <option name="show" value="PROJECT_FILES" />
-    <option name="description" value="" />
+    <option name="nameOverrideEnabled" value="true" />
+    <option name="nameOverrideText" value="KONGKNITEC" />
+    <option name="description" value="Something you can never achieve........." />
   </component>
 </project>

@@ -9,9 +9,9 @@ import configure
 from Helper_Functions.custom_error_box import CustomBox
 from Backend.smtp_services import sendVerifyOtp, sendAdminId, sendWelcome, sendResetOtp
 from Screens.Refactor.custom_widgets import CustomWidgets
-from Screens.Refactor.header_gui import header_gui
-from Screens.forgot_password import ForgotPassword
-from Screens.personal_info import ContactInfo
+from Screens.Refactor.loginHeaderGUI import loginHeaderGUI
+from Screens.Auth.forgot_password import ForgotPassword
+from Screens.Auth.personal_info import ContactInfo
 
 
 class Verify(ForgotPassword, ContactInfo):
@@ -96,7 +96,7 @@ class Verify(ForgotPassword, ContactInfo):
                     self.otp_entry5.focus()
 
     def _verifyGUI(self):
-        header_gui(self)
+        loginHeaderGUI(self)
         CustomWidgets.customHeaderLabel(self, 'VERIFY').grid(row=3, column=0, sticky='w')
         self.otp_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
         self.otp_entry1 = CustomWidgets.customEntry(parent=self.otp_frame, placeholder='', width=20, height=45,

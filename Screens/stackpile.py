@@ -6,8 +6,9 @@
 from tkinter import PhotoImage
 import customtkinter as ctk
 import configure
-from Screens import login, signup, forgot_password, verify, reset_password, personal_info, splash_screen, no_internet, \
-    dashboard
+from Screens.Auth import login, signup, forgot_password, verify, reset_password, personal_info
+from Screens import splashScreen, noInternet
+from Screens.Dashboard import dashboard
 
 
 class StackPile(ctk.CTk):
@@ -21,7 +22,7 @@ class StackPile(ctk.CTk):
         """
         super().__init__()
         # load the icon of the application
-        self._icon = PhotoImage(file="Icons/logo.png")
+        self._icon = PhotoImage(file="Assets/logo.png")
         # set the title of the application
         self.title('Kongknitec')
         # set the icon of the application
@@ -45,9 +46,9 @@ class StackPile(ctk.CTk):
         self.frames = {}
         self.previous = ''
         self.frame_stack = (
-            no_internet.NoInternet, login.Login, signup.Signup, forgot_password.ForgotPassword, verify.Verify,
+            noInternet.NoInternet, login.Login, signup.Signup, forgot_password.ForgotPassword, verify.Verify,
             reset_password.ResetPassword, personal_info.UserDetailsStack, dashboard.Dashboard,
-            splash_screen.SplashScreen)
+            splashScreen.SplashScreen)
         # to add the frames to the stack
         for window in self.frame_stack:
             page_name = window.__name__

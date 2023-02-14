@@ -28,7 +28,7 @@ class NoInternet(ctk.CTkFrame):
         """
         This is the method which is used to create the no internet GUI and holds most values of the GUI
         """
-        self._img = load_image(self, 'Icons/no_internet.png', 220)
+        self._img = load_image(self, 'Assets/no_internet.png', 220)
         # Creating a label for placing the image that is loaded above
         ctk.CTkLabel(master=self, image=self._img, anchor='center').grid(row=0, column=0,
                                                                          columnspan=2)

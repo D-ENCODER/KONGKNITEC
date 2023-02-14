@@ -8,7 +8,6 @@ import math
 import platform
 import random
 import smtplib
-from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 import requests
@@ -51,7 +50,7 @@ def sendVerifyOtp(email):
     message = '''Subject:Email Verification OTP\n''' + message
     s = smtplib.SMTP("smtp.gmail.com", 587)
     s.starttls()
-    s.login("kongknitec0000@gmail.com", "slilbbrmptebemwr")
+    s.login("kongknitec0000@gmail.com", "nfjbdunjcgxlwxue")
     s.sendmail("kongknitec0000@gmail.com", email, message)
     return OTP
 
@@ -93,7 +92,7 @@ def sendResetOtp(email):
     message = '''Subject:Password Reset\n''' + message
     s = smtplib.SMTP("smtp.gmail.com", 587)
     s.starttls()
-    s.login("kongknitec0000@gmail.com", "slilbbrmptebemwr")
+    s.login("kongknitec0000@gmail.com", "nfjbdunjcgxlwxue")
     s.sendmail("kongknitec0000@gmail.com", email, message)
     return OTP
 
@@ -141,7 +140,7 @@ def sendWelcome(email, name, bool):
     message = '''Subject: Welcome to Kongknitec\n''' + message.as_string()
     s = smtplib.SMTP("smtp.gmail.com", 587)
     s.starttls()
-    s.login("kongknitec0000@gmail.com", "slilbbrmptebemwr")
+    s.login("kongknitec0000@gmail.com", "nfjbdunjcgxlwxue")
     s.sendmail("kongknitec0000@gmail.com", email, message)
 
 
@@ -181,7 +180,7 @@ def sendAdminId(email):
     message = '''Subject: Your Admin Id is generated\n''' + message.as_string()
     s = smtplib.SMTP("smtp.gmail.com", 587)
     s.starttls()
-    s.login("kongknitec0000@gmail.com", "slilbbrmptebemwr")
+    s.login("kongknitec0000@gmail.com", "nfjbdunjcgxlwxue")
     s.sendmail("kongknitec0000@gmail.com", email, message)
     return int(AdminId)
 
@@ -217,7 +216,7 @@ def sendemail():
     email_message = email_message.as_string()
     s = smtplib.SMTP("smtp.gmail.com", 587)
     s.starttls()
-    s.login("kongknitec0000@gmail.com", "slilbbrmptebemwr")
+    s.login("kongknitec0000@gmail.com", "nfjbdunjcgxlwxue")
     s.sendmail("kongknitec0000@gmail.com", 'hetcjoshi1684@gmail.com', email_message)
 
 
@@ -269,7 +268,7 @@ def sendPasswordChanged(email):
     message = '''Subject: Your password has been changed\n''' + message.as_string()
     s = smtplib.SMTP("smtp.gmail.com", 587)
     s.starttls()
-    s.login("kongknitec0000@gmail.com", "slilbbrmptebemwr")
+    s.login("kongknitec0000@gmail.com", "nfjbdunjcgxlwxue")
     s.sendmail("kongknitec0000@gmail.com", email, message)
 
 
