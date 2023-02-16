@@ -22,7 +22,10 @@ def dashboardHeaderGUI(parent, grandparent):
     welcomeText = ctk.CTkLabel(master=headerFrame, text='Welcome ', text_color=configure.white,
                                text_font=configure.welcome_fontstyle, justify='center', width=0)
     welcomeText.grid(row=0, column=3)
-    name = list(parent.sql.fetch('Fname, Lname')[0])
+    if not parent.sql.fetch('Fname, Lname'):
+        name = ["Het", "Joshi"]
+    else:
+        name = list(parent.sql.fetch('Fname, Lname')[0])
     userText = ctk.CTkLabel(master=headerFrame, width=0, text=" ".join([name[0], name[1]]),
                             text_color=configure.light_cyan, text_font=configure.welcome_fontstyle, justify='center')
     userText.grid(row=0, column=4)

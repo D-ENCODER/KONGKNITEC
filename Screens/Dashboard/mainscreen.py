@@ -49,10 +49,6 @@ class MainScreen(ctk.CTkFrame):
                                          hover_color=configure.light_cyan, image=self.navigator.profileDarkImg)
 
             case 'default':
-                # self.navigator.dashboardImg = loadImage(self.navigator, 'Assets/dashboard.png', 20)
-                # self.navigator.datasetImg = loadImage(self.navigator, 'Assets/dataset.png', 20)
-                # self.navigator.attendanceImg = loadImage(self.navigator, 'Assets/attendance.png', 20)
-                # self.navigator.profileImg = loadImage(self.navigator, 'Assets/profile.png', 20)
                 self.__dashboard.configure(fg_color=configure.very_dark_gray, text_color=configure.white,
                                            hover_color=configure.dark_gray, image=self.navigator.dashboardImg)
                 self.__dataset.configure(fg_color=configure.very_dark_gray, text_color=configure.white,
@@ -65,8 +61,8 @@ class MainScreen(ctk.CTkFrame):
     def __mainScreenGUI(self):
         dashboardHeaderGUI(self, self.__controller)
         self.navigator = ctk.CTkFrame(master=self, width=configure.screen_width / 4,
-                                        fg_color=configure.very_dark_gray,
-                                        height=configure.screen_height - 100)
+                                      fg_color=configure.very_dark_gray,
+                                      height=configure.screen_height - 100)
         ctk.CTkLabel(master=self.navigator, text='', height=30).grid(row=0, column=0)
         self.navigator.dashboardImg = loadImage(self.navigator, 'Assets/dashboard.png', 20)
         self.navigator.datasetImg = loadImage(self.navigator, 'Assets/dataset.png', 20)

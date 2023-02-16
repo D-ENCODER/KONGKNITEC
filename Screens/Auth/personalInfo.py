@@ -32,9 +32,9 @@ class UserDetailsStack(Signup):
             frame = window(parent=self.container, controller=self, parent_controller=self._controller)
             self.frames[page_name] = frame
             frame.grid(row=4, column=0, sticky='nsew')
-        self.show_frame("PersonalInfo")
+        self.showFrame("PersonalInfo")
 
-    def show_frame(self, page_name):
+    def showFrame(self, page_name):
         frame = self.frames[page_name]
         frame.tkraise()
 
