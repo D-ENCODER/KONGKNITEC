@@ -7,8 +7,8 @@
 import customtkinter as ctk
 import requests
 import configure
-from Helper_Functions.load_image import load_image
-from Screens.Refactor.custom_widgets import CustomWidgets
+from Helper_Functions.loadImage import loadImage
+from Screens.Refactor.customWidgets import CustomWidgets
 
 
 class NoInternet(ctk.CTkFrame):
@@ -28,7 +28,7 @@ class NoInternet(ctk.CTkFrame):
         """
         This is the method which is used to create the no internet GUI and holds most values of the GUI
         """
-        self._img = load_image(self, 'Assets/no_internet.png', 220)
+        self._img = loadImage(self, 'Assets/no_internet.png', 220)
         # Creating a label for placing the image that is loaded above
         ctk.CTkLabel(master=self, image=self._img, anchor='center').grid(row=0, column=0,
                                                                          columnspan=2)
@@ -47,6 +47,6 @@ class NoInternet(ctk.CTkFrame):
             requests.get('https://google.com')
             self._parent.grid_configure(pady=(configure.screen_height - 600) / 2,
                     padx=(configure.screen_width - 300) / 2)
-            self._controller.goto_previous()
+            self._controller.gotoPrevious()
         except requests.exceptions.ConnectionError:
             pass

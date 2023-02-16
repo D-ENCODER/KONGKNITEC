@@ -6,7 +6,7 @@
 from PIL import ImageTk, Image
 
 
-def load_image(frame, path, image_size):
+def loadImage(frame, path, image_size):
     """
     This function is used to load the image
     :param frame: frame in which the image is to be loaded

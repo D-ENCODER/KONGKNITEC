@@ -8,11 +8,11 @@ import requests
 import configure
 from Backend.encryptor import encrypt
 from Backend.smtp_services import sendPasswordChanged
-from Helper_Functions.load_image import load_image
-from Screens.Refactor.custom_widgets import CustomWidgets
+from Helper_Functions.loadImage import loadImage
+from Screens.Refactor.customWidgets import CustomWidgets
 from Screens.Refactor.loginHeaderGUI import loginHeaderGUI
 from Screens.Validator.validator import validate_password
-from Screens.Auth.forgot_password import ForgotPassword
+from Screens.Auth.forgotPassword import ForgotPassword
 
 
 class ResetPassword(ForgotPassword):
@@ -20,8 +20,8 @@ class ResetPassword(ForgotPassword):
         ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.very_dark_gray)
         self._controller = kwargs['controller']
         self.password_error_label = ctk.CTkLabel()
-        self._show_icon = load_image(self, "Assets/hide.png", 17)
-        self._hide_icon = load_image(self, "Assets/show.png", 17)
+        self._show_icon = loadImage(self, "Assets/hide.png", 17)
+        self._hide_icon = loadImage(self, "Assets/show.png", 17)
         self.confirm_password_error_label = ctk.CTkLabel()
         self._resetPasswordGUI()
 
@@ -113,13 +113,13 @@ class ResetPassword(ForgotPassword):
                     if configure.obj.check_email_exists('Admin_details', ForgotPassword.credentials['email']):
                         configure.obj.dbUpdatePassword(ForgotPassword.credentials['email'], password, True)
                         sendPasswordChanged(ForgotPassword.credentials['email'])
-                        self._controller.show_frame('Login', self)
+                        self._controller.showFrame('Login', self)
                     elif configure.obj.check_email_exists('User_details', ForgotPassword.credentials['email']):
                         configure.obj.dbUpdatePassword(ForgotPassword.credentials['email'], password, False)
                         sendPasswordChanged(ForgotPassword.credentials['email'])
-                        self._controller.show_frame('Login')
+                        self._controller.showFrame('Login')
                 except requests.exceptions.ConnectionError:
-                    self._controller.show_frame('NoInternet', self)
+                    self._controller.showFrame('NoInternet', self)
             else:
                 # If the password is invalid then the error message is displayed
                 if not validate_password(parent=self):

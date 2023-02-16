@@ -65,10 +65,10 @@ class VideoPlayer:
             if obj.checkLogin() == [(0,)]:
                 self.parent.grid_configure(pady=(configure.screen_height - 600) / 2,
                                            padx=(configure.screen_width - 300) / 2)
-                self.controller.show_frame("Login", self)
+                self.controller.showFrame("Login", self)
             else:
                 self.parent.grid_configure(pady=0, padx=0)
-                self.controller.show_frame("Dashboard", self)
+                self.controller.showFrame("MainScreen", self)
 
     def play(self):
         """

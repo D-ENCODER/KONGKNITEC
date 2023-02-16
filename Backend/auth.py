@@ -10,7 +10,7 @@ from datetime import datetime
 
 import configure
 from Backend.encryptor import encrypt
-from Helper_Functions.custom_error_box import CustomBox
+from Helper_Functions.customErrorBox import CustomBox
 
 
 class FirebaseDatabase:

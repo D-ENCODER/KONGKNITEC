@@ -5,7 +5,7 @@
 # Version : 1.0.0
 import customtkinter as ctk
 import configure
-from Helper_Functions.load_image import load_image
+from Helper_Functions.loadImage import loadImage
 
 
 def loginFooterGUI(self, label, controller, hyper_label, frame):
@@ -21,9 +21,9 @@ def loginFooterGUI(self, label, controller, hyper_label, frame):
     # Create a frame for footer
     self._login_frame = ctk.CTkFrame(master=self, fg_color=configure.dark_gray, corner_radius=180)
     # load all the images used in the frame for footer
-    self._google_icon = load_image(self._login_frame, "Assets/google.png", 27)
-    self._git_icon = load_image(self._login_frame, "Assets/git.png", 27)
-    self._twitter_icon = load_image(self._login_frame, "Assets/twitter.png", 27)
+    self._google_icon = loadImage(self._login_frame, "Assets/google.png", 27)
+    self._git_icon = loadImage(self._login_frame, "Assets/git.png", 27)
+    self._twitter_icon = loadImage(self._login_frame, "Assets/twitter.png", 27)
     # Create a label for footer
     footerframe = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
     ctk.CTkLabel(master=footerframe, text=label,
@@ -33,7 +33,7 @@ def loginFooterGUI(self, label, controller, hyper_label, frame):
     ctk.CTkButton(master=footerframe, text=hyper_label, width=70, height=35, text_font=(configure.font, 12,
                                                                                         "bold"),
                   cursor="hand2", fg_color=configure.very_dark_gray, hover=False,
-                  command=lambda: controller.show_frame(frame, self),
+                  command=lambda: controller.showFrame(frame, self),
                   text_color=configure.light_cyan).grid(row=0, column=1, sticky='w')
     footerframe.grid(row=8, column=0, columnspan=2, sticky='ew')
 

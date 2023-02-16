@@ -7,9 +7,9 @@ import customtkinter as ctk
 import requests
 
 import configure
-from Helper_Functions.custom_error_box import CustomBox
+from Helper_Functions.customErrorBox import CustomBox
 from Backend.smtp_services import sendVerifyOtp, sendResetOtp
-from Screens.Refactor.custom_widgets import CustomWidgets
+from Screens.Refactor.customWidgets import CustomWidgets
 from Screens.Refactor.loginHeaderGUI import loginHeaderGUI
 from Screens.Validator.validator import validate_email, validate_enrollment
 
@@ -43,14 +43,14 @@ class ForgotPassword(ctk.CTkFrame):
                 try:
                     ForgotPassword.credentials['otp'] = sendResetOtp(self.email_entry.get())
                     ForgotPassword.credentials['email'] = self.email_entry.get()
-                    self._controller.show_frame('Verify', self)
+                    self._controller.showFrame('Verify', self)
                 except Exception as e:
                     obj = CustomBox()
-                    obj.error_box('Error', 'Something went wrong ' + '(' + str(e.args[0]) + ')')
+                    obj.errorBox('Error', 'Something went wrong ' + '(' + str(e.args[0]) + ')')
             except requests.exceptions.ConnectionError:
-                self._controller.show_frame('NoInternet', self)
+                self._controller.showFrame('NoInternet', self)
 
-        CustomWidgets.customButton(parent=self, text='BACK', command=lambda: self._controller.show_frame('Login', self),
+        CustomWidgets.customButton(parent=self, text='BACK', command=lambda: self._controller.showFrame('Login', self),
                                    fg_color=configure.dark_gray, text_color=configure.white,
                                    hover_color=configure.very_dark_gray).grid(row=5, column=0, pady=10)
         CustomWidgets.customButton(parent=self, text='SEND', command=validate).grid(row=5, column=1, pady=10)

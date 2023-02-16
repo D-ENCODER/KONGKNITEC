@@ -63,7 +63,7 @@ def generateDataset(userId, userName):
         if not temp:
             app1.destroy()
             obj = Helper_Functions.custom_error_box.CustomBox()
-            obj.error_box('No Face Detected', 'Please stay in the well lighted room to detect your face')
+            obj.errorBox('No Face Detected', 'Please stay in the well lighted room to detect your face')
             return
         image = Image.fromarray(img)
         # converts image frame to tkinter compatible image

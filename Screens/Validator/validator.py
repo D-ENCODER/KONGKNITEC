@@ -4,8 +4,8 @@
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
 import configure
-from Screens.Refactor.custom_widgets import CustomWidgets
-from Screens.Validator.validator_logic import Validator
+from Screens.Refactor.customWidgets import CustomWidgets
+from Screens.Validator.validatorLogic import Validator
 
 
 def validate_email(**kwargs):

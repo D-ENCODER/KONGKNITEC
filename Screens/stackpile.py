@@ -6,9 +6,9 @@
 from tkinter import PhotoImage
 import customtkinter as ctk
 import configure
-from Screens.Auth import login, signup, forgot_password, verify, reset_password, personal_info
+from Screens.Auth import login, signup, forgotPassword, verify, resetPassword, personalInfo
 from Screens import splashScreen, noInternet
-from Screens.Dashboard import dashboard
+from Screens.Dashboard import mainscreen
 
 
 class StackPile(ctk.CTk):
@@ -30,7 +30,7 @@ class StackPile(ctk.CTk):
         # to disable the maximise button
         self.resizable(False, False)
         # to call the function when the close button is pressed
-        self.protocol("WM_DELETE_WINDOW", self.on_closing)
+        self.protocol("WM_DELETE_WINDOW", self.onClosing)
         # to set the background color of the application
         self.configure(bg=configure.very_dark_gray)
         # to save the size of the current screen in global variable to use it later
@@ -46,9 +46,10 @@ class StackPile(ctk.CTk):
         self.frames = {}
         self.previous = ''
         self.frame_stack = (
-            noInternet.NoInternet, login.Login, signup.Signup, forgot_password.ForgotPassword, verify.Verify,
-            reset_password.ResetPassword, personal_info.UserDetailsStack, dashboard.Dashboard,
-            splashScreen.SplashScreen)
+            noInternet.NoInternet, login.Login, signup.Signup, forgotPassword.ForgotPassword, verify.Verify,
+            resetPassword.ResetPassword, personalInfo.UserDetailsStack, mainscreen.MainScreen
+            # splashScreen.SplashScreen
+        )
         # to add the frames to the stack
         for window in self.frame_stack:
             page_name = window.__name__
@@ -58,9 +59,9 @@ class StackPile(ctk.CTk):
             self.frames[page_name] = frame
             # to place the frame on the main frame
             frame.grid(row=0, column=0, sticky='nsew')
-        self.show_frame("SplashScreen", self)
+        self.showFrame("MainScreen", self)
 
-    def show_frame(self, page_name, previous):
+    def showFrame(self, page_name, previous):
         """
         Show a frame for the given page name
         """
@@ -68,12 +69,12 @@ class StackPile(ctk.CTk):
         frame = self.frames[page_name]
         frame.tkraise()
 
-    def goto_previous(self):
+    def gotoPrevious(self):
         frame = self.frames[self.previous]
         frame.tkraise()
 
-    def get_previous(self):
+    def getPrevious(self):
         return self.previous
 
-    def on_closing(self):
+    def onClosing(self):
         self.destroy()

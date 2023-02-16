@@ -6,12 +6,12 @@
 import customtkinter as ctk
 import requests
 import configure
-from Helper_Functions.custom_error_box import CustomBox
+from Helper_Functions.customErrorBox import CustomBox
 from Backend.smtp_services import sendVerifyOtp, sendAdminId, sendWelcome, sendResetOtp
-from Screens.Refactor.custom_widgets import CustomWidgets
+from Screens.Refactor.customWidgets import CustomWidgets
 from Screens.Refactor.loginHeaderGUI import loginHeaderGUI
-from Screens.Auth.forgot_password import ForgotPassword
-from Screens.Auth.personal_info import ContactInfo
+from Screens.Auth.forgotPassword import ForgotPassword
+from Screens.Auth.personalInfo import ContactInfo
 
 
 class Verify(ForgotPassword, ContactInfo):
@@ -121,10 +121,10 @@ class Verify(ForgotPassword, ContactInfo):
         def verify(event=None):
             self.otp = self.otp_entry1.get() + self.otp_entry2.get() + self.otp_entry3.get() + self.otp_entry4.get() + \
                        self.otp_entry5.get() + self.otp_entry6.get()
-            if self._controller.get_previous() == 'ForgotPassword':
+            if self._controller.getPrevious() == 'ForgotPassword':
                 Verify.credentials = ForgotPassword.credentials
                 if Verify.credentials['otp'] == self.otp:
-                    self._controller.show_frame('ResetPassword', self)
+                    self._controller.showFrame('ResetPassword', self)
             else:
                 Verify.credentials = ContactInfo.credentials
                 if Verify.credentials['otp'] == self.otp:
@@ -142,15 +142,15 @@ class Verify(ForgotPassword, ContactInfo):
                                 sendWelcome(Verify.credentials['email'], Verify.credentials['first name'] +
                                             ' ' + Verify.credentials['last name'], False)
                                 configure.obj.dbSignUp(Verify.credentials, 'User_details')
-                            self._controller.show_frame('Login', self)
+                            self._controller.showFrame('Login', self)
                         except Exception as e:
                             obj = CustomBox()
-                            obj.error_box('Error', 'Something went wrong' + '(' + e.args[0] + ')')
+                            obj.errorBox('Error', 'Something went wrong' + '(' + e.args[0] + ')')
                     except requests.exceptions.ConnectionError as e:
-                        self._controller.show_frame('NoInternet', self)
+                        self._controller.showFrame('NoInternet', self)
                 else:
                     obj = CustomBox()
-                    obj.error_box('Error', 'Invalid OTP')
+                    obj.errorBox('Error', 'Invalid OTP')
 
         self._switcher(0)
         self.otp_entry1.bind('<KeyRelease>', lambda event: self._switcher(1, event))
@@ -173,17 +173,17 @@ class Verify(ForgotPassword, ContactInfo):
                 try:
                     requests.get('https://google.com')
                     try:
-                        if self._controller.get_previous() == 'ForgotPassword':
+                        if self._controller.getPrevious() == 'ForgotPassword':
                             ForgotPassword.credentials['otp'] = sendResetOtp(Verify.credentials['email'])
                         else:
                             ContactInfo.credentials['otp'] = sendVerifyOtp(Verify.credentials['email'])
                     except Exception as e:
                         obj = CustomBox()
-                        obj.error_box('Error', 'Something went wrong. Please try again later' + e.args[0])
-                        self._controller.show_frame('Login', self)
+                        obj.errorBox('Error', 'Something went wrong. Please try again later' + e.args[0])
+                        self._controller.showFrame('Login', self)
                     countdown(90)
                 except requests.exceptions.ConnectionError as e:
-                    self._controller.show_frame('NoInternet', self)
+                    self._controller.showFrame('NoInternet', self)
 
             if time_sec > 0:
                 self.timer_frame.after(1000, countdown, time_sec - 1)

@@ -4,7 +4,7 @@
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
 
-def most_frequent(arg):
+def mostFrequent(arg):
     count = 0
     num = arg[0]
     for i in arg:

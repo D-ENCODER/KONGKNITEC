@@ -9,9 +9,9 @@ from numpy.core.defchararray import strip
 from phonenumbers import parse, carrier, NumberParseException
 import configure
 from Backend.sqlite_services import SqliteServices
-from Helper_Functions.custom_error_box import CustomBox
+from Helper_Functions.customErrorBox import CustomBox
 from Backend.smtp_services import sendVerifyOtp
-from Screens.Refactor.custom_widgets import CustomWidgets
+from Screens.Refactor.customWidgets import CustomWidgets
 from Screens.Refactor.loginHeaderGUI import loginHeaderGUI
 from Screens.Auth.signup import Signup
 
@@ -173,7 +173,7 @@ class PersonalInfo(UserDetailsStack):
                     Signup.credentials['gender'] = 'None'
                 self.sql.insertPersonalDetails(self.firstname_entry.get(), self.lastname_entry.get(),
                                                Signup.credentials['date of birth'], Signup.credentials['gender'])
-                self._controller.show_frame('ContactInfo')
+                self._controller.showFrame('ContactInfo')
             else:
                 self._validate_fields(0)
                 self._validate_fields(1)
@@ -181,7 +181,7 @@ class PersonalInfo(UserDetailsStack):
 
         self.button_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
         CustomWidgets.customButton(parent=self.button_frame, text='BACK', fg_color=configure.dark_gray,
-                                   command=lambda: self._parent_controller.show_frame('Signup', self),
+                                   command=lambda: self._parent_controller.showFrame('Signup', self),
                                    text_color=configure.white,
                                    hover_color=configure.very_dark_gray).grid(row=0, column=0, sticky='nsew', padx=10)
         CustomWidgets.customButton(parent=self.button_frame, text='NEXT', command=lambda: _verify()).grid(row=0,
@@ -302,20 +302,20 @@ class ContactInfo(PersonalInfo):
                         Signup.credentials['phone number'] = self.phone_entry.get()
                         Signup.credentials['enrollment'] = self.enroll_entry.get()
                         self.sql.insertContactDetails(self.phone_entry.get(), self.enroll_entry.get())
-                        self._parent_controller.show_frame('Verify', self)
+                        self._parent_controller.showFrame('Verify', self)
                     except Exception as e:
                         # Custom messagebox object
                         self.obj = CustomBox()
-                        self.obj.error_box('Error', 'Something went wrong ' + '(' + str(e) + ')')
+                        self.obj.errorBox('Error', 'Something went wrong ' + '(' + str(e) + ')')
                 except requests.exceptions.ConnectionError as e:
-                    self._parent_controller.show_frame('NoInternet', self)
+                    self._parent_controller.showFrame('NoInternet', self)
             else:
                 self._validate_fields(0)
                 self._validate_fields(1)
 
         self.button_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
         CustomWidgets.customButton(parent=self.button_frame, text='BACK', fg_color=configure.dark_gray,
-                                   command=lambda: self._controller.show_frame('PersonalInfo'),
+                                   command=lambda: self._controller.showFrame('PersonalInfo'),
                                    text_color=configure.white,
                                    hover_color=configure.very_dark_gray).grid(row=0, column=0, sticky='nsew', padx=10)
         CustomWidgets.customButton(parent=self.button_frame, text='VERIFY',

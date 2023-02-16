@@ -5,7 +5,7 @@
 # Version : 1.0.0
 import customtkinter as ctk
 import configure
-from Helper_Functions.load_image import load_image
+from Helper_Functions.loadImage import loadImage
 
 
 def loginHeaderGUI(self):
@@ -15,7 +15,7 @@ def loginHeaderGUI(self):
     :return: None
     """
     # Loading the image in the frame
-    self._img = load_image(self, 'Assets/logo.png', 120)
+    self._img = loadImage(self, 'Assets/logo.png', 120)
     # Creating a label for placing the image that is loaded above
     ctk.CTkLabel(master=self, image=self._img, anchor='center').grid(row=0, column=0,
                                                                      columnspan=2)

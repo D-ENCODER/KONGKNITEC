@@ -5,14 +5,14 @@
 # Version : 1.0.0
 import customtkinter as ctk
 import configure
-from Helper_Functions.load_image import load_image
-from Screens.Refactor.custom_widgets import CustomWidgets
+from Helper_Functions.loadImage import loadImage
+from Screens.Refactor.customWidgets import CustomWidgets
 
 
 def dashboardHeaderGUI(parent, grandparent):
     headerFrame = ctk.CTkFrame(parent, fg_color=configure.very_dark_gray)
     # Loading the image in the frame
-    headerFrame.img = load_image(headerFrame, 'Assets/logo.png', 80)
+    headerFrame.img = loadImage(headerFrame, 'Assets/logo.png', 80)
     # Creating a label for placing the image that is loaded above
     image = ctk.CTkLabel(master=headerFrame, image=headerFrame.img, anchor='center', width=100)
     image.grid(row=0, column=0)

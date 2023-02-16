@@ -2,7 +2,7 @@ import cv2
 import os
 import customtkinter as ctk
 from PIL import Image, ImageTk
-import Helper_Functions.most_frequent
+import Helper_Functions.mostFrequent
 from gtts import gTTS
 
 
@@ -85,7 +85,7 @@ def recognize():
         if progress == 100:
             cap.release()
             app1.destroy()
-            voice_obj = gTTS(text='Welcome' + Helper_Functions.most_frequent.most_frequent(name), lang='en', slow=False)
+            voice_obj = gTTS(text='Welcome' + Helper_Functions.most_frequent.mostFrequent(name), lang='en', slow=False)
             voice_obj.save("greetings.mp3")
             os.system("start greetings.mp3")
             return

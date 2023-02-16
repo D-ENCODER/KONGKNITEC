@@ -4,7 +4,7 @@
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
 
-from Helper_Functions.video_player import VideoPlayer
+from Helper_Functions.videoPlayer import VideoPlayer
 import customtkinter as ctk
 import configure
 import os

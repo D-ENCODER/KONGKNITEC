@@ -85,8 +85,28 @@ class CustomWidgets:
         defaultKwargs = {'color': configure.dark_gray, 'anchor': 'center'}
         kwargs = {**defaultKwargs, **kwargs}
         custom_hyperlink_label = ctk.CTkButton(master=kwargs['parent'], text=kwargs['text'], cursor="hand2",
-                                               fg_color=configure.very_dark_gray, text_font=(configure.font, 12, "bold"),
+                                               fg_color=configure.very_dark_gray,
+                                               text_font=(configure.font, 12, "bold"),
                                                hover_color=configure.very_dark_gray,
                                                command=kwargs['command'],
                                                text_color=configure.light_cyan)
         return custom_hyperlink_label
+
+    @staticmethod
+    def customDashboardButtons(parent, text, image, command):
+        """
+        Left side panel buttons of dashboard screen
+        :param parent: Parent of the button GUI
+        :param text: The text to be printed on button
+        :param image: Image object to be printed on the button
+        :param command: The function to be called whenever the button is pressed or the action event is called
+        :return: The custom button widget
+        """
+        custom_dashboard_button = ctk.CTkButton(master=parent, text=text,
+                                                image=image, corner_radius=20,
+                                                hover_color=configure.dark_gray,
+                                                fg_color=configure.very_dark_gray, width=configure.screen_width / 4,
+                                                height=50, command=command,
+                                                text_font=(configure.font, 17, 'bold'), text_color=configure.white)
+
+        return custom_dashboard_button
