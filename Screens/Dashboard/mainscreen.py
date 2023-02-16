@@ -26,70 +26,70 @@ class MainScreen(ctk.CTkFrame):
         match index:
             case 0:
                 self.__switcher('default')
-                self.__navigator.dashboardImg = loadImage(self.__navigator, 'Assets/dashboard.png', 20)
+                self.navigator.dashboardDarkImg = loadImage(self.navigator, 'Assets/dashboardd.png', 20)
                 self.__dashboard.configure(fg_color=configure.vivid_cyan, text_color=configure.very_dark_gray,
-                                           hover_color=configure.light_cyan, image=self.__navigator.dashboardImg)
+                                           hover_color=configure.light_cyan, image=self.navigator.dashboardDarkImg)
 
             case 1:
                 self.__switcher('default')
-                self.__navigator.datasetImg = loadImage(self.__navigator, 'Assets/dataset.png', 20)
+                self.navigator.datasetDarkImg = loadImage(self.navigator, 'Assets/datasetd.png', 20)
                 self.__dataset.configure(fg_color=configure.vivid_cyan, text_color=configure.very_dark_gray,
-                                         hover_color=configure.light_cyan, image=self.__navigator.datasetImg)
+                                         hover_color=configure.light_cyan, image=self.navigator.datasetDarkImg)
 
             case 2:
                 self.__switcher('default')
-                self.__navigator.attendanceImg = loadImage(self.__navigator, 'Assets/attendance.png', 20)
+                self.navigator.attendanceDarkImg = loadImage(self.navigator, 'Assets/attendanced.png', 20)
                 self.__attendance.configure(fg_color=configure.vivid_cyan, text_color=configure.very_dark_gray,
-                                            hover_color=configure.light_cyan, image=self.__navigator.attendanceImg)
+                                            hover_color=configure.light_cyan, image=self.navigator.attendanceDarkImg)
 
             case 3:
                 self.__switcher('default')
-                self.__navigator.profileImg = loadImage(self.__navigator, 'Assets/profile.png', 20)
+                self.navigator.profileDarkImg = loadImage(self.navigator, 'Assets/profiled.png', 20)
                 self.__profile.configure(fg_color=configure.vivid_cyan, text_color=configure.very_dark_gray,
-                                         hover_color=configure.light_cyan, image=self.__navigator.profileImg)
+                                         hover_color=configure.light_cyan, image=self.navigator.profileDarkImg)
 
             case 'default':
-                self.__navigator.dashboardImg = loadImage(self.__navigator, 'Assets/dashboard.png', 20)
-                self.__navigator.datasetImg = loadImage(self.__navigator, 'Assets/dataset.png', 20)
-                self.__navigator.attendanceImg = loadImage(self.__navigator, 'Assets/attendance.png', 20)
-                self.__navigator.profileImg = loadImage(self.__navigator, 'Assets/profile.png', 20)
+                # self.navigator.dashboardImg = loadImage(self.navigator, 'Assets/dashboard.png', 20)
+                # self.navigator.datasetImg = loadImage(self.navigator, 'Assets/dataset.png', 20)
+                # self.navigator.attendanceImg = loadImage(self.navigator, 'Assets/attendance.png', 20)
+                # self.navigator.profileImg = loadImage(self.navigator, 'Assets/profile.png', 20)
                 self.__dashboard.configure(fg_color=configure.very_dark_gray, text_color=configure.white,
-                                           hover_color=configure.dark_gray, image=self.__navigator.dashboardImg)
+                                           hover_color=configure.dark_gray, image=self.navigator.dashboardImg)
                 self.__dataset.configure(fg_color=configure.very_dark_gray, text_color=configure.white,
-                                         hover_color=configure.dark_gray, image=self.__navigator.datasetImg)
+                                         hover_color=configure.dark_gray, image=self.navigator.datasetImg)
                 self.__attendance.configure(fg_color=configure.very_dark_gray, text_color=configure.white,
-                                            hover_color=configure.dark_gray, image=self.__navigator.attendanceImg)
+                                            hover_color=configure.dark_gray, image=self.navigator.attendanceImg)
                 self.__profile.configure(fg_color=configure.very_dark_gray, text_color=configure.white,
-                                         hover_color=configure.dark_gray, image=self.__navigator.profileImg)
+                                         hover_color=configure.dark_gray, image=self.navigator.profileImg)
 
     def __mainScreenGUI(self):
         dashboardHeaderGUI(self, self.__controller)
-        self.__navigator = ctk.CTkFrame(master=self, width=configure.screen_width / 4,
+        self.navigator = ctk.CTkFrame(master=self, width=configure.screen_width / 4,
                                         fg_color=configure.very_dark_gray,
                                         height=configure.screen_height - 100)
-        ctk.CTkLabel(master=self.__navigator, text='', height=30).grid(row=0, column=0)
-        self.__navigator.dashboardImg = loadImage(self.__navigator, 'Assets/dashboard.png', 20)
-        self.__navigator.datasetImg = loadImage(self.__navigator, 'Assets/dataset.png', 20)
-        self.__navigator.attendanceImg = loadImage(self.__navigator, 'Assets/attendance.png', 20)
-        self.__navigator.profileImg = loadImage(self.__navigator, 'Assets/profile.png', 20)
-        self.__dashboard = CustomWidgets.customDashboardButtons(self.__navigator, 'Dashboard',
-                                                                self.__navigator.dashboardImg,
+        ctk.CTkLabel(master=self.navigator, text='', height=30).grid(row=0, column=0)
+        self.navigator.dashboardImg = loadImage(self.navigator, 'Assets/dashboard.png', 20)
+        self.navigator.datasetImg = loadImage(self.navigator, 'Assets/dataset.png', 20)
+        self.navigator.attendanceImg = loadImage(self.navigator, 'Assets/attendance.png', 20)
+        self.navigator.profileImg = loadImage(self.navigator, 'Assets/profile.png', 20)
+        self.__dashboard = CustomWidgets.customDashboardButtons(self.navigator, 'Dashboard',
+                                                                self.navigator.dashboardImg,
                                                                 lambda: self.__switcher(0))
         self.__dashboard.grid(row=1, column=0, pady=20)
-        self.__dataset = CustomWidgets.customDashboardButtons(self.__navigator, 'Dataset',
-                                                              self.__navigator.datasetImg,
+        self.__dataset = CustomWidgets.customDashboardButtons(self.navigator, 'Dataset',
+                                                              self.navigator.datasetImg,
                                                               lambda: self.__switcher(1))
         self.__dataset.grid(row=2, column=0)
-        self.__attendance = CustomWidgets.customDashboardButtons(self.__navigator, 'Attendance',
-                                                                 self.__navigator.attendanceImg,
+        self.__attendance = CustomWidgets.customDashboardButtons(self.navigator, 'Attendance',
+                                                                 self.navigator.attendanceImg,
                                                                  lambda: self.__switcher(2))
         self.__attendance.grid(row=3, column=0, pady=20)
-        self.__profile = CustomWidgets.customDashboardButtons(self.__navigator, 'Profile',
-                                                              self.__navigator.profileImg,
+        self.__profile = CustomWidgets.customDashboardButtons(self.navigator, 'Profile',
+                                                              self.navigator.profileImg,
                                                               lambda: self.__switcher(3))
         self.__profile.grid(row=4, column=0)
         self.__switcher(0)
-        self.__navigator.grid(row=1, column=0, sticky='n')
+        self.navigator.grid(row=1, column=0, sticky='n')
         self.__dashboardStack = ctk.CTkFrame(master=self, width=(configure.screen_width / 4) * 3)
         ctk.CTkLabel(master=self.__dashboardStack, height=configure.screen_height - 100,
                      width=(configure.screen_width / 4) * 3, text='').grid(row=0, column=0)
