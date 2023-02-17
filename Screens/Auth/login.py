@@ -57,7 +57,7 @@ class Login(ctk.CTkFrame):
         self.enrollment_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
         # Create the email entry
         self.enrollment_entry = CustomWidgets.customEntry(parent=self.enrollment_frame,
-                                                            placeholder='Admin Code/Application No/Enrollment No')
+                                                          placeholder='Admin Code/Application No/Enrollment No')
         # Placing the email entry in the grid layout
         self.enrollment_entry.grid(row=0, column=0, columnspan=2)
         # Placing the email frame into the grid layout
@@ -69,7 +69,7 @@ class Login(ctk.CTkFrame):
         self.password_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
         # Create the password entry
         self.password_entry = CustomWidgets.customEntry(parent=self.password_frame, placeholder='Password',
-                                                          obfuscated=True)
+                                                        obfuscated=True)
         # Placing the password entry in the grid layout
         self.password_entry.grid(row=0, column=0, columnspan=2)
         # Placing the password entry in the grid layout

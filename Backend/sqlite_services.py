@@ -6,7 +6,6 @@
 
 import sqlite3 as sql
 
-
 class SqliteServices:
     """
         Main class of SqliteServices. Handles all the sqlite database operations.
