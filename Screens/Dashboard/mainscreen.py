@@ -29,24 +29,28 @@ class MainScreen(ctk.CTkFrame):
                 self.navigator.dashboardDarkImg = loadImage(self.navigator, 'Assets/dashboardd.png', 20)
                 self.__dashboard.configure(fg_color=configure.vivid_cyan, text_color=configure.very_dark_gray,
                                            hover_color=configure.light_cyan, image=self.navigator.dashboardDarkImg)
+                self.showFrame('Dashboard')
 
             case 1:
                 self.__switcher('default')
                 self.navigator.datasetDarkImg = loadImage(self.navigator, 'Assets/datasetd.png', 20)
                 self.__dataset.configure(fg_color=configure.vivid_cyan, text_color=configure.very_dark_gray,
                                          hover_color=configure.light_cyan, image=self.navigator.datasetDarkImg)
+                self.showFrame('Dataset')
 
             case 2:
                 self.__switcher('default')
                 self.navigator.attendanceDarkImg = loadImage(self.navigator, 'Assets/attendanced.png', 20)
                 self.__attendance.configure(fg_color=configure.vivid_cyan, text_color=configure.very_dark_gray,
                                             hover_color=configure.light_cyan, image=self.navigator.attendanceDarkImg)
+                self.showFrame('Attendance')
 
             case 3:
                 self.__switcher('default')
                 self.navigator.profileDarkImg = loadImage(self.navigator, 'Assets/profiled.png', 20)
                 self.__profile.configure(fg_color=configure.vivid_cyan, text_color=configure.very_dark_gray,
                                          hover_color=configure.light_cyan, image=self.navigator.profileDarkImg)
+                self.showFrame('Profile')
 
             case 'default':
                 self.__dashboard.configure(fg_color=configure.very_dark_gray, text_color=configure.white,
@@ -84,27 +88,27 @@ class MainScreen(ctk.CTkFrame):
                                                               self.navigator.profileImg,
                                                               lambda: self.__switcher(3))
         self.__profile.grid(row=4, column=0)
-        self.__switcher(0)
         self.navigator.grid(row=1, column=0, sticky='n')
         self.__dashboardStack = ctk.CTkFrame(master=self, width=(configure.screen_width / 4) * 3)
         ctk.CTkLabel(master=self.__dashboardStack, height=configure.screen_height - 100,
                      width=(configure.screen_width / 4) * 3, text='').grid(row=0, column=0)
         self.__dashboardStack.grid(row=1, column=1, sticky='n')
-        self.__frames = {}
+        self.frames = {}
         self.__frameStack = (dashboard.Dashboard, attendance.Attendance, profile.Profile, dataset.Dataset)
         for window in self.__frameStack:
             page_name = window.__name__
             # to take the first frame and place it on the main frame
             frame = window(parent=self.__dashboardStack, controller=self)
             # to add the frame to the stack
-            self.__frames[page_name] = frame
+            self.frames[page_name] = frame
             # to place the frame on the main frame
             frame.grid(row=0, column=0, sticky='nsew')
         self.showFrame("Dashboard")
+        self.__switcher(0)
 
     def showFrame(self, page_name):
         """
         Show a frame for the given page name
         """
-        frame = self.__frames[page_name]
+        frame = self.frames[page_name]
         frame.tkraise()

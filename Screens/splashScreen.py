@@ -7,7 +7,6 @@
 from Helper_Functions.videoPlayer import VideoPlayer
 import customtkinter as ctk
 import configure
-import os
 
 
 class SplashScreen(ctk.CTkFrame):

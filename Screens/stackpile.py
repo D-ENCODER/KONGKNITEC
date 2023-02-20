@@ -29,6 +29,8 @@ class StackPile(ctk.CTk):
         self.iconphoto(False, self._icon)
         # to disable the maximise button
         self.resizable(False, False)
+        # To deactivate scaling effect on software
+        # ctk.deactivate_automatic_dpi_awareness()
         # to call the function when the close button is pressed
         self.protocol("WM_DELETE_WINDOW", self.onClosing)
         # to set the background color of the application
@@ -47,8 +49,8 @@ class StackPile(ctk.CTk):
         self.previous = ''
         self.frame_stack = (
             noInternet.NoInternet, login.Login, signup.Signup, forgotPassword.ForgotPassword, verify.Verify,
-            resetPassword.ResetPassword, personalInfo.UserDetailsStack, mainscreen.MainScreen,
-            splashScreen.SplashScreen
+            resetPassword.ResetPassword, personalInfo.UserDetailsStack, mainscreen.MainScreen
+            # splashScreen.SplashScreen
         )
         # to add the frames to the stack
         for window in self.frame_stack:
@@ -59,7 +61,7 @@ class StackPile(ctk.CTk):
             self.frames[page_name] = frame
             # to place the frame on the main frame
             frame.grid(row=0, column=0, sticky='nsew')
-        self.showFrame("SplashScreen", self)
+        self.showFrame("MainScreen", self)
 
     def showFrame(self, page_name, previous):
         """

@@ -5,6 +5,8 @@
 # Version : 1.0.0
 
 import sqlite3 as sql
+import os
+
 
 class SqliteServices:
     """
@@ -12,6 +14,8 @@ class SqliteServices:
     """
 
     def __init__(self):
+        if not os.path.exists('Backend/Database/'):
+            os.mkdir('Backend/Database/')
         self.conn = sql.connect("Backend/Database/local_user.db")
         self.cursor = self.conn.cursor()
         self.cursor.execute("CREATE TABLE IF NOT EXISTS UserDetails (Email TEXT, Password TEXT, Fname TEXT, "
@@ -30,8 +34,9 @@ class SqliteServices:
                             VALUES ("{}", "{}", NULL, NULL, NULL, NULL, NULL, NULL)'''.format(email, password))
         self.conn.commit()
 
-    def insertPersonalDetails(self, fname, lname, gender, dob):
+    def insertPersonalDetails(self, fname, lname, gender, dob, email):
         """
+            :param email: Email of the user
             :param fname First Name of the User
             :param lname Last Name of the User
             :param gender Gender of the User
@@ -40,19 +45,20 @@ class SqliteServices:
 
             Inserts Personal details into the local database.
         """
-        self.cursor.execute('''UPDATE UserDetails SET Fname="{}", Lname="{}", Gender="{}", Dob="{}"'''
-                            .format(fname, lname, gender, dob))
+        self.cursor.execute('''UPDATE UserDetails SET Fname="{}", Lname="{}", Gender="{}", Dob="{}" WHERE Email="{}"'''
+                            .format(fname, lname, gender, dob, email))
         self.conn.commit()
 
-    def insertContactDetails(self, phoneno, enrollno):
+    def insertContactDetails(self, phoneno, enrollno, email):
         """
+            :param email: Email of the user
             :param phoneno Contact Number of User
             :param enrollno Enrollment Number of User
             :returns None
 
             Inserts Contact details into the local database.
         """
-        self.cursor.execute('''UPDATE UserDetails SET Phoneno={}, Enrollno="{}"'''.format(phoneno, enrollno))
+        self.cursor.execute('''UPDATE UserDetails SET Phoneno={}, Enrollno="{}" WHERE Email="{}"'''.format(phoneno, enrollno, email))
         self.conn.commit()
 
     def fetch(self, columnName):

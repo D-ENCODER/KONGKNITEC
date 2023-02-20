@@ -20,7 +20,7 @@ class NoInternet(ctk.CTkFrame):
         ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.very_dark_gray)
         self._parent = kwargs['parent']
         self._parent.grid_configure(pady=(configure.screen_height - 400) / 2,
-                                        padx=(configure.screen_width - 400) / 2)
+                                    padx=(configure.screen_width - 400) / 2)
         self._controller = kwargs['controller']
         self._noInternetGUI()
 
@@ -37,7 +37,8 @@ class NoInternet(ctk.CTkFrame):
         ctk.CTkLabel(master=self, text='Please check your internet connection and\nmake sure you are connected to '
                                        'stable\ninternet connection ', anchor='center',
                      text_font=configure.welcome_fontstyle).grid(row=1, column=0, columnspan=2)
-        CustomWidgets.customButton(parent=self, text='Retry', command=self._retry).grid(row=2, column=0, columnspan=2, pady=10)
+        CustomWidgets.customButton(parent=self, text='Retry', command=self._retry).grid(row=2, column=0, columnspan=2,
+                                                                                        pady=10)
 
     def _retry(self):
         """
@@ -46,7 +47,7 @@ class NoInternet(ctk.CTkFrame):
         try:
             requests.get('https://google.com')
             self._parent.grid_configure(pady=(configure.screen_height - 600) / 2,
-                    padx=(configure.screen_width - 300) / 2)
+                                        padx=(configure.screen_width - 300) / 2)
             self._controller.gotoPrevious()
         except requests.exceptions.ConnectionError:
             pass

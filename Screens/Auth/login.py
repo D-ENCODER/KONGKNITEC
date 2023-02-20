@@ -115,6 +115,7 @@ class Login(ctk.CTkFrame):
                     elif dbpassword == encrypt(self.password_entry.get()):
                         configure.obj.dbLogin(int(self.enrollment_entry.get()))
                         self._sql.login(self.enrollment_entry.get(), datetime.datetime.now())
+                        self.__parent.grid_configure(pady=0, padx=0)
                         self.__controller.showFrame('MainScreen', self)
                     else:
                         # Custom messagebox object

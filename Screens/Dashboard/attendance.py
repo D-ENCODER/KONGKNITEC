@@ -17,4 +17,18 @@ class Attendance(ctk.CTkFrame):
         self.__attendanceGUI()
 
     def __attendanceGUI(self):
-        pass
+        ctk.CTkLabel(master=self, text='', height=15).grid(row=0, column=0)
+        self.__option = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
+        self.__size = (configure.screen_width - (configure.screen_width / 4) - 220)
+        ctk.CTkLabel(master=self.__option, text='', width=self.__size).grid(row=0, column=0)
+        self.__takeAttendance = ctk.CTkButton(master=self.__option, text='Take',
+                                              text_font=(configure.font, 13, "bold"),
+                                              text_color=configure.very_dark_gray, fg_color=configure.vivid_cyan,
+                                              hover_color=configure.light_cyan, width=100, height=35, corner_radius=10)
+        self.__takeAttendance.grid(row=0, column=1, sticky='e')
+        ctk.CTkLabel(master=self.__option, text='', width=20).grid(row=0, column=2)
+        self.__addAttendance = ctk.CTkButton(master=self.__option, text='Add', text_font=(configure.font, 13, "bold"),
+                                             text_color=configure.very_dark_gray, fg_color=configure.vivid_cyan,
+                                             hover_color=configure.light_cyan, width=100, height=35, corner_radius=10)
+        self.__addAttendance.grid(row=0, column=3)
+        self.__option.grid(row=1, column=0)

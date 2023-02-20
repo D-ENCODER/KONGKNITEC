@@ -172,7 +172,8 @@ class PersonalInfo(UserDetailsStack):
                 else:
                     Signup.credentials['gender'] = 'None'
                 self.sql.insertPersonalDetails(self.firstname_entry.get(), self.lastname_entry.get(),
-                                               Signup.credentials['date of birth'], Signup.credentials['gender'])
+                                               Signup.credentials['date of birth'], Signup.credentials['gender'],
+                                               Signup.credentials['email'])
                 self._controller.showFrame('ContactInfo')
             else:
                 self._validate_fields(0)
@@ -301,7 +302,8 @@ class ContactInfo(PersonalInfo):
                         Signup.credentials['otp'] = sendVerifyOtp(Signup.credentials['email'])
                         Signup.credentials['phone number'] = self.phone_entry.get()
                         Signup.credentials['enrollment'] = self.enroll_entry.get()
-                        self.sql.insertContactDetails(self.phone_entry.get(), self.enroll_entry.get())
+                        self.sql.insertContactDetails(self.phone_entry.get(), self.enroll_entry.get(),
+                                                      Signup.credentials['email'])
                         self._parent_controller.showFrame('Verify', self)
                     except Exception as e:
                         # Custom messagebox object
