@@ -1,5 +1,5 @@
 # Date    : 01/10/22 01:00 pm
-# Author  : Maulik (mm.2004.parmar@gmail.com)
+# Author  : Parmar Maulik (mm.2004.parmar@gmail.com)
 # GitHub    : (https://github.com/Maulikatgit)
 # Twitter    : (https://twitter.com/Mr_younglord)
 # Version : 1.0.0

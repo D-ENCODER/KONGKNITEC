@@ -4,8 +4,12 @@
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
 import customtkinter as ctk
+from PIL.ImageTk import PhotoImage
+
 import configure
+
 from Backend.sqlite_services import SqliteServices
+from Screens.Refactor.customWidgets import CustomWidgets
 
 
 class Attendance(ctk.CTkFrame):
@@ -28,7 +32,23 @@ class Attendance(ctk.CTkFrame):
         self.__takeAttendance.grid(row=0, column=1, sticky='e')
         ctk.CTkLabel(master=self.__option, text='', width=20).grid(row=0, column=2)
         self.__addAttendance = ctk.CTkButton(master=self.__option, text='Add', text_font=(configure.font, 13, "bold"),
-                                             text_color=configure.very_dark_gray, fg_color=configure.vivid_cyan,
+                                             text_color=configure.very_dark_gray, command=lambda: self.add(),
+                                             fg_color=configure.vivid_cyan,
                                              hover_color=configure.light_cyan, width=100, height=35, corner_radius=10)
         self.__addAttendance.grid(row=0, column=3)
         self.__option.grid(row=1, column=0)
+
+    def add(self):
+        obj = ctk.CTkToplevel()
+        obj.geometry("400x200+{}+{}".format((configure.screen_width / 2) - 200, (configure.screen_height / 2) - 150))
+        # obj.resizable(False, False)
+        obj.configure(bg=configure.very_dark_gray)
+        self._icon = PhotoImage(file="Assets/logo.png")
+        obj.iconphoto(False, self._icon)
+        obj.title("Kongknitec: Manual Attendance")
+        enrollment = CustomWidgets.customEntry(parent=obj, placeholder='Enter Enrollment')
+        enrollment.grid(row=0, column=0, pady=50, padx=55)
+        add = ctk.CTkButton(master=obj, text='Add', text_font=(configure.font, 13, "bold"),
+                            text_color=configure.very_dark_gray, fg_color=configure.vivid_cyan,
+                            hover_color=configure.light_cyan, width=100, height=35, corner_radius=10)
+        add.grid(row=1, column=0, padx=55)
