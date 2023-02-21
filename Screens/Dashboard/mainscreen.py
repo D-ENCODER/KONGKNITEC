@@ -7,7 +7,7 @@ import customtkinter as ctk
 import configure
 from Backend.sqlite_services import SqliteServices
 from Helper_Functions.loadImage import loadImage
-from Screens.Dashboard import attendance, dataset, dashboard, profile
+from Screens.Dashboard import attendance, dataset, dashboard, profile, take
 from Screens.Refactor.customWidgets import CustomWidgets
 from Screens.Refactor.dashboardHeaderGUI import dashboardHeaderGUI
 
@@ -84,6 +84,7 @@ class MainScreen(ctk.CTkFrame):
                                                                  self.navigator.attendanceImg,
                                                                  lambda: self.__switcher(2))
         self.__attendance.grid(row=3, column=0, pady=20)
+
         self.__profile = CustomWidgets.customDashboardButtons(self.navigator, 'Profile',
                                                               self.navigator.profileImg,
                                                               lambda: self.__switcher(3))
