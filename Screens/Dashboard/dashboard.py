@@ -5,7 +5,7 @@
 # Version : 1.0.0
 import customtkinter as ctk
 import configure
-from Backend.sqlite_services import SqliteServices
+from Backend.signup_sqlite_services import SignupSqliteServices
 
 
 class Dashboard(ctk.CTkFrame):
@@ -13,7 +13,7 @@ class Dashboard(ctk.CTkFrame):
         ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.very_dark_gray)
         self.__parent = kwargs['parent']
         self.__controller = kwargs['controller']
-        self.sql = SqliteServices()
+        self.sql = SignupSqliteServices()
         self.__dashboardGUI()
 
     def __dashboardGUI(self):

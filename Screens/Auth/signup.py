@@ -6,7 +6,7 @@
 import customtkinter as ctk
 import configure
 from Backend.encryptor import encrypt
-from Backend.sqlite_services import SqliteServices
+from Backend.signup_sqlite_services import SignupSqliteServices
 from Helper_Functions.customErrorBox import CustomBox
 from Helper_Functions.loadImage import loadImage
 from Screens.Refactor.customWidgets import CustomWidgets
@@ -38,7 +38,7 @@ class Signup(ctk.CTkFrame):
         self.__show_icon = loadImage(self, "Assets/hide.png", 17)
         self.__hide_icon = loadImage(self, "Assets/show.png", 17)
         # Local database object
-        self.__sql = SqliteServices()
+        self.__sql = SignupSqliteServices()
         # Calling the sign-up GUI function
         self.__signupGUI()
 

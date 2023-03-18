@@ -10,7 +10,7 @@ import imageio
 from PIL import Image, ImageTk
 
 import configure
-from Backend.sqlite_services import SqliteServices
+from Backend.signup_sqlite_services import SignupSqliteServices
 
 
 class VideoPlayer:
@@ -61,7 +61,7 @@ class VideoPlayer:
                 label.configure(image=image)
                 label.image = image
                 sleep(0.05)
-            obj = SqliteServices()
+            obj = SignupSqliteServices()
             if obj.checkLogin() == [(0,)]:
                 self.parent.grid_configure(pady=(configure.screen_height - 600) / 2,
                                            padx=(configure.screen_width - 300) / 2)

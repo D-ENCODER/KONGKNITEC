@@ -8,7 +8,7 @@ import sqlite3 as sql
 import os
 
 
-class SqliteServices:
+class SignupSqliteServices:
     """
         Main class of SqliteServices. Handles all the sqlite database operations.
     """
@@ -30,9 +30,10 @@ class SqliteServices:
 
             Inserts Email and Password into the local database.
         """
-        self.cursor.execute('''INSERT INTO UserDetails(Email, Password, Fname, Lname, Gender, Dob, Phoneno, Enrollno)
-                            VALUES ("{}", "{}", NULL, NULL, NULL, NULL, NULL, NULL)'''.format(email, password))
+        self.cursor.execute("INSERT INTO UserDetails(Email, Password, Fname, Lname, Gender, Dob, Phoneno, Enrollno) "
+                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (email, password, None, None, None, None, None, None))
         self.conn.commit()
+        self.cursor.close()
 
     def insertPersonalDetails(self, fname, lname, gender, dob, email):
         """
@@ -45,9 +46,9 @@ class SqliteServices:
 
             Inserts Personal details into the local database.
         """
-        self.cursor.execute('''UPDATE UserDetails SET Fname="{}", Lname="{}", Gender="{}", Dob="{}" WHERE Email="{}"'''
-                            .format(fname, lname, gender, dob, email))
+        self.cursor.execute("UPDATE UserDetails SET Fname=?, Lname=?, Gender=?, Dob=? WHERE Email=?", (fname, lname, gender, dob, email))
         self.conn.commit()
+        self.cursor.close()
 
     def insertContactDetails(self, phoneno, enrollno, email):
         """
@@ -58,8 +59,9 @@ class SqliteServices:
 
             Inserts Contact details into the local database.
         """
-        self.cursor.execute('''UPDATE UserDetails SET Phoneno={}, Enrollno="{}" WHERE Email="{}"'''.format(phoneno, enrollno, email))
+        self.cursor.execute("UPDATE UserDetails SET Phoneno=?, Enrollno=? WHERE Email=?", (phoneno, enrollno, email))
         self.conn.commit()
+        self.cursor.close()
 
     def fetch(self, columnName):
         """
@@ -68,7 +70,7 @@ class SqliteServices:
 
             Fetches specific column wise data from the database.
         """
-        self.cursor.execute("SELECT " + columnName + " FROM UserDetails")
+        self.cursor.execute("SELECT {} FROM UserDetails".format(columnName))
         return self.cursor.fetchall()
 
     def fetchall(self):
@@ -85,15 +87,20 @@ class SqliteServices:
         :returns: None
         """
         self.cursor.execute("CREATE TABLE IF NOT EXISTS LoginDetails(enrollNo TEXT, dateTime INTEGER)")
-        self.cursor.execute('''INSERT INTO LoginDetails(enrollNo, dateTime) VALUES ("{}", "{}")'''.format(enrollmentNo,
-                                                                                                          dateTime))
+        self.cursor.execute("INSERT INTO LoginDetails(enrollNo, dateTime) VALUES (?, ?)", (enrollmentNo, dateTime))
         self.conn.commit()
+        self.cursor.close()
 
     def checkLogin(self):
         result = self.cursor.execute('''SELECT count(*) FROM sqlite_master WHERE type="table" AND 
         name="LoginDetails"''')
         self.conn.commit()
         return result.fetchall()
+
+    def fetchCondition(self, columnName, condition):
+        self.cursor.execute("SELECT {} FROM UserDetails WHERE Enrollno={}".format(columnName, condition))
+        self.conn.commit()
+        return self.cursor.fetchall()
 
     # def remove(self, name):
     #     """
@@ -111,6 +118,8 @@ class SqliteServices:
     #     self.conn.commit()
     def complete(self):
         self.cursor.execute("DROP TABLE UserDetails")
+        self.cursor.close()
 
     def __del__(self):
+        self.cursor.close()
         self.conn.close()

@@ -3,10 +3,11 @@
 # GitHub    : (https://github.com/Maulikatgit)
 # Twitter    : (https://twitter.com/Mr_younglord)
 # Version : 1.0.0
+
 import customtkinter as ctk
 from PIL.ImageTk import PhotoImage
 import configure
-from Backend.sqlite_services import SqliteServices
+from Backend.signup_sqlite_services import SignupSqliteServices
 
 
 class Take(ctk.CTkFrame):
@@ -14,7 +15,7 @@ class Take(ctk.CTkFrame):
         ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.very_dark_gray)
         self.__parent = kwargs['parent']
         self.__controller = kwargs['controller']
-        self.sql = SqliteServices()
+        self.sql = SignupSqliteServices()
         self.__takeGUI()
 
     def __takeGUI(self):

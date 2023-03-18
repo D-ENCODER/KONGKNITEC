@@ -8,7 +8,7 @@ import requests
 from numpy.core.defchararray import strip
 from phonenumbers import parse, carrier, NumberParseException
 import configure
-from Backend.sqlite_services import SqliteServices
+from Backend.signup_sqlite_services import SignupSqliteServices
 from Helper_Functions.customErrorBox import CustomBox
 from Backend.smtp_services import sendVerifyOtp
 from Screens.Refactor.customWidgets import CustomWidgets
@@ -47,7 +47,7 @@ class PersonalInfo(UserDetailsStack):
         self._parent_controller = kwargs['parent_controller']
         self.first_error_label = ctk.CTkLabel()
         self.last_error_label = ctk.CTkLabel()
-        self.sql = SqliteServices()
+        self.sql = SignupSqliteServices()
         self._personalInfoGUI()
 
     def validate_date(self):
@@ -202,7 +202,7 @@ class ContactInfo(PersonalInfo):
         self._controller = kwargs['controller']
         self._parent_controller = kwargs['parent_controller']
         self.phone_error_label = ctk.CTkLabel()
-        self.sql = SqliteServices()
+        self.sql = SignupSqliteServices()
         self._contactInfoGUI()
 
     def _validate_fields(self, index):

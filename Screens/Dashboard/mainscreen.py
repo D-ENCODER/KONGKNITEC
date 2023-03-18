@@ -5,7 +5,7 @@
 # Version : 1.0.0
 import customtkinter as ctk
 import configure
-from Backend.sqlite_services import SqliteServices
+from Backend.signup_sqlite_services import SignupSqliteServices
 from Helper_Functions.loadImage import loadImage
 from Screens.Dashboard import attendance, dataset, dashboard, profile, take
 from Screens.Refactor.customWidgets import CustomWidgets
@@ -19,7 +19,7 @@ class MainScreen(ctk.CTkFrame):
         self.__parent = kwargs['parent']
         self.__parent.grid_configure(pady=0, padx=0)
         self.__controller = kwargs['controller']
-        self.sql = SqliteServices()
+        self.sql = SignupSqliteServices()
         self.__mainScreenGUI()
 
     def __switcher(self, index):

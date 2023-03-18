@@ -7,7 +7,7 @@ import customtkinter as ctk
 from numpy.core.defchararray import strip
 from Screens.Validator.validator import validate_email
 import configure
-from Backend.sqlite_services import SqliteServices
+from Backend.signup_sqlite_services import SignupSqliteServices
 from Screens.Refactor.customWidgets import CustomWidgets
 
 
@@ -16,7 +16,7 @@ class Profile(ctk.CTkFrame):
         ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.very_dark_gray)
         self.__parent = kwargs['parent']
         self.__controller = kwargs['controller']
-        self.sql = SqliteServices()
+        self.sql = SignupSqliteServices()
         self.__profileGUI()
 
     def __profileGUI(self):
