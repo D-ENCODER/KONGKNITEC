@@ -5,7 +5,6 @@
 # Version : 1.0.0
 import threading
 from time import sleep
-
 import imageio
 from PIL import Image, ImageTk
 
