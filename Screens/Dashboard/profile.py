@@ -5,10 +5,10 @@
 # Version : 1.0.0
 import customtkinter as ctk
 from numpy.core.defchararray import strip
-from Screens.Validator.validator import validate_email
 import configure
 from Backend.SqliteServices.signup_sqlite_services import SignupSqliteServices
 from Screens.Refactor.customWidgets import CustomWidgets
+from Screens.Validator.validatorLogic import Validator
 
 
 class Profile(ctk.CTkFrame):
@@ -16,33 +16,34 @@ class Profile(ctk.CTkFrame):
         ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.very_dark_gray)
         self.__parent = kwargs['parent']
         self.__controller = kwargs['controller']
+        self.email_error_label = CustomWidgets.customErrorLabel(parent=self, error_text='')
         self.sql = SignupSqliteServices()
         self.__profileGUI()
 
     def __profileGUI(self):
         CustomWidgets.customHeaderLabel(self, 'EDIT PROFILE').grid(row=0, column=0)
         ctk.CTkLabel(master=self, text='', height=15).grid(row=1, column=0, columnspan=2)
-        ctk.CTkLabel(master=self, text='First Name', text_font=(configure.font, 12, 'bold'),
-                     width=30).grid(row=2, column=1, sticky='e')
         self.firstname_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
+        ctk.CTkLabel(master=self.firstname_frame, text='First Name', text_font=(configure.font, 12, 'bold'),
+                     width=30).grid(row=1, column=0, sticky='e')
         self.firstname_entry = CustomWidgets.customEntry(parent=self.firstname_frame, placeholder='Maulik')
-        self.firstname_entry.grid(row=2, column=2)
+        self.firstname_entry.grid(row=1, column=1, padx=50)
         self.firstname_entry.bind('<FocusOut>', lambda event: self._validate_fields(0))
-        self.firstname_frame.grid(row=2, column=2, pady=10, padx=25)
-        ctk.CTkLabel(master=self, text='Last Name', text_font=(configure.font, 12, 'bold'),
-                     width=30).grid(row=3, column=1, sticky='e')
+        self.firstname_frame.grid(row=2, column=2, pady=10)
         self.lastname_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
+        ctk.CTkLabel(master=self.lastname_frame, text='Last Name', text_font=(configure.font, 12, 'bold'),
+                     width=30).grid(row=1, column=0, sticky='e')
         self.lastname_entry = CustomWidgets.customEntry(parent=self.lastname_frame, placeholder='Parmar')
-        self.lastname_entry.grid(row=3, column=2)
+        self.lastname_entry.grid(row=1, column=1, padx=50)
         self.lastname_entry.bind('<FocusOut>', lambda event: self._validate_fields(1))
-        self.lastname_frame.grid(row=3, column=2, pady=10, padx= 25)
-        ctk.CTkLabel(master=self, text='E-mail', text_font=(configure.font, 12, 'bold'),
-                     width=30).grid(row=4, column=1, sticky='e')
+        self.lastname_frame.grid(row=3, column=2, pady=10)
         self.email_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
+        ctk.CTkLabel(master=self.email_frame, text='E-mail', text_font=(configure.font, 12, 'bold'),
+                     width=30).grid(row=1, column=0, sticky='e')
         self.email_entry = CustomWidgets.customEntry(parent=self.email_frame, placeholder='mm.2004.parmar@gmail.com')
-        self.email_entry.grid(row=4, column=2)
-        self.email_frame.grid(row=4, column=2, pady=10, padx=25)
-        self.email_entry.bind('<FocusOut>', lambda event: validate_email(parent=self))
+        self.email_entry.grid(row=1, column=1, padx=50)
+        self.email_frame.grid(row=4, column=2, pady=10)
+        self.email_entry.bind('<FocusOut>', lambda event: self.validateEmail(parent=self))
         self.phone_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
         ctk.CTkLabel(master=self, text='Contact', text_font=(configure.font, 12, 'bold'),
                      width=30).grid(row=5, column=1, sticky='e')
@@ -74,13 +75,39 @@ class Profile(ctk.CTkFrame):
                                   hover_color=configure.light_cyan, width=100, height=35, corner_radius=10)
         self.save.grid(row=8, column=2)
 
+    def validateEmail(self):
+        """
+        This is the function which is used to validate the email address when the focus pops out of the entry
+        :return: None
+        """
+        if Validator.validate_email(self.email_entry.get())[0]:
+            # If the email is valid then remove the error label
+            self.email_error_label.destroy()
+            # reset the color of the entry to default
+            self.email_entry.configure(border_color=configure.dark_gray)
+            return True
+        else:
+            # checks if the error label is already present or not
+            if self.email_error_label.winfo_exists():
+                # If the error label is already present then destroy it
+                self.email_error_label.destroy()
+            # Create the custom error label
+            self.email_error_label = CustomWidgets.customErrorLabel(parent=self.email_frame,
+                                                                    error_text=Validator.validate_email(
+                                                                        self.email_entry.get())[1])
+            # Place the error label in the grid layout
+            self.email_error_label.grid(row=1, column=0, columnspan=2)
+            # Change the color of the entry to dominant color
+            self.email_entry.configure(border_color=configure.light_cyan)
+            return False
+
     def _validate_fields(self, index):
         match index:
             case 0:
                 if strip(self.firstname_entry.get()) == '':
                     self.first_error_label = CustomWidgets.customErrorLabel(parent=self.firstname_frame,
                                                                             error_text='First name is required')
-                    self.first_error_label.grid(row=1, column=0, columnspan=2)
+                    self.first_error_label.grid(row=2, column=1)
                     self.firstname_entry.configure(border_color=configure.light_cyan)
                     return False
                 else:
@@ -91,7 +118,7 @@ class Profile(ctk.CTkFrame):
                 if strip(self.lastname_entry.get()) == '':
                     self.last_error_label = CustomWidgets.customErrorLabel(parent=self.lastname_frame,
                                                                            error_text='Last name is required')
-                    self.last_error_label.grid(row=1, column=0, columnspan=2)
+                    self.last_error_label.grid(row=2, column=1)
                     self.lastname_entry.configure(border_color=configure.light_cyan)
                     return False
                 else:

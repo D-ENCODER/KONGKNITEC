@@ -37,13 +37,12 @@ class Attendance(ctk.CTkFrame):
 
     def add(self):
         obj = ctk.CTkToplevel()
-        obj.geometry("400x200+{}+{}".format((configure.screen_width / 2) - 200, (configure.screen_height / 2) - 150))
-        # obj.resizable(False, False)
+        obj.geometry("350x150")
         obj.configure(bg=configure.very_dark_gray)
         self._icon = PhotoImage(file="Assets/logo.png")
         obj.iconphoto(False, self._icon)
-        obj.title("Kongknitec: Manual Attendance")
-        enrollment = CustomWidgets.customEntry(parent=obj, placeholder='Enter Enrollment')
+        obj.title("Add Attendance")
+        enrollment = CustomWidgets.customEntry(parent=obj, placeholder='Enrollment No')
         enrollment.grid(row=0, column=0, pady=50, padx=55)
         add = ctk.CTkButton(master=obj, text='Add', text_font=(configure.font, 13, "bold"),
                             text_color=configure.very_dark_gray, fg_color=configure.vivid_cyan,
