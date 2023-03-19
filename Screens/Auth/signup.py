@@ -6,7 +6,7 @@
 import customtkinter as ctk
 import configure
 from Backend.encryptor import encrypt
-from Backend.signup_sqlite_services import SignupSqliteServices
+from Backend.SqliteServices.signup_sqlite_services import SignupSqliteServices
 from Helper_Functions.customErrorBox import CustomBox
 from Helper_Functions.loadImage import loadImage
 from Screens.Refactor.customWidgets import CustomWidgets

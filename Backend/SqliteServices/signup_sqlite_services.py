@@ -33,7 +33,6 @@ class SignupSqliteServices:
         self.cursor.execute("INSERT INTO UserDetails(Email, Password, Fname, Lname, Gender, Dob, Phoneno, Enrollno) "
                             "VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (email, password, None, None, None, None, None, None))
         self.conn.commit()
-        self.cursor.close()
 
     def insertPersonalDetails(self, fname, lname, gender, dob, email):
         """
@@ -48,7 +47,6 @@ class SignupSqliteServices:
         """
         self.cursor.execute("UPDATE UserDetails SET Fname=?, Lname=?, Gender=?, Dob=? WHERE Email=?", (fname, lname, gender, dob, email))
         self.conn.commit()
-        self.cursor.close()
 
     def insertContactDetails(self, phoneno, enrollno, email):
         """
@@ -61,7 +59,6 @@ class SignupSqliteServices:
         """
         self.cursor.execute("UPDATE UserDetails SET Phoneno=?, Enrollno=? WHERE Email=?", (phoneno, enrollno, email))
         self.conn.commit()
-        self.cursor.close()
 
     def fetch(self, columnName):
         """
@@ -79,17 +76,6 @@ class SignupSqliteServices:
         """
         self.cursor.execute("SELECT * FROM UserDetails")
         return self.cursor.fetchall()
-
-    def login(self, enrollmentNo, dateTime):
-        """
-        :param enrollmentNo: Enrollment number of the user that logs in.
-        :param dateTime: Date and Time of the session creation
-        :returns: None
-        """
-        self.cursor.execute("CREATE TABLE IF NOT EXISTS LoginDetails(enrollNo TEXT, dateTime INTEGER)")
-        self.cursor.execute("INSERT INTO LoginDetails(enrollNo, dateTime) VALUES (?, ?)", (enrollmentNo, dateTime))
-        self.conn.commit()
-        self.cursor.close()
 
     def checkLogin(self):
         result = self.cursor.execute('''SELECT count(*) FROM sqlite_master WHERE type="table" AND 
@@ -118,8 +104,6 @@ class SignupSqliteServices:
     #     self.conn.commit()
     def complete(self):
         self.cursor.execute("DROP TABLE UserDetails")
-        self.cursor.close()
 
     def __del__(self):
-        self.cursor.close()
         self.conn.close()

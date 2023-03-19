@@ -22,10 +22,11 @@ def dashboardHeaderGUI(parent, grandparent):
     welcomeText = ctk.CTkLabel(master=headerFrame, text='Welcome ', text_color=configure.white,
                                text_font=configure.welcome_fontstyle, justify='center', width=0)
     welcomeText.grid(row=0, column=3)
-    if not parent.sql.fetch('Fname, Lname'):
-        name = ["Het", "Joshi"]
+    if not parent.loginsql.getLoginDetails():
+        name = ["User", ""]
     else:
-        name = list(parent.sql.fetch('Fname, Lname')[0])
+        login = list(parent.loginsql.getLoginDetails()[0])
+        name = list(parent.signupsql.fetchCondition('Fname, Lname', login[0])[0])
     userText = ctk.CTkLabel(master=headerFrame, width=0, text=" ".join([name[0], name[1]]),
                             text_color=configure.light_cyan, text_font=configure.welcome_fontstyle, justify='center')
     userText.grid(row=0, column=4)

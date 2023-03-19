@@ -8,7 +8,7 @@ import requests
 from numpy.core.defchararray import strip
 from phonenumbers import parse, carrier, NumberParseException
 import configure
-from Backend.signup_sqlite_services import SignupSqliteServices
+from Backend.SqliteServices.signup_sqlite_services import SignupSqliteServices
 from Helper_Functions.customErrorBox import CustomBox
 from Backend.smtp_services import sendVerifyOtp
 from Screens.Refactor.customWidgets import CustomWidgets

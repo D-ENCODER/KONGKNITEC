@@ -6,7 +6,7 @@
 import customtkinter as ctk
 from PIL.ImageTk import PhotoImage
 import configure
-from Backend.signup_sqlite_services import SignupSqliteServices
+from Backend.SqliteServices.signup_sqlite_services import SignupSqliteServices
 from Screens.Refactor.customWidgets import CustomWidgets
 
 

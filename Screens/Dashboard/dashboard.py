@@ -5,7 +5,7 @@
 # Version : 1.0.0
 import customtkinter as ctk
 import configure
-from Backend.signup_sqlite_services import SignupSqliteServices
+from Backend.SqliteServices.signup_sqlite_services import SignupSqliteServices
 
 
 class Dashboard(ctk.CTkFrame):

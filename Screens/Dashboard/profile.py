@@ -7,7 +7,7 @@ import customtkinter as ctk
 from numpy.core.defchararray import strip
 from Screens.Validator.validator import validate_email
 import configure
-from Backend.signup_sqlite_services import SignupSqliteServices
+from Backend.SqliteServices.signup_sqlite_services import SignupSqliteServices
 from Screens.Refactor.customWidgets import CustomWidgets
 
 

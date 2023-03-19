@@ -5,9 +5,8 @@
 # Version : 1.0.0
 
 import customtkinter as ctk
-from PIL.ImageTk import PhotoImage
 import configure
-from Backend.signup_sqlite_services import SignupSqliteServices
+from Backend.SqliteServices.signup_sqlite_services import SignupSqliteServices
 
 
 class Take(ctk.CTkFrame):

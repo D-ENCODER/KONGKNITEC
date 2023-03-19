@@ -7,8 +7,8 @@ import datetime
 import customtkinter as ctk
 import requests
 import configure
+from Backend.SqliteServices.login_sqlite_services import LoginSqliteServices
 from Backend.encryptor import encrypt
-from Backend.signup_sqlite_services import SignupSqliteServices
 from Helper_Functions.customErrorBox import CustomBox
 from Helper_Functions.loadImage import loadImage
 from Screens.Refactor.customWidgets import CustomWidgets
@@ -39,7 +39,7 @@ class Login(ctk.CTkFrame):
         self.__show_icon = loadImage(self, "Assets/hide.png", 17)
         self.__hide_icon = loadImage(self, "Assets/show.png", 17)
         # Local Database Object
-        self._sql = SignupSqliteServices()
+        self._sql = LoginSqliteServices()
         # Call the login GUI
         self.__loginGUI()
 
@@ -114,7 +114,7 @@ class Login(ctk.CTkFrame):
                         self.obj.errorBox('ERROR', 'No user found with this enrollment number')
                     elif dbpassword == encrypt(self.password_entry.get()):
                         configure.obj.dbLogin(int(self.enrollment_entry.get()))
-                        self._sql.login(self.enrollment_entry.get(), datetime.datetime.now())
+                        self._sql.insertLoginDetails(self.enrollment_entry.get())
                         self.__parent.grid_configure(pady=0, padx=0)
                         self.__controller.showFrame('MainScreen', self)
                     else:

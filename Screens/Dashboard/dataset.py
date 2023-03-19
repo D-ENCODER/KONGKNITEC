@@ -3,12 +3,13 @@
 # GitHub    : (https://github.com/D-ENCODER)
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
+import fnmatch
+import os
 from tkinter import PhotoImage
-
 import customtkinter as ctk
 import configure
-from Backend.dataset_sqlite_services import DatasetSqliteServices
-from Backend.signup_sqlite_services import SignupSqliteServices
+from Backend.SqliteServices.dataset_sqlite_services import DatasetSqliteServices
+from Backend.SqliteServices.signup_sqlite_services import SignupSqliteServices
 from Screens.Dashboard.FaceModules.face_detection import FaceDetection
 from Screens.Refactor.customWidgets import CustomWidgets
 
@@ -18,7 +19,7 @@ class Dataset(ctk.CTkFrame):
         ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.very_dark_gray)
         self.__parent = kwargs['parent']
         self.__controller = kwargs['controller']
-        self.sql = DatasetSqliteServices()
+        self.datasetsql = DatasetSqliteServices()
         self.signupsql = SignupSqliteServices()
         self.label = ctk.CTkLabel(master=self, text='', text_font=(configure.font, 20))
         self.__datasetGUI()
@@ -35,11 +36,17 @@ class Dataset(ctk.CTkFrame):
         self.__addDataset.grid(row=0, column=1, sticky='e')
         self.__editDataset = ctk.CTkButton(master=self.__option, text='Edit', text_font=(configure.font, 13, "bold"),
                                            text_color=configure.very_dark_gray,
-                                           fg_color=configure.vivid_cyan,
+                                           fg_color=configure.vivid_cyan, command=lambda: self.edit(),
                                            hover_color=configure.light_cyan, width=100, height=35, corner_radius=10)
         self.__editDataset.grid(row=0, column=2, padx=25)
         self.__option.grid(row=1, column=0)
-        if not self.sql.getDatasetDetails():
+        fileOfDirectory = os.listdir('Dataset')
+        pattern = "*.jpg"
+        names = []
+        for filename in fileOfDirectory:
+            if fnmatch.fnmatch(filename, pattern):
+                names.append(filename)
+        if not names:
             self.__emptyDatasetGUI()
         else:
             self.__tableGUI()
@@ -60,7 +67,7 @@ class Dataset(ctk.CTkFrame):
         def addDataset(enrollment):
             if not enrollment:
                 CustomWidgets.customErrorLabel(parent=frame,
-                                               error_text='Empty Enrollment No',).grid(row=1, column=0)
+                                               error_text='Empty Enrollment No', ).grid(row=1, column=0)
             elif not enrollment.isdigit():
                 CustomWidgets.customErrorLabel(parent=frame,
                                                error_text='Enrollment No must be numeric', ).grid(row=1, column=0)
@@ -68,16 +75,64 @@ class Dataset(ctk.CTkFrame):
                 CustomWidgets.customErrorLabel(parent=frame,
                                                error_text='Enrollment No must be of 12 digits', ).grid(row=1, column=0)
             else:
-                name = list(self.signupsql.fetchCondition('Fname, Lname', enrollment)[0])
-                name = name[0] + '_' + name[1]
-                obj = FaceDetection(master=self, name=name)
-                window.destroy()
+                if os.path.isfile('Dataset/' + enrollment + '.jpg'):
+                    CustomWidgets.customErrorLabel(parent=frame,
+                                                   error_text='Dataset already exists', ).grid(row=1, column=0)
+                else:
+                    obj = FaceDetection(master=self, enrollment=enrollment)
+                    window.destroy()
 
         button = CustomWidgets.customButton(parent=frame, text='Add Dataset', command=lambda: addDataset(entry.get()))
         button.grid(row=2, column=0)
 
+    def edit(self):
+        window = ctk.CTkToplevel()
+        window.geometry('350x150')
+        window.title('Add Dataset')
+        window.configure(bg=configure.very_dark_gray)
+        icon = PhotoImage(file="Assets/logo.png")
+        window.iconphoto(False, icon)
+        window.focus()
+        frame = ctk.CTkFrame(master=window, fg_color=configure.very_dark_gray)
+        frame.grid(row=0, column=0)
+        enrolls = list(self.datasetsql.getId())
+        temp = []
+        for i in enrolls:
+            temp.append(str(i[0]))
+        enrolls = temp
+        id = ctk.CTkComboBox(master=frame, width=250, corner_radius=10, values=enrolls)
+        id.grid(row=0, column=0, pady=20)
+
+        def editDataset():
+            enroll = list(self.datasetsql.getEnrollment(id.get())[0])
+            enroll = enroll[0]
+            window.destroy()
+            obj = FaceDetection(master=self, enrollment=enroll)
+
+        button = CustomWidgets.customButton(parent=frame, text='Edit', command=lambda: editDataset())
+        button.grid(row=2, column=0)
+
     def __tableGUI(self):
-        pass
+        fileOfDirectory = os.listdir('Dataset')
+        pattern = "*.jpg"
+        enroll = []
+        for filename in fileOfDirectory:
+            if fnmatch.fnmatch(filename, pattern):
+                enroll.append(filename.split('.')[0])
+        self.datasetsql.massInsert(enroll)
+        data = list(self.datasetsql.getDatasetDetails())
+        ctk.CTkLabel(master=self, text='').grid(row=2, column=0)
+        self.frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
+        self.frame.grid(row=3, column=0)
+        header = ['SR No.', 'Enrollment No.', 'Name', 'E-mail', 'Date']
+        for i in range(len(header)):
+            self.label = ctk.CTkLabel(master=self.frame, text=header[i], text_font=(configure.font, 18, "bold"),
+                                      text_color=configure.vivid_cyan)
+            self.label.grid(row=0, column=i, sticky='nsew')
+        for details in range(len(data)):
+            for fields in range(len(data[details])):
+                self.label = ctk.CTkLabel(master=self.frame, text=data[details][fields], text_font=(configure.font, 15))
+                self.label.grid(row=details + 1, column=fields, sticky='nsew', padx=10, pady=10)
 
     def __emptyDatasetGUI(self):
         frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)

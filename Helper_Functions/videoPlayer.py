@@ -10,7 +10,7 @@ import imageio
 from PIL import Image, ImageTk
 
 import configure
-from Backend.signup_sqlite_services import SignupSqliteServices
+from Backend.SqliteServices.signup_sqlite_services import SignupSqliteServices
 
 
 class VideoPlayer:
