@@ -53,7 +53,7 @@ class Dataset(ctk.CTkFrame):
 
     def add(self):
         window = ctk.CTkToplevel()
-        window.geometry('350x150')
+        window.geometry("400x200+{}+{}".format((configure.screen_width / 2) - 200, (configure.screen_height / 2) - 150))
         window.title('Add Dataset')
         window.configure(bg=configure.very_dark_gray)
         icon = PhotoImage(file="Assets/logo.png")
@@ -62,7 +62,7 @@ class Dataset(ctk.CTkFrame):
         frame = ctk.CTkFrame(master=window, fg_color=configure.very_dark_gray)
         frame.grid(row=0, column=0)
         entry = CustomWidgets.customEntry(parent=frame, placeholder='Enrollment No')
-        entry.grid(row=0, column=0)
+        entry.grid(row=0, column=0, pady=50, padx=55)
 
         def addDataset(enrollment):
             if not enrollment:
@@ -87,7 +87,7 @@ class Dataset(ctk.CTkFrame):
 
     def edit(self):
         window = ctk.CTkToplevel()
-        window.geometry('350x150')
+        window.geometry("400x200+{}+{}".format((configure.screen_width / 2) - 200, (configure.screen_height / 2) - 150))
         window.title('Add Dataset')
         window.configure(bg=configure.very_dark_gray)
         icon = PhotoImage(file="Assets/logo.png")
@@ -101,7 +101,7 @@ class Dataset(ctk.CTkFrame):
             temp.append(str(i[0]))
         enrolls = temp
         id = ctk.CTkComboBox(master=frame, width=250, corner_radius=10, values=enrolls)
-        id.grid(row=0, column=0, pady=20)
+        id.grid(row=0, column=0, pady=50, padx=55)
 
         def editDataset():
             enroll = list(self.datasetsql.getEnrollment(id.get())[0])
@@ -113,10 +113,10 @@ class Dataset(ctk.CTkFrame):
         button.grid(row=2, column=0)
 
     def __tableGUI(self):
-        fileOfDirectory = os.listdir('Dataset')
+        Directoryfile = os.listdir('Dataset')
         pattern = "*.jpg"
         enroll = []
-        for filename in fileOfDirectory:
+        for filename in Directoryfile:
             if fnmatch.fnmatch(filename, pattern):
                 enroll.append(filename.split('.')[0])
         self.datasetsql.massInsert(enroll)
@@ -124,9 +124,9 @@ class Dataset(ctk.CTkFrame):
         ctk.CTkLabel(master=self, text='').grid(row=2, column=0)
         self.frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
         self.frame.grid(row=3, column=0)
-        header = ['SR No.', 'Enrollment No.', 'Name', 'E-mail', 'Date']
-        for i in range(len(header)):
-            self.label = ctk.CTkLabel(master=self.frame, text=header[i], text_font=(configure.font, 18, "bold"),
+        table_header = ['SR No.', 'Enrollment No.', 'Name', 'E-mail', 'Date']
+        for i in range(len(table_header)):
+            self.label = ctk.CTkLabel(master=self.frame, text=table_header[i], text_font=(configure.font, 18, "bold"),
                                       text_color=configure.vivid_cyan)
             self.label.grid(row=0, column=i, sticky='nsew')
         for details in range(len(data)):
