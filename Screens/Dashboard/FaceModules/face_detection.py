@@ -18,6 +18,7 @@ class FaceDetection(ctk.CTkToplevel):
         super().__init__()
         self.title("Face Detection")
         self.geometry("650x550")
+        self.configure(fg_color=configure.very_dark_gray)
         self._icon = PhotoImage(file="Assets/logo.png")
         self.iconphoto(False, self._icon)
         self.protocol("WM_DELETE_WINDOW", self.onClosing)

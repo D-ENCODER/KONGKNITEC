@@ -10,6 +10,7 @@ import customtkinter as ctk
 import configure
 from Backend.SqliteServices.dataset_sqlite_services import DatasetSqliteServices
 from Backend.SqliteServices.signup_sqlite_services import SignupSqliteServices
+from Screens.Dashboard.FaceModules.data_training import TrainDataset
 from Screens.Dashboard.FaceModules.face_detection import FaceDetection
 from Screens.Refactor.customWidgets import CustomWidgets
 
@@ -27,7 +28,7 @@ class Dataset(ctk.CTkFrame):
     def __datasetGUI(self):
         ctk.CTkLabel(master=self, text='', height=15).grid(row=0, column=0)
         self.__option = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
-        self.__size = (configure.screen_width - (configure.screen_width / 4) - 250)
+        self.__size = (configure.screen_width - (configure.screen_width / 4) - 375)
         ctk.CTkLabel(master=self.__option, text='', width=self.__size).grid(row=0, column=0)
         self.__addDataset = ctk.CTkButton(master=self.__option, text='Add',
                                           text_font=(configure.font, 13, "bold"), command=lambda: self.add(),
@@ -39,6 +40,11 @@ class Dataset(ctk.CTkFrame):
                                            fg_color=configure.vivid_cyan, command=lambda: self.edit(),
                                            hover_color=configure.light_cyan, width=100, height=35, corner_radius=10)
         self.__editDataset.grid(row=0, column=2, padx=25)
+        self.trainDataset = ctk.CTkButton(master=self.__option, text='Train', text_font=(configure.font, 13, "bold"),
+                                          text_color=configure.very_dark_gray,
+                                          fg_color=configure.vivid_cyan, command=lambda: self.train(),
+                                          hover_color=configure.light_cyan, width=100, height=35, corner_radius=10)
+        self.trainDataset.grid(row=0, column=3)
         self.__option.grid(row=1, column=0)
         fileOfDirectory = os.listdir('Dataset')
         pattern = "*.jpg"
@@ -84,6 +90,9 @@ class Dataset(ctk.CTkFrame):
 
         button = CustomWidgets.customButton(parent=frame, text='Add Dataset', command=lambda: addDataset(entry.get()))
         button.grid(row=2, column=0)
+
+    def train(self):
+        obj = TrainDataset(self.trainDataset)
 
     def edit(self):
         window = ctk.CTkToplevel()
@@ -138,6 +147,6 @@ class Dataset(ctk.CTkFrame):
         frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
         frame.grid(row=2, column=0, sticky='nsew', padx=(((configure.screen_width / 4) * 3) - 140) / 2,
                    pady=(configure.screen_height - 191) / 2)
-        label = ctk.CTkLabel(frame, text='Dataset is empty!!', text_font=configure.welcome_fontstyle,
+        label = ctk.CTkLabel(frame, text='No Data available!!', text_font=configure.welcome_fontstyle,
                              fg_color=configure.very_dark_gray)
         label.grid(row=1, column=1)
