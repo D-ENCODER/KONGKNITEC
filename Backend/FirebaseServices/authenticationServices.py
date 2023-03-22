@@ -4,12 +4,8 @@
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
 
-from firebase_admin import firestore, credentials
-import firebase_admin
+from firebase_admin import firestore
 from datetime import datetime
-import configure
-from Backend.encryptor import encrypt
-from Helper_Functions.customErrorBox import CustomBox
 
 
 class AuthenticationServices:
@@ -18,32 +14,29 @@ class AuthenticationServices:
     """
 
     def __init__(self):
-        # Using json file to initialize an app instance in the constructor
-        cred = credentials.Certificate("Backend/FirebaseServices/serviceAccountKey.json")
-        firebase_admin.initialize_app(cred)
+        """
+        constructor of the class to initialize the database.
+        """
+        self.db = firestore.client()
 
-    @staticmethod
-    def check_email_exists(collection, email):
+    def check_email_exists(self, collection, email):
         """
         checks if the user already exists in the database.
         returns False if not found and True otherwise.
         """
-        db = firestore.client()
         # get all the documents in the collection
-        doc = db.collection(collection).where('email', '==', email).get()
+        doc = self.db.collection(collection).where('Email', '==', email).get()
         if len(doc) > 0:
             return True
         return False
 
-    @staticmethod
-    def check_enrollment_exists(collection, enrollment):
+    def check_enrollment_exists(self, collection, enrollment):
         """
         checks if the user already exists in the database.
         returns False if not found and True otherwise.
         """
-        db = firestore.client()
         # get all the documents in the collection
-        doc = db.collection(collection).where('enrollment', '==', enrollment).get()
+        doc = self.db.collection(collection).where('Enrollment', '==', enrollment).get()
         if len(doc) > 0:
             return True
         return False
@@ -53,30 +46,27 @@ class AuthenticationServices:
         adds the user to the database if the user does not already exist.
         takes email password and key as arguments.
         """
-        db = firestore.client()
         # check if the user already exists
         # add the user to the database
-        db.collection(db_collection).document().set(credential)
+        self.db.collection(db_collection).document().set(credential)
 
     def getAdminCode(self):
         """
         returns the admin code from the database.
         """
-        db = firestore.client()
         # get the admin code from the database
-        doc = db.collection('AdminCode').document('ADMINCODE').get()
+        doc = self.db.collection('AdminCode').document('ADMINCODE').get()
         return doc.to_dict()['code']
 
-    def getLoginDetails(self, enroll, bool):
+    def getLoginDetails(self, enroll, boolean):
         """
         returns the login details from the database.
         """
-        db = firestore.client()
         # get the login details from the database
-        if bool:
-            query = db.collection('Admin_details').where('enrollment', '==', int(enroll))
+        if boolean:
+            query = self.db.collection('Admin_details').where('Enrollment', '==', int(enroll))
         else:
-            query = db.collection('User_details').where('enrollment', '==', int(enroll))
+            query = self.db.collection('User_details').where('Enrollment', '==', int(enroll))
 
         for doc in query.stream():
             return doc.to_dict()['password']
@@ -86,25 +76,19 @@ class AuthenticationServices:
         """
         updates the last login date of the user.
         """
-        db = firestore.client()
         # get the login details from the database
-        db.collection('Login').document().set({'enrollment': enrollment, 'date': datetime.now()})
+        self.db.collection('Login').document().set({'Enrollment': enrollment, 'DateTime': datetime.now()})
 
     def dbUpdatePassword(self, email, password, bool):
         """
         updates the password of the user.
         """
-        db = firestore.client()
         # get the login details from the database
         if bool:
-            query = db.collection('Admin_details').where('email', '==', email).stream()
+            query = self.db.collection('Admin_details').where('Email', '==', email).stream()
             for doc in query:
-                doc_id = doc.id
-            print('helllo world')
-            db.collection('Admin_details').document(doc_id).update({'password': password})
+                self.db.collection('Admin_details').document(doc.id).update({'Password': password})
         else:
-            query = db.collection('User_details').where('email', '==', email).stream()
+            query = self.db.collection('User_details').where('Email', '==', email).stream()
             for doc in query:
-                doc_id = doc.id
-            print('helllo world')
-            db.collection('User_details').document(doc_id).update({'password': password})
+                self.db.collection('User_details').document(doc.id).update({'Password': password})

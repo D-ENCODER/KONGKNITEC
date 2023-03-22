@@ -162,18 +162,18 @@ class PersonalInfo(UserDetailsStack):
 
         def _verify():
             if self._validate_fields(0) and self._validate_fields(1) and self.validate_date():
-                Signup.credentials['first name'] = self.firstname_entry.get()
-                Signup.credentials['last name'] = self.lastname_entry.get()
-                Signup.credentials['date of birth'] = self.day.get() + '-' + self.month.get() + '-' + self.year.get()
+                Signup.credentials['First Name'] = self.firstname_entry.get()
+                Signup.credentials['Last Name'] = self.lastname_entry.get()
+                Signup.credentials['Date Of Birth'] = self.day.get() + '-' + self.month.get() + '-' + self.year.get()
                 if self.gender_val.get() == 1:
-                    Signup.credentials['gender'] = 'Male'
+                    Signup.credentials['Gender'] = 'Male'
                 elif self.gender_val.get() == 2:
-                    Signup.credentials['gender'] = 'Female'
+                    Signup.credentials['Gender'] = 'Female'
                 else:
-                    Signup.credentials['gender'] = 'None'
+                    Signup.credentials['Gender'] = 'None'
                 self.sql.insertPersonalDetails(self.firstname_entry.get(), self.lastname_entry.get(),
-                                               Signup.credentials['date of birth'], Signup.credentials['gender'],
-                                               Signup.credentials['email'])
+                                               Signup.credentials['Date Of Birth'], Signup.credentials['Gender'],
+                                               Signup.credentials['Email'])
                 self._controller.showFrame('ContactInfo')
             else:
                 self._validate_fields(0)
@@ -299,9 +299,9 @@ class ContactInfo(PersonalInfo):
                 try:
                     requests.get('https://google.com')
                     try:
-                        Signup.credentials['otp'] = sendVerifyOtp(Signup.credentials['email'])
-                        Signup.credentials['phone number'] = self.phone_entry.get()
-                        Signup.credentials['enrollment'] = self.enroll_entry.get()
+                        Signup.credentials['otp'] = sendVerifyOtp(Signup.credentials['Email'])
+                        Signup.credentials['Phone Number'] = self.phone_entry.get()
+                        Signup.credentials['Enrollment'] = self.enroll_entry.get()
                         self.sql.insertContactDetails(self.phone_entry.get(), self.enroll_entry.get(),
                                                       Signup.credentials['email'])
                         self._parent_controller.showFrame('Verify', self)

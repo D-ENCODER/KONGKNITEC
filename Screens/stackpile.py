@@ -5,6 +5,9 @@
 # Version : 1.0.0
 from tkinter import PhotoImage
 import customtkinter as ctk
+import firebase_admin
+from firebase_admin import credentials
+
 import configure
 from Screens.Auth import login, signup, forgotPassword, verify, resetPassword, personalInfo
 from Screens import splashScreen, noInternet
@@ -33,6 +36,8 @@ class StackPile(ctk.CTk):
         # ctk.deactivate_automatic_dpi_awareness()
         # to call the function when the close button is pressed
         self.protocol("WM_DELETE_WINDOW", self.onClosing)
+        self.cred = credentials.Certificate("Backend/FirebaseServices/serviceAccountKey.json")
+        firebase_admin.initialize_app(self.cred)
         # to set the background color of the application
         self.configure(bg=configure.very_dark_gray)
         # to save the size of the current screen in global variable to use it later

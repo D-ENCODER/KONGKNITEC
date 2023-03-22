@@ -112,7 +112,7 @@ class Attendance(ctk.CTkFrame):
                         CustomWidgets.customErrorLabel(parent=frame,
                                                        error_text='Attendance already added', ).grid(row=1, column=0)
                     else:
-                        self.attendanceSql.insertAttendance(self.date, enrollment)
+                        self.attendanceSql.insertAttendance(self.date, 'M' + enrollment)
                         window.destroy()
 
         button = CustomWidgets.customButton(parent=frame, text='Add', command=lambda: addDataset(entry.get()))

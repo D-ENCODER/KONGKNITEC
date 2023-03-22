@@ -6,6 +6,7 @@
 import customtkinter as ctk
 import requests
 import configure
+from Backend.FirebaseServices.authenticationServices import AuthenticationServices
 from Backend.encryptor import encrypt
 from Backend.smtp_services import sendPasswordChanged
 from Helper_Functions.loadImage import loadImage
@@ -23,6 +24,7 @@ class ResetPassword(ForgotPassword):
         self._show_icon = loadImage(self, "Assets/hide.png", 17)
         self._hide_icon = loadImage(self, "Assets/show.png", 17)
         self.confirm_password_error_label = ctk.CTkLabel()
+        self.obj = AuthenticationServices()
         self._resetPasswordGUI()
 
     def _resetPasswordGUI(self):
@@ -110,13 +112,13 @@ class ResetPassword(ForgotPassword):
                 password = encrypt(self.password_entry.get())
                 try:
                     requests.get('https://google.com')
-                    if configure.obj.check_email_exists('Admin_details', ForgotPassword.credentials['email']):
-                        configure.obj.dbUpdatePassword(ForgotPassword.credentials['email'], password, True)
-                        sendPasswordChanged(ForgotPassword.credentials['email'])
+                    if self.obj.check_email_exists('Admin_details', ForgotPassword.credentials['Email']):
+                        self.obj.dbUpdatePassword(ForgotPassword.credentials['Email'], password, True)
+                        sendPasswordChanged(ForgotPassword.credentials['Email'])
                         self._controller.showFrame('Login', self)
-                    elif configure.obj.check_email_exists('User_details', ForgotPassword.credentials['email']):
-                        configure.obj.dbUpdatePassword(ForgotPassword.credentials['email'], password, False)
-                        sendPasswordChanged(ForgotPassword.credentials['email'])
+                    elif self.obj.check_email_exists('User_details', ForgotPassword.credentials['Email']):
+                        self.obj.dbUpdatePassword(ForgotPassword.credentials['Email'], password, False)
+                        sendPasswordChanged(ForgotPassword.credentials['Email'])
                         self._controller.showFrame('Login')
                 except requests.exceptions.ConnectionError:
                     self._controller.showFrame('NoInternet', self)

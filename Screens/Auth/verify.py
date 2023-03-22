@@ -6,6 +6,7 @@
 import customtkinter as ctk
 import requests
 import configure
+from Backend.FirebaseServices.authenticationServices import AuthenticationServices
 from Helper_Functions.customErrorBox import CustomBox
 from Backend.smtp_services import sendVerifyOtp, sendAdminId, sendWelcome, sendResetOtp
 from Screens.Refactor.customWidgets import CustomWidgets
@@ -20,6 +21,7 @@ class Verify(ForgotPassword, ContactInfo):
     def __init__(self, **kwargs):
         ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.very_dark_gray)
         self._controller = kwargs['controller']
+        self.obj = AuthenticationServices()
         self._verifyGUI()
 
     def _switcher(self, index, event=None):
@@ -132,16 +134,16 @@ class Verify(ForgotPassword, ContactInfo):
                         requests.get('https://google.com')
                         try:
                             Verify.credentials.pop('otp')
-                            if len(Verify.credentials['enrollment']) == 6:
-                                Verify.credentials['enrollment'] = sendAdminId(Verify.credentials['email'])
-                                sendWelcome(Verify.credentials['email'], Verify.credentials['first name'] +
-                                            ' ' + Verify.credentials['last name'], True)
-                                configure.obj.dbSignUp(Verify.credentials, 'Admin_details')
+                            if len(Verify.credentials['Enrollment']) == 6:
+                                Verify.credentials['Enrollment'] = sendAdminId(Verify.credentials['Email'])
+                                sendWelcome(Verify.credentials['Email'], Verify.credentials['First Name'] +
+                                            ' ' + Verify.credentials['Last Name'], True)
+                                self.obj.dbSignUp(Verify.credentials, 'Admin_details')
                             else:
-                                Verify.credentials['enrollment'] = int(Verify.credentials['enrollment'])
-                                sendWelcome(Verify.credentials['email'], Verify.credentials['first name'] +
-                                            ' ' + Verify.credentials['last name'], False)
-                                configure.obj.dbSignUp(Verify.credentials, 'User_details')
+                                Verify.credentials['Enrollment'] = int(Verify.credentials['Enrollment'])
+                                sendWelcome(Verify.credentials['Email'], Verify.credentials['First Name'] +
+                                            ' ' + Verify.credentials['Last Name'], False)
+                                self.obj.dbSignUp(Verify.credentials, 'User_details')
                             self._controller.showFrame('Login', self)
                         except Exception as e:
                             obj = CustomBox()
@@ -174,9 +176,9 @@ class Verify(ForgotPassword, ContactInfo):
                     requests.get('https://google.com')
                     try:
                         if self._controller.getPrevious() == 'ForgotPassword':
-                            ForgotPassword.credentials['otp'] = sendResetOtp(Verify.credentials['email'])
+                            ForgotPassword.credentials['otp'] = sendResetOtp(Verify.credentials['Email'])
                         else:
-                            ContactInfo.credentials['otp'] = sendVerifyOtp(Verify.credentials['email'])
+                            ContactInfo.credentials['otp'] = sendVerifyOtp(Verify.credentials['Email'])
                     except Exception as e:
                         obj = CustomBox()
                         obj.errorBox('Error', 'Something went wrong. Please try again later' + e.args[0])

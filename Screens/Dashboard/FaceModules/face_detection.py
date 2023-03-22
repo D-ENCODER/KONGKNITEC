@@ -9,6 +9,7 @@ import cv2
 import dlib
 from PIL import Image, ImageTk
 import configure
+from Backend.FirebaseServices.datasetServices import DatasetServices
 from Backend.SqliteServices.dataset_sqlite_services import DatasetSqliteServices
 from Backend.SqliteServices.signup_sqlite_services import SignupSqliteServices
 
@@ -22,6 +23,7 @@ class FaceDetection(ctk.CTkToplevel):
         self._icon = PhotoImage(file="Assets/logo.png")
         self.iconphoto(False, self._icon)
         self.protocol("WM_DELETE_WINDOW", self.onClosing)
+        self.__firebaseDataset = DatasetServices()
         self.__parent = kwargs["master"]
         self.__signupsql = SignupSqliteServices()
         self.__datasetsql = DatasetSqliteServices()
@@ -65,7 +67,13 @@ class FaceDetection(ctk.CTkToplevel):
                     self.__take_photo.configure(state="normal")
 
                     def save():
-                        cv2.imwrite("Dataset/{}.jpg".format(self.__enrollment), frame)
+                        try:
+                            cv2.imwrite("Dataset/{}.jpg".format(self.__enrollment), frame)
+                            self.__firebaseDataset.addDataset(self.__enrollment, 'Dataset/{}.jpg'.format(self.__enrollment))
+                        except Exception as e:
+                            obj = open("KONGKNITEC.log", "a")
+                            obj.write(str(e))
+                            obj.close()
                         self.onClosing()
 
                     self.__take_photo.configure(command=lambda: save())
