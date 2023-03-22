@@ -38,8 +38,8 @@ class Login(ctk.CTkFrame):
         # Enlarging the scope og the controller variable
         self.__controller = kwargs['controller']
         # Load the show password icon and hide password icon
-        self.__show_icon = loadImage(self, "Assets/hide.png", 17)
-        self.__hide_icon = loadImage(self, "Assets/show.png", 17)
+        self.__show_icon = ctk.CTkImage(Image.open("Assets/hide.png"), size=(17, 17))
+        self.__hide_icon = ctk.CTkImage(Image.open("Assets/show.png"), size=(17, 17))
         # Local Database Object
         self._sql = LoginSqliteServices()
         # Call the login GUI
@@ -55,7 +55,7 @@ class Login(ctk.CTkFrame):
         # Call the header GUI
         loginHeaderGUI(self.frame)
         # Create the header label
-        CustomWidgets.customHeaderLabel(self, 'LOGIN').grid(row=3, column=0, sticky='w')
+        CustomWidgets.customHeaderLabel(self.frame, 'LOGIN').grid(row=3, column=0, sticky='w')
         # Creating a frame for email and error box label
         self.enrollment_frame = ctk.CTkFrame(master=self.frame, fg_color=configure.very_dark_gray)
         # Create the email entry
@@ -134,11 +134,11 @@ class Login(ctk.CTkFrame):
                     self.__controller.showFrame('NoInternet', self)
             else:
                 # if email is not valid then show the error message
-                if not validate_password(parent=self):
+                if not validate_password(parent=self.frame):
                     # Invoke the error message
-                    validate_password(parent=self)
+                    validate_password(parent=self.frame)
                 # if password is not valid then show the error message
-                if not validate_enrollment(parent=self):
+                if not validate_enrollment(parent=self.frame):
                     # Invoke the error message
                     validate_enrollment(parent=self.frame)
 

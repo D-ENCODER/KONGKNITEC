@@ -165,7 +165,7 @@ class Verify(ForgotPassword, ContactInfo):
         self.otp_entry6.bind('<KeyRelease>', lambda event: self._switcher(6, event))
         self.otp_entry6.bind('<Return>', verify)
         self.otp_frame.grid(row=4, column=0, columnspan=2, pady=10)
-        self.otp_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
+        self.otp_frame = ctk.CTkFrame(master=self.frame, fg_color=configure.very_dark_gray)
 
         def countdown(time_sec):
             minutes, seconds = divmod(time_sec, 60)

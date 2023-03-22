@@ -43,7 +43,7 @@ class ResetPassword(ForgotPassword):
         # Placing the password frame into the grid layout
         self.password_frame.grid(row=5, column=0, columnspan=2, pady=10)
         # Creating a frame for confirm password and error box label
-        self.confirm_password_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
+        self.confirm_password_frame = ctk.CTkFrame(master=self.frame, fg_color=configure.very_dark_gray)
         # Calling the show password button
         self.confirm_password_entry = CustomWidgets.customEntry(parent=self.confirm_password_frame,
                                                                 placeholder='Confirm Password', obfuscated=True)
@@ -143,5 +143,5 @@ class ResetPassword(ForgotPassword):
                                hover=False, command=lambda: show_password(), bg_color=configure.dark_gray)
         # Placing the show password button
         button.grid(row=0, column=1, sticky='e', padx=10)
-        CustomWidgets.customButton(parent=self, text='RESET PASSWORD', command=lambda: _verifyReset()) \
+        CustomWidgets.customButton(parent=self.frame, text='RESET PASSWORD', command=lambda: _verifyReset()) \
             .grid(row=7, column=0, columnspan=2, pady=10)

@@ -39,8 +39,8 @@ class Signup(ctk.CTkFrame):
         self.password_error_label = ctk.CTkLabel(master=self)
         self.confirm_password_error_label = ctk.CTkLabel(master=self)
         # Loading the show and hide icons so that it can be used further
-        self.__show_icon = loadImage(self, "Assets/hide.png", 17)
-        self.__hide_icon = loadImage(self, "Assets/show.png", 17)
+        self.__show_icon = ctk.CTkImage(Image.open("Assets/hide.png"), size=(17, 17))
+        self.__hide_icon = ctk.CTkImage(Image.open("Assets/show.png"), size=(17, 17))
         # Local database object
         self.__sql = SignupSqliteServices()
         # Calling the sign-up GUI function
@@ -56,9 +56,9 @@ class Signup(ctk.CTkFrame):
                         pady=(configure.screen_height - 600) / 2)
         loginHeaderGUI(self.frame)
         # Calling the header label
-        CustomWidgets.customHeaderLabel(self, 'SIGN-UP').grid(row=3, column=0, sticky='w')
+        CustomWidgets.customHeaderLabel(self.frame, 'SIGN-UP').grid(row=3, column=0, sticky='w')
         # Creating a frame for email and error box label
-        self.email_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
+        self.email_frame = ctk.CTkFrame(master=self.frame, fg_color=configure.very_dark_gray)
         # Calling the email entry label
         self.email_entry = CustomWidgets.customEntry(parent=self.email_frame, placeholder='E-mail address')
         # Placing the email entry in the grid layout
