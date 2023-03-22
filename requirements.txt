@@ -1,8 +1,8 @@
-customtkinter==4.6.3
-firebase_admin==6.0.1
-numpy==1.23.5
-Pillow==9.3.0
-phonenumbers==8.13.0
-opencv-python~=4.6.0.66
+customtkinter==5.1.2
+firebase_admin==6.1.0
+numpy==1.24.2
+Pillow==9.4.0
+phonenumbers==8.13.7
+opencv-python~=4.7.0.72
 requests~=2.28.1
-imageio~=2.22.4
+imageio~=2.26.1

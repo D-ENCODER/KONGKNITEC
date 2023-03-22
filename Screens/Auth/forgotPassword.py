@@ -26,13 +26,15 @@ class ForgotPassword(ctk.CTkFrame):
         """
         super().__init__(kwargs['parent'], fg_color=configure.very_dark_gray)
         self._controller = kwargs['controller']
-        self.email_error_label = ctk.CTkLabel()
+        self.email_error_label = ctk.CTkLabel(master=self)
         self._forgotPasswordGUI()
 
     def _forgotPasswordGUI(self):
-        loginHeaderGUI(self)
-        CustomWidgets.customHeaderLabel(self, 'RECOVERY').grid(row=3, column=0, sticky='w')
-        self.email_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
+        self.frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
+        self.frame.grid(row=0, column=0, padx=(configure.screen_width - 300) / 2, pady=(configure.screen_height - 600) / 2)
+        loginHeaderGUI(self.frame)
+        CustomWidgets.customHeaderLabel(self.frame, 'RECOVERY').grid(row=3, column=0, sticky='w')
+        self.email_frame = ctk.CTkFrame(master=self.frame, fg_color=configure.very_dark_gray)
         self.email_entry = CustomWidgets.customEntry(parent=self.email_frame, placeholder='E-mail address')
         self.email_entry.grid(row=0, column=0, columnspan=2)
         self.email_frame.grid(row=4, column=0, columnspan=2, pady=10)
@@ -50,7 +52,7 @@ class ForgotPassword(ctk.CTkFrame):
             except requests.exceptions.ConnectionError:
                 self._controller.showFrame('NoInternet', self)
 
-        CustomWidgets.customButton(parent=self, text='BACK', command=lambda: self._controller.showFrame('Login', self),
+        CustomWidgets.customButton(parent=self.frame, text='BACK', command=lambda: self._controller.showFrame('Login', self),
                                    fg_color=configure.dark_gray, text_color=configure.white,
                                    hover_color=configure.very_dark_gray).grid(row=5, column=0, pady=10)
-        CustomWidgets.customButton(parent=self, text='SEND', command=validate).grid(row=5, column=1, pady=10)
+        CustomWidgets.customButton(parent=self.frame, text='SEND', command=validate).grid(row=5, column=1, pady=10)

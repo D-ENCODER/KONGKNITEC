@@ -22,25 +22,25 @@ class Dataset(ctk.CTkFrame):
         self.__controller = kwargs['controller']
         self.datasetsql = DatasetSqliteServices()
         self.signupsql = SignupSqliteServices()
-        self.label = ctk.CTkLabel(master=self, text='', text_font=(configure.font, 20))
+        self.label = ctk.CTkLabel(master=self, text='', font=(configure.font, 20))
         self.__datasetGUI()
 
     def __datasetGUI(self):
         ctk.CTkLabel(master=self, text='', height=15).grid(row=0, column=0)
         self.__option = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
-        self.__size = (configure.screen_width - (configure.screen_width / 4) - 375)
+        self.__size = (configure.screen_width - (configure.screen_width / 4) - 500)
         ctk.CTkLabel(master=self.__option, text='', width=self.__size).grid(row=0, column=0)
         self.__addDataset = ctk.CTkButton(master=self.__option, text='Add',
-                                          text_font=(configure.font, 13, "bold"), command=lambda: self.add(),
+                                          font=(configure.font, 18, "bold"), command=lambda: self.add(),
                                           text_color=configure.very_dark_gray, fg_color=configure.vivid_cyan,
                                           hover_color=configure.light_cyan, width=100, height=35, corner_radius=10)
         self.__addDataset.grid(row=0, column=1, sticky='e')
-        self.__editDataset = ctk.CTkButton(master=self.__option, text='Edit', text_font=(configure.font, 13, "bold"),
+        self.__editDataset = ctk.CTkButton(master=self.__option, text='Edit', font=(configure.font, 18, "bold"),
                                            text_color=configure.very_dark_gray,
                                            fg_color=configure.vivid_cyan, command=lambda: self.edit(),
                                            hover_color=configure.light_cyan, width=100, height=35, corner_radius=10)
         self.__editDataset.grid(row=0, column=2, padx=25)
-        self.trainDataset = ctk.CTkButton(master=self.__option, text='Train', text_font=(configure.font, 13, "bold"),
+        self.trainDataset = ctk.CTkButton(master=self.__option, text='Train', font=(configure.font, 18, "bold"),
                                           text_color=configure.very_dark_gray,
                                           fg_color=configure.vivid_cyan, command=lambda: self.train(),
                                           hover_color=configure.light_cyan, width=100, height=35, corner_radius=10)
@@ -131,22 +131,23 @@ class Dataset(ctk.CTkFrame):
         self.datasetsql.massInsert(enroll)
         data = list(self.datasetsql.getDatasetDetails())
         ctk.CTkLabel(master=self, text='').grid(row=2, column=0)
-        self.frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
-        self.frame.grid(row=3, column=0)
+        self.frame = ctk.CTkScrollableFrame(master=self, fg_color=configure.very_dark_gray,
+                                            width=(configure.screen_width / 4) * 3, height=(configure.screen_height - 200))
+        self.frame.grid(row=3, column=0, padx=50)
         table_header = ['SR No.', 'Enrollment No.', 'Name', 'E-mail', 'Date']
         for i in range(len(table_header)):
-            self.label = ctk.CTkLabel(master=self.frame, text=table_header[i], text_font=(configure.font, 18, "bold"),
+            self.label = ctk.CTkLabel(master=self.frame, text=table_header[i], font=(configure.font, 23, "bold"),
                                       text_color=configure.vivid_cyan)
-            self.label.grid(row=0, column=i, sticky='nsew')
+            self.label.grid(row=0, column=i, sticky='nsew', padx=20)
         for details in range(len(data)):
             for fields in range(len(data[details])):
-                self.label = ctk.CTkLabel(master=self.frame, text=data[details][fields], text_font=(configure.font, 15))
-                self.label.grid(row=details + 1, column=fields, sticky='nsew', padx=10, pady=10)
+                self.label = ctk.CTkLabel(master=self.frame, text=data[details][fields], font=(configure.font, 20))
+                self.label.grid(row=details + 1, column=fields, sticky='nsew', padx=20, pady=10)
 
     def __emptyDatasetGUI(self):
         frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
         frame.grid(row=2, column=0, sticky='nsew', padx=(((configure.screen_width / 4) * 3) - 140) / 2,
                    pady=(configure.screen_height - 191) / 2)
-        label = ctk.CTkLabel(frame, text='No Data available!!', text_font=configure.welcome_fontstyle,
+        label = ctk.CTkLabel(frame, text='No Data available!!', font=configure.welcome_fontstyle,
                              fg_color=configure.very_dark_gray)
         label.grid(row=1, column=1)

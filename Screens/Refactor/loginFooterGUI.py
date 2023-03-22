@@ -20,18 +20,18 @@ def loginFooterGUI(self, label, controller, hyper_label, frame):
     """
     # Create a frame for footer
     self._login_frame = ctk.CTkFrame(master=self, fg_color=configure.dark_gray, corner_radius=180)
-    # load all the images used in the frame for footer
-    self._google_icon = loadImage(self._login_frame, "Assets/google.png", 27)
-    self._git_icon = loadImage(self._login_frame, "Assets/git.png", 27)
-    self._twitter_icon = loadImage(self._login_frame, "Assets/twitter.png", 27)
-    # Create a label for footer
+    # # load all the images used in the frame for footer
+    # self._google_icon = loadImage(self._login_frame, "Assets/google.png", 27)
+    # self._git_icon = loadImage(self._login_frame, "Assets/git.png", 27)
+    # self._twitter_icon = loadImage(self._login_frame, "Assets/twitter.png", 27)
+    # # Create a label for footer
     footerframe = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
     ctk.CTkLabel(master=footerframe, text=label,
-                 text_font=(configure.font, 12), text_color=configure.white, anchor='e').grid(row=0, column=0,
-                                                                                              sticky='e')
+                 font=(configure.font, 16), text_color=configure.white, anchor='e').grid(row=0, column=0,
+                                                                                         sticky='e')
     # Create a hyperlink label for footer
-    ctk.CTkButton(master=footerframe, text=hyper_label, width=70, height=35, text_font=(configure.font, 12,
-                                                                                        "bold"),
+    ctk.CTkButton(master=footerframe, text=hyper_label, width=70, height=35, font=(configure.font, 16,
+                                                                                   "bold"),
                   cursor="hand2", fg_color=configure.very_dark_gray, hover=False,
                   command=lambda: controller.showFrame(frame, self),
                   text_color=configure.light_cyan).grid(row=0, column=1, sticky='w')
@@ -39,21 +39,21 @@ def loginFooterGUI(self, label, controller, hyper_label, frame):
 
     # Create a frame for footer
     # ctk.CTkLabel(master=self, text='--OR--',
-    #              text_font=(configure.font, 12, "bold"), text_color=configure.light_cyan).grid(row=9, column=0,
+    #              font=(configure.font, 12, "bold"), text_color=configure.light_cyan).grid(row=9, column=0,
     # columnspan=2)
 
-    def caller():
-        pass
+    # def caller():
+    #     pass
 
-    # Create third party authentication buttons frame for footer
-    ctk.CTkButton(master=self._login_frame, image=self._google_icon, text="", width=30, hover=False, cursor='hand2',
-                  fg_color=configure.dark_gray, command=caller, ).grid(row=0, column=0, padx=7, pady=10)
-
-    ctk.CTkButton(master=self._login_frame, image=self._git_icon, text="", width=30, hover=False, cursor='hand2',
-                  fg_color=configure.dark_gray, command=caller).grid(row=0, column=1, padx=50, pady=10)
-
-    ctk.CTkButton(master=self._login_frame, image=self._twitter_icon, text="", width=30, hover=False,
-                  cursor='hand2', fg_color=configure.dark_gray, command=caller).grid(row=0, column=2,
-                                                                                     padx=7, pady=10)
-    # Place the frame for footer
-    # self._login_frame.grid(row=10, column=0, columnspan=2)
+    # # Create third party authentication buttons frame for footer
+    # ctk.CTkButton(master=self._login_frame, image=self._google_icon, text="", width=30, hover=False, cursor='hand2',
+    #               fg_color=configure.dark_gray, command=caller, ).grid(row=0, column=0, padx=7, pady=10)
+    #
+    # ctk.CTkButton(master=self._login_frame, image=self._git_icon, text="", width=30, hover=False, cursor='hand2',
+    #               fg_color=configure.dark_gray, command=caller).grid(row=0, column=1, padx=50, pady=10)
+    #
+    # ctk.CTkButton(master=self._login_frame, image=self._twitter_icon, text="", width=30, hover=False,
+    #               cursor='hand2', fg_color=configure.dark_gray, command=caller).grid(row=0, column=2,
+    #                                                                                  padx=7, pady=10)
+    # # Place the frame for footer
+    # # self._login_frame.grid(row=10, column=0, columnspan=2)

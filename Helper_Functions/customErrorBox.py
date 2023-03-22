@@ -18,13 +18,13 @@ class CustomBox(CTkToplevel):
         self.iconphoto(False, img)
         error_image = CTkLabel(master=self, image=img, anchor='nw')
         error_image.place(x=10, y=15)
-        label = CTkTextbox(master=self, width=300, height=100, state='normal', text_font=configure.welcome_fontstyle,
+        label = CTkTextbox(master=self, width=300, height=100, state='normal', font=configure.welcome_fontstyle,
                            border_color=configure.very_dark_gray, fg_color=configure.very_dark_gray,
                            text_color=configure.white)
         label.place(x=50, y=10)
         label.insert('end', message)
         label.configure(state='disabled')
-        button = CTkButton(master=self, text='OK', width=100, height=35, text_font=configure.welcome_fontstyle,
+        button = CTkButton(master=self, text='OK', width=100, height=35, font=configure.welcome_fontstyle,
                            fg_color=configure.light_cyan, text_color=configure.very_dark_gray,
                            border_color=configure.white, hover_color=configure.vivid_cyan,
                            command=self.destroy, corner_radius=15)

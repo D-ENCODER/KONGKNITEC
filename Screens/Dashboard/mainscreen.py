@@ -4,6 +4,8 @@
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
 import customtkinter as ctk
+from PIL import Image
+
 import configure
 from Backend.SqliteServices.login_sqlite_services import LoginSqliteServices
 from Backend.SqliteServices.signup_sqlite_services import SignupSqliteServices
@@ -70,10 +72,10 @@ class MainScreen(ctk.CTkFrame):
                                       fg_color=configure.very_dark_gray,
                                       height=configure.screen_height - 100)
         ctk.CTkLabel(master=self.navigator, text='', height=30).grid(row=0, column=0)
-        self.navigator.dashboardImg = loadImage(self.navigator, 'Assets/dashboard.png', 20)
-        self.navigator.datasetImg = loadImage(self.navigator, 'Assets/dataset.png', 20)
-        self.navigator.attendanceImg = loadImage(self.navigator, 'Assets/attendance.png', 20)
-        self.navigator.profileImg = loadImage(self.navigator, 'Assets/profile.png', 20)
+        self.navigator.dashboardImg = ctk.CTkImage(Image.open('Assets/dashboard.png'), size=(20, 20))
+        self.navigator.datasetImg = ctk.CTkImage(Image.open('Assets/dataset.png'), size=(20, 20))
+        self.navigator.attendanceImg = ctk.CTkImage(Image.open('Assets/attendance.png'), size=(20, 20))
+        self.navigator.profileImg = ctk.CTkImage(Image.open('Assets/profile.png'), size=(20, 20))
         self.__dashboard = CustomWidgets.customDashboardButtons(self.navigator, 'Dashboard',
                                                                 self.navigator.dashboardImg,
                                                                 lambda: self.__switcher(0))

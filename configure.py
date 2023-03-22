@@ -12,5 +12,5 @@ very_dark_gray = '#1a1a1a'
 screen_width = 0
 screen_height = 0
 font = 'Ubuntu Mono'
-welcome_fontstyle = (font, 14, "bold")
-header_fontstyle = (font, 20, "bold")
+welcome_fontstyle = (font, 19, "bold")
+header_fontstyle = (font, 25, "bold")

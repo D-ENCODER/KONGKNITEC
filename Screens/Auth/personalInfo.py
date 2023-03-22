@@ -22,9 +22,10 @@ class UserDetailsStack(Signup):
         ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.very_dark_gray)
         self._controller = kwargs['controller']
         self.container = ctk.CTkFrame(self, fg_color=configure.very_dark_gray)
-        loginHeaderGUI(self.container)
-        CustomWidgets.customHeaderLabel(self.container, 'Personal Info').grid(row=3, column=0, sticky='w')
-        self.container.grid(row=0, column=0, sticky='nsew')
+
+        self.container.grid(row=0, column=0, sticky='nsew', padx=(configure.screen_width - 300) / 2,
+                            pady=(configure.screen_height - 600) / 2)
+
         self.frames = {}
         self.frame_stack = (PersonalInfo, ContactInfo, Signup)
         for window in self.frame_stack:
@@ -32,7 +33,7 @@ class UserDetailsStack(Signup):
             frame = window(parent=self.container, controller=self, parent_controller=self._controller)
             self.frames[page_name] = frame
             frame.grid(row=4, column=0, sticky='nsew')
-        self.showFrame("PersonalInfo")
+        self.showFrame("ContactInfo")
 
     def showFrame(self, page_name):
         frame = self.frames[page_name]
@@ -42,11 +43,11 @@ class UserDetailsStack(Signup):
 class PersonalInfo(UserDetailsStack):
     def __init__(self, **kwargs):
         ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.very_dark_gray)
-        self.dob_error_label = ctk.CTkLabel()
+        self.dob_error_label = ctk.CTkLabel(master=self)
         self._controller = kwargs['controller']
         self._parent_controller = kwargs['parent_controller']
-        self.first_error_label = ctk.CTkLabel()
-        self.last_error_label = ctk.CTkLabel()
+        self.first_error_label = ctk.CTkLabel(master=self)
+        self.last_error_label = ctk.CTkLabel(master=self)
         self.sql = SignupSqliteServices()
         self._personalInfoGUI()
 
@@ -92,7 +93,8 @@ class PersonalInfo(UserDetailsStack):
                     self.firstname_entry.configure(border_color=configure.light_cyan)
                     return False
                 else:
-                    self.first_error_label.destroy()
+                    if self.first_error_label.winfo_exists():
+                        self.first_error_label.destroy()
                     self.firstname_entry.configure(border_color=configure.dark_gray)
                     return True
             case 1:
@@ -104,10 +106,13 @@ class PersonalInfo(UserDetailsStack):
                     return False
                 else:
                     self.lastname_entry.configure(border_color=configure.dark_gray)
-                    self.last_error_label.destroy()
+                    if self.first_error_label.winfo_exists():
+                        self.last_error_label.destroy()
                     return True
 
     def _personalInfoGUI(self):
+        loginHeaderGUI(self)
+        CustomWidgets.customHeaderLabel(self, 'Personal Info').grid(row=3, column=0, sticky='w')
         self.gender_val = ctk.IntVar(value=0)
         self.firstname_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
         self.firstname_entry = CustomWidgets.customEntry(parent=self.firstname_frame, placeholder='First name')
@@ -120,39 +125,39 @@ class PersonalInfo(UserDetailsStack):
         self.lastname_entry.bind('<FocusOut>', lambda event: self._validate_fields(1))
         self.lastname_frame.grid(row=5, column=0, columnspan=2, pady=10)
         self.birth_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
-        ctk.CTkLabel(master=self.birth_frame, text='DoB', text_font=(configure.font, 12, 'bold'),
+        ctk.CTkLabel(master=self.birth_frame, text='DoB', font=(configure.font, 17, 'bold'),
                      width=70, anchor='w').grid(row=0, column=0, sticky='w')
         self.day = CustomWidgets.customEntry(parent=self.birth_frame, placeholder='DD', width=40)
         self.day.bind('<KeyRelease>', lambda event: self._switch(0))
         self.day.grid(row=0, column=1)
-        ctk.CTkLabel(master=self.birth_frame, text='/', text_font=(configure.font, 12, 'bold'),
+        ctk.CTkLabel(master=self.birth_frame, text='/', font=(configure.font, 17, 'bold'),
                      width=30).grid(row=0, column=2)
         self.month = CustomWidgets.customEntry(parent=self.birth_frame, placeholder='MM', width=40)
         self.month.bind('<KeyRelease>', lambda event: self._switch(1))
         self.month.grid(row=0, column=3)
-        ctk.CTkLabel(master=self.birth_frame, text='/', text_font=(configure.font, 12, 'bold'),
+        ctk.CTkLabel(master=self.birth_frame, text='/', font=(configure.font, 17, 'bold'),
                      width=30).grid(row=0, column=4)
         self.year = CustomWidgets.customEntry(parent=self.birth_frame, placeholder='YYYY', width=55)
         self.year.bind('<KeyRelease>', lambda event: self._switch(2))
         self.year.grid(row=0, column=5)
         self.birth_frame.grid(row=6, column=0, columnspan=2, pady=10)
         self.gender_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
-        ctk.CTkLabel(master=self, text='Gender', text_font=(configure.font, 12, 'bold'), anchor='w').grid(row=7,
-                                                                                                          column=0,
-                                                                                                          sticky='w')
+        ctk.CTkLabel(master=self, text='Gender', font=(configure.font, 17, 'bold'), anchor='w').grid(row=7,
+                                                                                                     column=0,
+                                                                                                     sticky='w')
         self.male = ctk.CTkRadioButton(master=self.gender_frame, variable=self.gender_val, value=1,
-                                       text_font=(configure.font, 12),
+                                       font=(configure.font, 15),
                                        text='Male', border_color=configure.dark_gray, hover_color=configure.light_cyan,
                                        fg_color=configure.vivid_cyan, border_width_checked=5)
         self.male.grid(row=1, column=0, sticky='w')
         self.female = ctk.CTkRadioButton(master=self.gender_frame, variable=self.gender_val, value=2,
-                                         text_font=(configure.font, 12),
+                                         font=(configure.font, 15),
                                          text='Female', border_color=configure.dark_gray,
                                          hover_color=configure.light_cyan, fg_color=configure.vivid_cyan,
                                          border_width_checked=5)
         self.female.grid(row=2, column=0, sticky='w', pady=10)
         self.other = ctk.CTkRadioButton(master=self.gender_frame, variable=self.gender_val, value=3,
-                                        text_font=(configure.font, 12),
+                                        font=(configure.font, 15),
                                         text='Prefer not to say', border_color=configure.dark_gray,
                                         hover_color=configure.light_cyan, fg_color=configure.vivid_cyan,
                                         border_width_checked=5)
@@ -198,10 +203,10 @@ class ContactInfo(PersonalInfo):
 
     def __init__(self, **kwargs):
         ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.very_dark_gray)
-        self.enroll_error_label = ctk.CTkLabel()
+        self.enroll_error_label = ctk.CTkLabel(master=self)
         self._controller = kwargs['controller']
         self._parent_controller = kwargs['parent_controller']
-        self.phone_error_label = ctk.CTkLabel()
+        self.phone_error_label = ctk.CTkLabel(master=self)
         self.sql = SignupSqliteServices()
         self._contactInfoGUI()
 
@@ -282,6 +287,8 @@ class ContactInfo(PersonalInfo):
                     return True
 
     def _contactInfoGUI(self):
+        loginHeaderGUI(self)
+        CustomWidgets.customHeaderLabel(self, 'Personal Info').grid(row=3, column=0, sticky='w')
         self.phone_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
         self.phone_entry = CustomWidgets.customEntry(parent=self.phone_frame, placeholder='1234567890')
         self.phone_entry.grid(row=0, column=0, columnspan=2)

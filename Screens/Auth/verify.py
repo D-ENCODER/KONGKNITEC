@@ -98,9 +98,11 @@ class Verify(ForgotPassword, ContactInfo):
                     self.otp_entry5.focus()
 
     def _verifyGUI(self):
-        loginHeaderGUI(self)
-        CustomWidgets.customHeaderLabel(self, 'VERIFY').grid(row=3, column=0, sticky='w')
-        self.otp_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
+        self.frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
+        self.frame.grid(row=0, column=0, sticky='nsew', padx=(configure.screen_width - 300) / 2, pady=(configure.screen_height - 600) / 2)
+        loginHeaderGUI(self.frame)
+        CustomWidgets.customHeaderLabel(self.frame, 'VERIFY').grid(row=3, column=0, sticky='w')
+        self.otp_frame = ctk.CTkFrame(master=self.frame, fg_color=configure.very_dark_gray)
         self.otp_entry1 = CustomWidgets.customEntry(parent=self.otp_frame, placeholder='', width=20, height=45,
                                                     font_weight='bold', font_size=17)
         self.otp_entry1.grid(row=0, column=0, padx=10)
@@ -195,12 +197,12 @@ class Verify(ForgotPassword, ContactInfo):
                                                             command=lambda: sender())
                 resend.grid(row=0, column=1)
 
-        self.timer_frame = ctk.CTkFrame(self, fg_color=configure.very_dark_gray)
+        self.timer_frame = ctk.CTkFrame(self.frame, fg_color=configure.very_dark_gray)
         CustomWidgets.customErrorLabel(parent=self.timer_frame, error_text='Resend OTP in ', anchor='e',
                                        color=configure.white).grid(row=0, column=0)
         self.timer = CustomWidgets.customErrorLabel(parent=self.timer_frame, error_text='01:30')
         self.timer.grid(row=0, column=1)
         self.timer_frame.grid(row=6, column=0, columnspan=2)
         countdown(90)
-        CustomWidgets.customButton(parent=self, text='VERIFY', command=verify).grid(row=7, column=0, columnspan=2,
+        CustomWidgets.customButton(parent=self.frame, text='VERIFY', command=verify).grid(row=7, column=0, columnspan=2,
                                                                                     pady=10)

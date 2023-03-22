@@ -27,18 +27,18 @@ class Attendance(ctk.CTkFrame):
     def __attendanceGUI(self):
         ctk.CTkLabel(master=self, text='', height=15).grid(row=0, column=0)
         self.__option = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
-        self.__size = (configure.screen_width - (configure.screen_width / 4) - 250)
+        self.__size = (configure.screen_width - (configure.screen_width / 4) - 350)
 
         def take():
             obj = FacialRecognition()
 
         ctk.CTkLabel(master=self.__option, text='', width=self.__size).grid(row=0, column=0)
         self.__takeAttendance = ctk.CTkButton(master=self.__option, text='Take',
-                                              text_font=(configure.font, 13, "bold"), command=lambda: take(),
+                                              font=(configure.font, 18, "bold"), command=lambda: take(),
                                               text_color=configure.very_dark_gray, fg_color=configure.vivid_cyan,
                                               hover_color=configure.light_cyan, width=100, height=35, corner_radius=10)
         self.__takeAttendance.grid(row=0, column=1, sticky='e')
-        self.__addAttendance = ctk.CTkButton(master=self.__option, text='Add', text_font=(configure.font, 13, "bold"),
+        self.__addAttendance = ctk.CTkButton(master=self.__option, text='Add', font=(configure.font, 18, "bold"),
                                              text_color=configure.very_dark_gray, command=lambda: self.add(),
                                              fg_color=configure.vivid_cyan,
                                              hover_color=configure.light_cyan, width=100, height=35, corner_radius=10)
@@ -52,24 +52,41 @@ class Attendance(ctk.CTkFrame):
 
     def __tableAttendanceGUI(self):
         ctk.CTkLabel(master=self, text='').grid(row=2, column=0)
-        self.frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
-        self.frame.grid(row=3, column=0)
+        self.frame = ctk.CTkScrollableFrame(master=self, fg_color=configure.very_dark_gray,
+                                            width=(configure.screen_width / 4) * 3, height=(configure.screen_height - 200))
+        self.frame.grid(row=3, column=0, padx=50)
         data = list(self.attendanceSql.getAttendance(self.date))
         table_header = ['SR No.', 'Enrollment No.', 'Name', 'E-mail', 'Time']
         for i in range(len(table_header)):
-            self.label = ctk.CTkLabel(master=self.frame, text=table_header[i], text_font=(configure.font, 18, "bold"),
+            self.label = ctk.CTkLabel(master=self.frame, text=table_header[i], font=(configure.font, 23, "bold"),
                                       text_color=configure.vivid_cyan)
-            self.label.grid(row=0, column=i, sticky='nsew')
+            self.label.grid(row=0, column=i, sticky='nsew',  padx=20)
+        info = [[]]
+        for i in range(len(data)):
+            data[i] = list(data[i])
+            for j in range(len(data[i])):
+                if j == 0:
+                    info[i].append(data[i][0])
+                if j == 1:
+                    enroll = str(data[i][1])[1:]
+                    info[i].append(enroll)
+                    userdata = list(self.__signupSql.fetchCondition('Fname, Lname, Email', enroll))
+                    for user in userdata:
+                        info[i].append(user[0] + ' ' + user[1])
+                        info[i].append(user[2])
+                if j == 2:
+                    info[i].append(data[i][2])
+        data = info
         for details in range(len(data)):
             for fields in range(len(data[details])):
-                self.label = ctk.CTkLabel(master=self.frame, text=data[details][fields], text_font=(configure.font, 15))
-                self.label.grid(row=details + 1, column=fields, sticky='nsew', padx=10, pady=10)
+                self.label = ctk.CTkLabel(master=self.frame, text=data[details][fields], font=(configure.font, 20))
+                self.label.grid(row=details + 1, column=fields, sticky='nsew', padx=20, pady=10)
 
     def __emptyAttendanceGUI(self):
         frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
         frame.grid(row=2, column=0, sticky='nsew', padx=(((configure.screen_width / 4) * 3) - 140) / 2,
                    pady=(configure.screen_height - 191) / 2)
-        label = ctk.CTkLabel(frame, text='No Data available!!', text_font=configure.welcome_fontstyle,
+        label = ctk.CTkLabel(frame, text='No Data available!!', font=configure.welcome_fontstyle,
                              fg_color=configure.very_dark_gray)
         label.grid(row=1, column=1)
 

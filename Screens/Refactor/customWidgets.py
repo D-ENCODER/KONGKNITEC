@@ -20,13 +20,13 @@ class CustomWidgets:
         :param kwargs: This is a dictionary of all the parameters required to create a custom entry widget.
         :return: The custom entry widget.
         """
-        defaultKwargs = {'width': 290, 'height': 35, 'font_size': 12, 'obfuscated': False, 'font_weight': 'normal',
+        defaultKwargs = {'width': 290, 'height': 35, 'font_size': 17, 'obfuscated': False, 'font_weight': 'normal',
                          'border_color': configure.dark_gray}
         kwargs = {**defaultKwargs, **kwargs}
         custom_entry = ctk.CTkEntry(master=kwargs['parent'], placeholder_text=kwargs['placeholder'],
                                     fg_color=configure.dark_gray, border_color=kwargs['border_color'],
-                                    border_width=1.5, corner_radius=10, text_font=(configure.font, kwargs['font_size'],
-                                                                                   kwargs['font_weight']),
+                                    border_width=1.5, corner_radius=10, font=(configure.font, kwargs['font_size'],
+                                                                              kwargs['font_weight']),
                                     width=kwargs['width'],
                                     height=kwargs['height'], show='•' if kwargs['obfuscated'] else '')
         return custom_entry
@@ -40,7 +40,7 @@ class CustomWidgets:
         :param text: The text to be displayed in the header label.
         :return: The header label widget.
         """
-        custom_label = ctk.CTkLabel(master=self, text=text, text_font=configure.header_fontstyle,
+        custom_label = ctk.CTkLabel(master=self, text=text, font=configure.header_fontstyle,
                                     anchor='w', text_color=configure.light_cyan)
         return custom_label
 
@@ -55,7 +55,7 @@ class CustomWidgets:
         kwargs = {**defaultKwargs, **kwargs}
         custom_button = ctk.CTkButton(master=kwargs['parent'], text=kwargs['text'], width=100, height=35,
                                       fg_color=kwargs['fg_color'], hover_color=kwargs['hover_color'],
-                                      text_font=(configure.font, 12, "bold"), corner_radius=15,
+                                      font=(configure.font, 17, "bold"), corner_radius=15,
                                       text_color=kwargs['text_color'],
                                       command=kwargs['command'])
         return custom_button
@@ -70,7 +70,7 @@ class CustomWidgets:
         defaultKwargs = {'color': configure.light_cyan, 'anchor': 'center'}
         kwargs = {**defaultKwargs, **kwargs}
         custom_error_label = ctk.CTkLabel(master=kwargs['parent'], text=kwargs['error_text'],
-                                          text_font=(configure.font, 10, "bold"),
+                                          font=(configure.font, 13, "bold"),
                                           text_color=kwargs['color'], bg_color=configure.very_dark_gray,
                                           anchor=kwargs['anchor'])
         return custom_error_label
@@ -86,7 +86,7 @@ class CustomWidgets:
         kwargs = {**defaultKwargs, **kwargs}
         custom_hyperlink_label = ctk.CTkButton(master=kwargs['parent'], text=kwargs['text'], cursor="hand2",
                                                fg_color=configure.very_dark_gray,
-                                               text_font=(configure.font, 12, "bold"),
+                                               font=(configure.font, 17, "bold"),
                                                hover_color=configure.very_dark_gray,
                                                command=kwargs['command'],
                                                text_color=configure.light_cyan)
@@ -107,6 +107,6 @@ class CustomWidgets:
                                                 hover_color=configure.dark_gray,
                                                 fg_color=configure.very_dark_gray, width=configure.screen_width / 4,
                                                 height=50, command=command,
-                                                text_font=(configure.font, 17, 'bold'), text_color=configure.white)
+                                                font=(configure.font, 22, 'bold'), text_color=configure.white)
 
         return custom_dashboard_button

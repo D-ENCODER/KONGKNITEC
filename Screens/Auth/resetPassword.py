@@ -5,6 +5,8 @@
 # Version : 1.0.0
 import customtkinter as ctk
 import requests
+from PIL import Image
+
 import configure
 from Backend.FirebaseServices.authenticationServices import AuthenticationServices
 from Backend.encryptor import encrypt
@@ -20,17 +22,19 @@ class ResetPassword(ForgotPassword):
     def __init__(self, **kwargs):
         ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.very_dark_gray)
         self._controller = kwargs['controller']
-        self.password_error_label = ctk.CTkLabel()
-        self._show_icon = loadImage(self, "Assets/hide.png", 17)
-        self._hide_icon = loadImage(self, "Assets/show.png", 17)
-        self.confirm_password_error_label = ctk.CTkLabel()
+        self.password_error_label = ctk.CTkLabel(master=self)
+        self._show_icon = ctk.CTkImage(Image.open("Assets/hide.png"), size=(17, 17))
+        self._hide_icon = ctk.CTkImage(Image.open("Assets/show.png"), size=(17, 17))
+        self.confirm_password_error_label = ctk.CTkLabel(master=self)
         self.obj = AuthenticationServices()
         self._resetPasswordGUI()
 
     def _resetPasswordGUI(self):
-        loginHeaderGUI(self)
-        CustomWidgets.customHeaderLabel(self, 'RESET').grid(row=3, column=0, sticky='w')
-        self.password_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
+        self.frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
+        self.frame.grid(row=0, column=0, padx=(configure.screen_width - 300) / 2, pady=(configure.screen_height - 600) / 2)
+        loginHeaderGUI(self.frame)
+        CustomWidgets.customHeaderLabel(self.frame, 'RESET').grid(row=3, column=0, sticky='w')
+        self.password_frame = ctk.CTkFrame(master=self.frame, fg_color=configure.very_dark_gray)
         # Calling the password entry label
         self.password_entry = CustomWidgets.customEntry(parent=self.password_frame, placeholder='Password',
                                                         obfuscated=True)
@@ -58,7 +62,8 @@ class ResetPassword(ForgotPassword):
             """
             # Validating the confirm password entered by the user
             if self.password_entry.get() == self.confirm_password_entry.get():
-                self.confirm_password_error_label.destroy()
+                if self.confirm_password_error_label.winfo_exists():
+                    self.confirm_password_error_label.destroy()
                 # If the confirm password is valid then the confirm password entry label is set to the default color
                 self.confirm_password_entry.configure(border_color=configure.dark_gray)
                 return True
@@ -134,8 +139,8 @@ class ResetPassword(ForgotPassword):
 
         # Calling the show password button
         button = ctk.CTkButton(master=self.password_frame, image=self._hide_icon, width=20, height=20, text="",
-                               fg_color=configure.dark_gray, corner_radius=180, cursor="hand2", border=False,
-                               hover=False, command=lambda: show_password())
+                               fg_color=configure.dark_gray, corner_radius=180, cursor="hand2", border_width=0,
+                               hover=False, command=lambda: show_password(), bg_color=configure.dark_gray)
         # Placing the show password button
         button.grid(row=0, column=1, sticky='e', padx=10)
         CustomWidgets.customButton(parent=self, text='RESET PASSWORD', command=lambda: _verifyReset()) \

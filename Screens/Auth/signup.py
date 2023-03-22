@@ -4,6 +4,8 @@
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
 import customtkinter as ctk
+from PIL import Image
+
 import configure
 from Backend.FirebaseServices.authenticationServices import AuthenticationServices
 from Backend.encryptor import encrypt
@@ -33,9 +35,9 @@ class Signup(ctk.CTkFrame):
         self.__controller = kwargs['controller']
         self.obj = AuthenticationServices()
         # Initializing the error handlers
-        self.email_error_label = ctk.CTkLabel()
-        self.password_error_label = ctk.CTkLabel()
-        self.confirm_password_error_label = ctk.CTkLabel()
+        self.email_error_label = ctk.CTkLabel(master=self)
+        self.password_error_label = ctk.CTkLabel(master=self)
+        self.confirm_password_error_label = ctk.CTkLabel(master=self)
         # Loading the show and hide icons so that it can be used further
         self.__show_icon = loadImage(self, "Assets/hide.png", 17)
         self.__hide_icon = loadImage(self, "Assets/show.png", 17)
@@ -49,7 +51,10 @@ class Signup(ctk.CTkFrame):
         This function is used to load the sign-up GUI and holds the logic of the sign-up GUI
         :return: None
         """
-        loginHeaderGUI(self)
+        self.frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
+        self.frame.grid(row=0, column=0, sticky='nsew', padx=(configure.screen_width - 300) / 2,
+                        pady=(configure.screen_height - 600) / 2)
+        loginHeaderGUI(self.frame)
         # Calling the header label
         CustomWidgets.customHeaderLabel(self, 'SIGN-UP').grid(row=3, column=0, sticky='w')
         # Creating a frame for email and error box label
@@ -63,7 +68,7 @@ class Signup(ctk.CTkFrame):
         # Binding the validate email function to the email entry label
         self.email_entry.bind('<FocusOut>', lambda event: validate_email(parent=self))
         # Creating a frame for password and error box label
-        self.password_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
+        self.password_frame = ctk.CTkFrame(master=self.frame, fg_color=configure.very_dark_gray)
         # Calling the password entry label
         self.password_entry = CustomWidgets.customEntry(parent=self.password_frame, placeholder='Password',
                                                         obfuscated=True)
@@ -72,7 +77,7 @@ class Signup(ctk.CTkFrame):
         # Placing the password frame into the grid layout
         self.password_frame.grid(row=5, column=0, columnspan=2, pady=10)
         # Creating a frame for confirm password and error box label
-        self.confirm_password_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
+        self.confirm_password_frame = ctk.CTkFrame(master=self.frame, fg_color=configure.very_dark_gray)
         # Calling the show password button
         self.confirm_password_entry = CustomWidgets.customEntry(parent=self.confirm_password_frame,
                                                                 placeholder='Confirm Password', obfuscated=True)
@@ -170,13 +175,14 @@ class Signup(ctk.CTkFrame):
 
         # Calling the show password button
         button = ctk.CTkButton(master=self.password_frame, image=self.__hide_icon, width=20, height=20, text="",
-                               fg_color=configure.dark_gray, corner_radius=180, cursor="hand2", border=False,
-                               hover=False, command=lambda: show_password())
+                               fg_color=configure.dark_gray, corner_radius=180, cursor="hand2", border_width=0,
+                               hover=False, command=lambda: show_password(), bg_color=configure.dark_gray)
         # Placing the show password button
         button.grid(row=0, column=1, sticky='e', padx=10)
         # Calling the sign-up button and placing it in the grid layout
-        CustomWidgets.customButton(parent=self, text='NEXT', command=lambda: _verifySignup()).grid(row=7, column=0,
-                                                                                                   columnspan=2,
-                                                                                                   pady=10)
+        CustomWidgets.customButton(parent=self.frame, text='NEXT', command=lambda: _verifySignup()).grid(row=7,
+                                                                                                         column=0,
+                                                                                                         columnspan=2,
+                                                                                                         pady=10)
         # Calling the footer gui function to display the footer
-        loginFooterGUI(self, "Already have an account?", self.__controller, "Login", "Login")
+        loginFooterGUI(self.frame, "Already have an account?", self.__controller, "Login", "Login")

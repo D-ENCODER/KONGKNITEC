@@ -5,12 +5,13 @@
 # Version : 1.0.0
 import customtkinter as ctk
 import requests
+from PIL import Image
+
 import configure
 from Backend.FirebaseServices.authenticationServices import AuthenticationServices
 from Backend.SqliteServices.login_sqlite_services import LoginSqliteServices
 from Backend.encryptor import encrypt
 from Helper_Functions.customErrorBox import CustomBox
-from Helper_Functions.loadImage import loadImage
 from Screens.Refactor.customWidgets import CustomWidgets
 from Screens.Refactor.loginFooterGUI import loginFooterGUI
 from Screens.Refactor.loginHeaderGUI import loginHeaderGUI
@@ -32,8 +33,8 @@ class Login(ctk.CTkFrame):
         self.__parent = kwargs['parent']
         self.obj = AuthenticationServices()
         # Initializing the error handlers
-        self.enrollment_error_label = ctk.CTkLabel()
-        self.password_error_label = ctk.CTkLabel()
+        self.enrollment_error_label = ctk.CTkLabel(master=self)
+        self.password_error_label = ctk.CTkLabel(master=self)
         # Enlarging the scope og the controller variable
         self.__controller = kwargs['controller']
         # Load the show password icon and hide password icon
@@ -48,14 +49,15 @@ class Login(ctk.CTkFrame):
         """
         This is the method which is used to create the login GUI and holds most values of the GUI
         """
-        self.__parent.grid_configure(pady=(configure.screen_height - 600) / 2,
-                                     padx=(configure.screen_width - 300) / 2)
+        self.frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
+        self.frame.grid(row=0, column=0, padx=(configure.screen_width - 300) / 2,
+                        pady=(configure.screen_height - 600) / 2)
         # Call the header GUI
-        loginHeaderGUI(self)
+        loginHeaderGUI(self.frame)
         # Create the header label
         CustomWidgets.customHeaderLabel(self, 'LOGIN').grid(row=3, column=0, sticky='w')
         # Creating a frame for email and error box label
-        self.enrollment_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
+        self.enrollment_frame = ctk.CTkFrame(master=self.frame, fg_color=configure.very_dark_gray)
         # Create the email entry
         self.enrollment_entry = CustomWidgets.customEntry(parent=self.enrollment_frame,
                                                           placeholder='Admin Code/Application No/Enrollment No')
@@ -67,7 +69,7 @@ class Login(ctk.CTkFrame):
         # Binding the function to the entry widget to validate the email address
         self.enrollment_entry.bind('<FocusOut>', lambda event: validate_enrollment(parent=self))
         # Creating a frame for password and error box label
-        self.password_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
+        self.password_frame = ctk.CTkFrame(master=self.frame, fg_color=configure.very_dark_gray)
         # Create the password entry
         self.password_entry = CustomWidgets.customEntry(parent=self.password_frame, placeholder='Password',
                                                         obfuscated=True)
@@ -102,7 +104,7 @@ class Login(ctk.CTkFrame):
         # are valid and legit
         def _verifyLogin():
             # if email is valid and password is valid then login
-            if validate_password(parent=self) and validate_enrollment(parent=self):
+            if validate_password(parent=self.frame) and validate_enrollment(parent=self.frame):
                 try:
                     requests.get('https://google.com')
                     if self.enrollment_entry.get().startswith('314'):
@@ -138,20 +140,21 @@ class Login(ctk.CTkFrame):
                 # if password is not valid then show the error message
                 if not validate_enrollment(parent=self):
                     # Invoke the error message
-                    validate_enrollment(parent=self)
+                    validate_enrollment(parent=self.frame)
 
         # Create the show password button and placing on the same entry box
         button = ctk.CTkButton(master=self.password_frame, image=self.__hide_icon, width=20, height=20, text="",
-                               fg_color=configure.dark_gray, corner_radius=180, cursor="hand2", border=False,
-                               hover=False, command=lambda: _show_password())
+                               fg_color=configure.dark_gray, corner_radius=180, cursor="hand2", border_width=0,
+                               hover=False, command=lambda: _show_password(), bg_color=configure.dark_gray)
         button.grid(row=0, column=1, sticky='e', padx=10)
         # Creating the forgot password hyper label and placing it in the grid layout
-        CustomWidgets.customHyperlinkLabel(parent=self, text='FORGOT PASSWORD ?',
+        CustomWidgets.customHyperlinkLabel(parent=self.frame, text='FORGOT PASSWORD ?',
                                            command=lambda: self.__controller.showFrame("ForgotPassword", self)). \
             grid(row=6, column=1, sticky='e')
         # Creating the login button and placing it in the grid layout
-        CustomWidgets.customButton(parent=self, text='LOGIN', command=lambda: _verifyLogin()).grid(row=7, column=0,
-                                                                                                   columnspan=2,
-                                                                                                   pady=10)
+        CustomWidgets.customButton(parent=self.frame, text='LOGIN', command=lambda: _verifyLogin()).grid(row=7,
+                                                                                                         column=0,
+                                                                                                         columnspan=2,
+                                                                                                         pady=10)
         # Creating the signup hyper label and placing it in the grid layout
-        loginFooterGUI(self, "Don't have an account? ", self.__controller, "Sign-up", "Signup")
+        loginFooterGUI(self.frame, "Don't have an account? ", self.__controller, "Sign-up", "Signup")

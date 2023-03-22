@@ -4,6 +4,8 @@
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
 import customtkinter as ctk
+from PIL import Image
+
 import configure
 from Helper_Functions.loadImage import loadImage
 from Screens.Refactor.customWidgets import CustomWidgets
@@ -12,15 +14,16 @@ from Screens.Refactor.customWidgets import CustomWidgets
 def dashboardHeaderGUI(parent, grandparent):
     headerFrame = ctk.CTkFrame(parent, fg_color=configure.very_dark_gray)
     # Loading the image in the frame
-    headerFrame.img = loadImage(headerFrame, 'Assets/logo.png', 80)
+    image = ctk.CTkImage(Image.open('Assets/logo.png'), size=(80, 80))
+    # headerFrame.img = loadImage(headerFrame, 'Assets/logo.png', 80)
     # Creating a label for placing the image that is loaded above
-    image = ctk.CTkLabel(master=headerFrame, image=headerFrame.img, anchor='center', width=100)
+    image = ctk.CTkLabel(master=headerFrame, image=image, text="", anchor='center', width=100)
     image.grid(row=0, column=0)
     headerText = CustomWidgets.customHeaderLabel(headerFrame, 'KONGKNITEC')
-    headerText.configure(text_font=(configure.font, 20, 'bold'))
+    headerText.configure(font=(configure.font, 25, 'bold'))
     headerText.grid(row=0, column=1)
     welcomeText = ctk.CTkLabel(master=headerFrame, text='Welcome ', text_color=configure.white,
-                               text_font=configure.welcome_fontstyle, justify='center', width=0)
+                               font=configure.welcome_fontstyle, justify='center', width=0)
     welcomeText.grid(row=0, column=3)
     if not parent.loginsql.getLoginDetails():
         name = ["User", ""]
@@ -28,7 +31,7 @@ def dashboardHeaderGUI(parent, grandparent):
         login = list(parent.loginsql.getLoginDetails()[0])
         name = list(parent.signupsql.fetchCondition('Fname, Lname', login[0])[0])
     userText = ctk.CTkLabel(master=headerFrame, width=0, text=" ".join([name[0], name[1]]),
-                            text_color=configure.light_cyan, text_font=configure.welcome_fontstyle, justify='center')
+                            text_color=configure.light_cyan, font=configure.welcome_fontstyle, justify='center')
     userText.grid(row=0, column=4)
     grandparent.withdraw()
     grandparent.update()

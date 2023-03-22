@@ -29,7 +29,7 @@ class StackPile(ctk.CTk):
         # set the title of the application
         self.title('Kongknitec')
         # set the icon of the application
-        self.iconphoto(False, self._icon)
+        self.iconphoto(True, self._icon)
         # to disable the maximise button
         self.resizable(False, False)
         # To deactivate scaling effect on software
@@ -48,8 +48,7 @@ class StackPile(ctk.CTk):
         # to initialise the stacking frame to hold the frames
         container = ctk.CTkFrame(self, fg_color=configure.very_dark_gray)
         # placing the stacking frame on the main frame
-        container.grid(row=0, column=0, sticky='nsew', pady=(configure.screen_height - 600) / 2,
-                       padx=(configure.screen_width - 300) / 2)
+        container.grid(row=0, column=0, sticky='nsew')
         self.frames = {}
         self.previous = ''
         self.frame_stack = (

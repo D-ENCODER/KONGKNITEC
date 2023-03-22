@@ -31,9 +31,9 @@ class FacialRecognition(ctk.CTkToplevel):
         self.__attendanceFirebase = AttendanceServices()
         self.enrolls = []
         self.__frame = ctk.CTkFrame(self, fg_color=configure.very_dark_gray)
-        # self.__label = ctk.CTkLabel(self.__frame, text_font=(configure.font, 20, "bold"))
+        # self.__label = ctk.CTkLabel(self.__frame, font=(configure.font, 20, "bold"))
         # self.__label.grid(row=0, column=0, sticky="nsew")
-        self.__textarea = ctk.CTkTextbox(self.__frame, text_font=(configure.font, 15), corner_radius=10,
+        self.__textarea = ctk.CTkTextbox(self.__frame, font=(configure.font, 15), corner_radius=10,
                                          width=600, fg_color=configure.very_dark_gray, height=450)
         self.__textarea.configure(state="disabled")
         self.__textarea.grid(row=1, column=0, sticky="nsew", pady=20, padx=25)

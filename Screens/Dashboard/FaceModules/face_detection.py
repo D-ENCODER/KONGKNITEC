@@ -30,7 +30,7 @@ class FaceDetection(ctk.CTkToplevel):
         self.__detector = dlib.get_frontal_face_detector()
         self.__enrollment = kwargs["enrollment"]
         self.__cap = cv2.VideoCapture(0)
-        self.__label = ctk.CTkLabel(self, text_font=(configure.font, 20, "bold"))
+        self.__label = ctk.CTkLabel(self, font=(configure.font, 20, "bold"))
         self.__label.grid(row=0, column=0, sticky="nsew")
         self.__frame = ctk.CTkFrame(self)
         self.__frame.grid(row=1, column=0, sticky="nsew")
