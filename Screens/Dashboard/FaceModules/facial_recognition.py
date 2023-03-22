@@ -14,6 +14,7 @@ import cv2
 import numpy as np
 from PIL import Image, ImageTk
 import configure
+from Backend.FirebaseServices.attendanceServices import AttendanceServices
 from Backend.SqliteServices.attendance_sqlite_services import AttendanceSqliteServices
 from Screens.Refactor.customWidgets import CustomWidgets
 
@@ -27,6 +28,8 @@ class FacialRecognition(ctk.CTkToplevel):
         self.iconphoto(False, self._icon)
         self.geometry("650x550")
         self.configure(fg_color=configure.very_dark_gray)
+        self.__attendanceFirebase = AttendanceServices()
+        self.enrolls = []
         self.__frame = ctk.CTkFrame(self, fg_color=configure.very_dark_gray)
         # self.__label = ctk.CTkLabel(self.__frame, text_font=(configure.font, 20, "bold"))
         # self.__label.grid(row=0, column=0, sticky="nsew")
@@ -74,6 +77,7 @@ class FacialRecognition(ctk.CTkToplevel):
             if True in matches:
                 first_match_index = matches.index(True)
                 name = self.__knownFaceNames[first_match_index]
+                name = 'A' + name
 
             # Or instead, use the known face with the smallest distance to the new face
             else:
@@ -81,6 +85,7 @@ class FacialRecognition(ctk.CTkToplevel):
                 best_match_index = np.argmin(face_distances)
                 if matches[best_match_index]:
                     name = self.__knownFaceNames[best_match_index]
+                    name = 'A' + name
 
             if name != "Unknown":
                 enrolls = list(self.__attendancesql.getEnrollment(self.__date))
@@ -90,6 +95,7 @@ class FacialRecognition(ctk.CTkToplevel):
                     self.__textarea.configure(state="normal")
                     self.__textarea.insert("0.0", name + " attendance marked successfully\n")
                     self.__attendancesql.insertAttendance(self.__date, name)
+                    self.enrolls.append(name)
                     self.__textarea.configure(state="disabled")
                 else:
                     continue
@@ -102,6 +108,7 @@ class FacialRecognition(ctk.CTkToplevel):
         self.after(1, self.__recognize)
 
     def onClosing(self):
+        self.__attendanceFirebase.insertAttendance(self.__date, self.enrolls)
         # Release handle to the webcam
         self.__videoCapture.release()
         cv2.destroyAllWindows()

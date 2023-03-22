@@ -5,6 +5,7 @@
 # Version : 1.0.0
 import customtkinter as ctk
 import configure
+from Backend.FirebaseServices.authenticationServices import AuthenticationServices
 from Backend.encryptor import encrypt
 from Backend.SqliteServices.signup_sqlite_services import SignupSqliteServices
 from Helper_Functions.customErrorBox import CustomBox
@@ -30,6 +31,7 @@ class Signup(ctk.CTkFrame):
         ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.very_dark_gray)
         # Enlarging the scope of the controller so that it can be used in other functions
         self.__controller = kwargs['controller']
+        self.obj = AuthenticationServices()
         # Initializing the error handlers
         self.email_error_label = ctk.CTkLabel()
         self.password_error_label = ctk.CTkLabel()
@@ -141,15 +143,15 @@ class Signup(ctk.CTkFrame):
             """
             # Validating the email address, password and confirm password entered by the user
             if validate_email(parent=self) and validate_password(parent=self) and validate_confirm_password():
-                if configure.obj.check_email_exists('Admin_details', self.email_entry.get()) or \
-                        configure.obj.check_email_exists('User_details', self.email_entry.get()):
+                if self.obj.check_email_exists('Admin_details', self.email_entry.get()) or \
+                        self.obj.check_email_exists('User_details', self.email_entry.get()):
                     # Custom messagebox object
                     self.obj = CustomBox()
                     self.obj.errorBox('ERROR', 'Email already exists')
                 else:
                     self.password = encrypt(self.password_entry.get())
-                    Signup.credentials['email'] = self.email_entry.get()
-                    Signup.credentials['password'] = self.password
+                    Signup.credentials['Email'] = self.email_entry.get()
+                    Signup.credentials['Password'] = self.password
                     self.__sql.insertSignupDetails(self.email_entry.get(), self.password_entry.get())
                     self.__controller.showFrame('UserDetailsStack', self)
             else:

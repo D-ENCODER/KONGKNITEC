@@ -3,10 +3,10 @@
 # GitHub    : (https://github.com/D-ENCODER)
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
-import datetime
 import customtkinter as ctk
 import requests
 import configure
+from Backend.FirebaseServices.authenticationServices import AuthenticationServices
 from Backend.SqliteServices.login_sqlite_services import LoginSqliteServices
 from Backend.encryptor import encrypt
 from Helper_Functions.customErrorBox import CustomBox
@@ -30,6 +30,7 @@ class Login(ctk.CTkFrame):
         """
         ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.very_dark_gray)
         self.__parent = kwargs['parent']
+        self.obj = AuthenticationServices()
         # Initializing the error handlers
         self.enrollment_error_label = ctk.CTkLabel()
         self.password_error_label = ctk.CTkLabel()
@@ -105,22 +106,28 @@ class Login(ctk.CTkFrame):
                 try:
                     requests.get('https://google.com')
                     if self.enrollment_entry.get().startswith('314'):
-                        dbpassword = configure.obj.getLoginDetails(self.enrollment_entry.get(), True)
+                        dbpassword = self.obj.getLoginDetails(self.enrollment_entry.get(), True)
                     else:
-                        dbpassword = configure.obj.getLoginDetails(self.enrollment_entry.get(), False)
+                        dbpassword = self.obj.getLoginDetails(self.enrollment_entry.get(), False)
                     if dbpassword is None:
                         # Custom messagebox object
-                        self.obj = CustomBox()
-                        self.obj.errorBox('ERROR', 'No user found with this enrollment number')
+                        self.error = CustomBox()
+                        self.error.errorBox('ERROR', 'No user found with this enrollment number')
+                        file = open('KONGKNITEC', 'a')
+                        file.write('No user found with this enrollment number')
+                        file.close()
                     elif dbpassword == encrypt(self.password_entry.get()):
-                        configure.obj.dbLogin(int(self.enrollment_entry.get()))
+                        self.obj.dbLogin(int(self.enrollment_entry.get()))
                         self._sql.insertLoginDetails(self.enrollment_entry.get())
                         self.__parent.grid_configure(pady=0, padx=0)
                         self.__controller.showFrame('MainScreen', self)
                     else:
                         # Custom messagebox object
-                        self.obj = CustomBox()
-                        self.obj.errorBox('ERROR', 'Invalid credentials')
+                        self.error = CustomBox()
+                        self.error.errorBox('ERROR', 'Invalid credentials')
+                        file = open('KONGKNITEC', 'a')
+                        file.write('No user found with this enrollment number')
+                        file.close()
                 except requests.exceptions.ConnectionError:
                     self.__controller.showFrame('NoInternet', self)
             else:
