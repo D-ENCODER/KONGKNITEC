@@ -7,20 +7,19 @@
 from firebase_admin import firestore, credentials
 import firebase_admin
 from datetime import datetime
-
 import configure
 from Backend.encryptor import encrypt
 from Helper_Functions.customErrorBox import CustomBox
 
 
-class FirebaseDatabase:
+class AuthenticationServices:
     """
     class for executing backend queries and database related functions.
     """
 
     def __init__(self):
-        # Using jason file to initialize an app instance in the constructor
-        cred = credentials.Certificate("Backend/serviceAccountKey.json")
+        # Using json file to initialize an app instance in the constructor
+        cred = credentials.Certificate("Backend/FirebaseServices/serviceAccountKey.json")
         firebase_admin.initialize_app(cred)
 
     @staticmethod

@@ -3,7 +3,7 @@
 # GitHub    : (https://github.com/D-ENCODER)
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
-from Backend.auth import FirebaseDatabase
+from Backend.FirebaseServices.authenticationServices import AuthenticationServices
 
 light_cyan = '#64FFDA'
 vivid_cyan = '#1de9b6'
@@ -15,4 +15,4 @@ screen_height = 0
 font = 'Ubuntu Mono'
 welcome_fontstyle = (font, 14, "bold")
 header_fontstyle = (font, 20, "bold")
-obj = FirebaseDatabase()
+obj = AuthenticationServices()
