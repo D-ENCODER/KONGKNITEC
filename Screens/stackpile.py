@@ -7,7 +7,6 @@ from tkinter import PhotoImage
 import customtkinter as ctk
 import firebase_admin
 from firebase_admin import credentials
-
 import configure
 from Screens.Auth import login, signup, forgotPassword, verify, resetPassword, personalInfo
 from Screens import splashScreen, noInternet
