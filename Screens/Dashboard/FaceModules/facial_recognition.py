@@ -105,7 +105,7 @@ class FacialRecognition(ctk.CTkToplevel):
                 self.__textarea.configure(state="disabled")
 
         self.__button.configure(command=self.onClosing)
-        self.after(1, self.__recognize)
+        self.after(100, self.__recognize)
 
     def onClosing(self):
         self.__attendanceFirebase.insertAttendance(self.__date, self.enrolls)

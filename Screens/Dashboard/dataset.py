@@ -133,7 +133,7 @@ class Dataset(ctk.CTkFrame):
         ctk.CTkLabel(master=self, text='').grid(row=2, column=0)
         self.frame = ctk.CTkScrollableFrame(master=self, fg_color=configure.very_dark_gray,
                                             width=(configure.screen_width / 4) * 3, height=(configure.screen_height - 200))
-        self.frame.grid(row=3, column=0, padx=50)
+        self.frame.grid(row=3, column=0)
         table_header = ['SR No.', 'Enrollment No.', 'Name', 'E-mail', 'Date']
         for i in range(len(table_header)):
             self.label = ctk.CTkLabel(master=self.frame, text=table_header[i], font=(configure.font, 23, "bold"),

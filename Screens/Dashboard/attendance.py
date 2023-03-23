@@ -54,14 +54,14 @@ class Attendance(ctk.CTkFrame):
         ctk.CTkLabel(master=self, text='').grid(row=2, column=0)
         self.frame = ctk.CTkScrollableFrame(master=self, fg_color=configure.very_dark_gray,
                                             width=(configure.screen_width / 4) * 3, height=(configure.screen_height - 200))
-        self.frame.grid(row=3, column=0, padx=50)
+        self.frame.grid(row=3, column=0)
         data = list(self.attendanceSql.getAttendance(self.date))
         table_header = ['SR No.', 'Enrollment No.', 'Name', 'E-mail', 'Time']
         for i in range(len(table_header)):
             self.label = ctk.CTkLabel(master=self.frame, text=table_header[i], font=(configure.font, 23, "bold"),
                                       text_color=configure.vivid_cyan)
             self.label.grid(row=0, column=i, sticky='nsew',  padx=20)
-        info = [[]]
+        info = [[], [], [], [], []]
         for i in range(len(data)):
             data[i] = list(data[i])
             for j in range(len(data[i])):

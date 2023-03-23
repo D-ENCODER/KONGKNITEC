@@ -69,6 +69,7 @@ class FaceDetection(ctk.CTkToplevel):
                     def save():
                         try:
                             cv2.imwrite("Dataset/{}.jpg".format(self.__enrollment), frame)
+                            self.__datasetsql.massInsert(list(self.__enrollment))
                             self.__firebaseDataset.addDataset(self.__enrollment, 'Dataset/{}.jpg'.format(self.__enrollment))
                         except Exception as e:
                             obj = open("KONGKNITEC.log", "a")
