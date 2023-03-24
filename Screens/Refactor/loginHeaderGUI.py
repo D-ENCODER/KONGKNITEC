@@ -5,9 +5,7 @@
 # Version : 1.0.0
 import customtkinter as ctk
 from PIL import Image
-
 import configure
-from Helper_Functions.loadImage import loadImage
 
 
 def loginHeaderGUI(self):

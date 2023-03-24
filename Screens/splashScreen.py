@@ -20,8 +20,8 @@ class SplashScreen(ctk.CTkFrame):
     def _splashGUI(self):
         splash = ctk.CTkLabel(self, text='', height=350, width=600,
                               bg_color=configure.very_dark_gray, anchor='center')
-        splash.pack(padx=((configure.screen_width-600)/2), pady=((configure.screen_height-350)/2))
+        splash.grid(row=0, column=0, padx=(configure.screen_width - 570) / 2,
+                    pady=(configure.screen_height - 500) / 2)
         splashscreen = VideoPlayer("Assets/splash.gif", splash,
                                    controller=self._controller, parent=self._parent)
         splashscreen.play()
-

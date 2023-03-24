@@ -9,7 +9,6 @@ from PIL import Image
 import configure
 from Backend.SqliteServices.login_sqlite_services import LoginSqliteServices
 from Backend.SqliteServices.signup_sqlite_services import SignupSqliteServices
-from Helper_Functions.loadImage import loadImage
 from Screens.Dashboard import attendance, dataset, dashboard, profile
 from Screens.Refactor.customWidgets import CustomWidgets
 from Screens.Refactor.dashboardHeaderGUI import dashboardHeaderGUI
@@ -30,28 +29,28 @@ class MainScreen(ctk.CTkFrame):
         match index:
             case 0:
                 self.__switcher('default')
-                self.navigator.dashboardDarkImg = loadImage(self.navigator, 'Assets/dashboardd.png', 20)
+                self.navigator.dashboardDarkImg = ctk.CTkImage(Image.open("Assets/dashboardd.png"), size=(20, 20))
                 self.__dashboard.configure(fg_color=configure.vivid_cyan, text_color=configure.very_dark_gray,
                                            hover_color=configure.light_cyan, image=self.navigator.dashboardDarkImg)
                 self.showFrame('Dashboard')
 
             case 1:
                 self.__switcher('default')
-                self.navigator.datasetDarkImg = loadImage(self.navigator, 'Assets/datasetd.png', 20)
+                self.navigator.datasetDarkImg = ctk.CTkImage(Image.open("Assets/datasetd.png"), size=(20, 20))
                 self.__dataset.configure(fg_color=configure.vivid_cyan, text_color=configure.very_dark_gray,
                                          hover_color=configure.light_cyan, image=self.navigator.datasetDarkImg)
                 self.showFrame('Dataset')
 
             case 2:
                 self.__switcher('default')
-                self.navigator.attendanceDarkImg = loadImage(self.navigator, 'Assets/attendanced.png', 20)
+                self.navigator.attendanceDarkImg = ctk.CTkImage(Image.open("Assets/attendanced.png"), size=(20, 20))
                 self.__attendance.configure(fg_color=configure.vivid_cyan, text_color=configure.very_dark_gray,
                                             hover_color=configure.light_cyan, image=self.navigator.attendanceDarkImg)
                 self.showFrame('Attendance')
 
             case 3:
                 self.__switcher('default')
-                self.navigator.profileDarkImg = loadImage(self.navigator, 'Assets/profiled.png', 20)
+                self.navigator.profileDarkImg = ctk.CTkImage(Image.open("Assets/profiled.png"), size=(20, 20))
                 self.__profile.configure(fg_color=configure.vivid_cyan, text_color=configure.very_dark_gray,
                                          hover_color=configure.light_cyan, image=self.navigator.profileDarkImg)
                 self.showFrame('Profile')

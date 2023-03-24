@@ -5,7 +5,6 @@
 # Version : 1.0.0
 import customtkinter as ctk
 import configure
-from Helper_Functions.loadImage import loadImage
 
 
 def loginFooterGUI(self, label, controller, hyper_label, frame):

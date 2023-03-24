@@ -7,7 +7,7 @@ import threading
 from time import sleep
 import imageio
 from PIL import Image, ImageTk
-
+import customtkinter as ctk
 import configure
 from Backend.SqliteServices.signup_sqlite_services import SignupSqliteServices
 
@@ -41,6 +41,7 @@ class VideoPlayer:
         self.frame_data = imageio.get_reader(self.path)
         # resizes the video's frames and stores them in a list
         for image in self.frame_data.iter_data():
+            # self.imgFrames.append(ctk.CTkImage(Image.fromarray(image)))
             self.imgFrames.append(ImageTk.PhotoImage(Image.fromarray(image).resize(self.size)))
 
     def load(self, label, loop):
@@ -62,8 +63,8 @@ class VideoPlayer:
                 sleep(0.05)
             obj = SignupSqliteServices()
             if obj.checkLogin() == [(0,)]:
-                self.parent.grid_configure(pady=(configure.screen_height - 600) / 2,
-                                           padx=(configure.screen_width - 300) / 2)
+                # self.parent.grid_configure(pady=(configure.screen_height - 600) / 2,
+                #                            padx=(configure.screen_width - 300) / 2)
                 self.controller.showFrame("Login", self)
             else:
                 self.parent.grid_configure(pady=0, padx=0)

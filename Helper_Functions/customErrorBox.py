@@ -5,7 +5,8 @@
 # Version : 1.0.0
 from customtkinter import *
 import configure
-from Helper_Functions.loadImage import loadImage
+import customtkinter as ctk
+from PIL import Image
 
 
 class CustomBox(CTkToplevel):
@@ -14,7 +15,7 @@ class CustomBox(CTkToplevel):
         self.resizable(False, False)
         self.configure(bg=configure.very_dark_gray)
         self.geometry("350x175+{}+{}".format(0, 0))
-        img = loadImage(self, 'Assets/error.png', 35)
+        img = ctk.CTkImage(Image.open('Assets/error.png'), size=(35, 35))
         self.iconphoto(False, img)
         error_image = CTkLabel(master=self, image=img, anchor='nw')
         error_image.place(x=10, y=15)

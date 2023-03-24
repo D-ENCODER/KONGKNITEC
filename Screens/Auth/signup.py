@@ -11,7 +11,6 @@ from Backend.FirebaseServices.authenticationServices import AuthenticationServic
 from Backend.encryptor import encrypt
 from Backend.SqliteServices.signup_sqlite_services import SignupSqliteServices
 from Helper_Functions.customErrorBox import CustomBox
-from Helper_Functions.loadImage import loadImage
 from Screens.Refactor.customWidgets import CustomWidgets
 from Screens.Refactor.loginFooterGUI import loginFooterGUI
 from Screens.Refactor.loginHeaderGUI import loginHeaderGUI

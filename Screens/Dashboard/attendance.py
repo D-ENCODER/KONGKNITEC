@@ -5,6 +5,7 @@
 # Version : 1.0.0
 from datetime import datetime
 import customtkinter as ctk
+from PIL import Image
 from PIL.ImageTk import PhotoImage
 import configure
 from Backend.SqliteServices.attendance_sqlite_services import AttendanceSqliteServices
@@ -20,6 +21,13 @@ class Attendance(ctk.CTkFrame):
         self.__controller = kwargs['controller']
         self.date = datetime.now().strftime("%d%m%Y")
         self.__signupSql = SignupSqliteServices()
+        self.__frame = ctk.CTkScrollableFrame(master=self, fg_color=configure.very_dark_gray,
+                                              width=(configure.screen_width / 4) * 3,
+                                              height=(configure.screen_height - 200))
+        self.__frame.grid(row=3, column=0)
+        self.__emptyFrame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
+        self.__emptyFrame.grid(row=2, column=0, sticky='nsew', padx=(((configure.screen_width / 4) * 3) - 140) / 2,
+                               pady=(configure.screen_height - 191) / 2)
         self.attendanceSql = AttendanceSqliteServices()
         self.attendanceSql.createTable(self.date)
         self.__attendanceGUI()
@@ -33,34 +41,51 @@ class Attendance(ctk.CTkFrame):
             obj = FacialRecognition()
 
         ctk.CTkLabel(master=self.__option, text='', width=self.__size).grid(row=0, column=0)
+        image = ctk.CTkImage(Image.open('Assets/sync.png'), size=(25, 25))
+        self.__refreshTable = ctk.CTkButton(master=self.__option, text='', command=lambda: self.refresh(), hover=False,
+                                            fg_color=configure.very_dark_gray, image=image, width=35, height=35,
+                                            corner_radius=180)
+        self.__refreshTable.grid(row=0, column=1, sticky='e')
         self.__takeAttendance = ctk.CTkButton(master=self.__option, text='Take',
                                               font=(configure.font, 18, "bold"), command=lambda: take(),
                                               text_color=configure.very_dark_gray, fg_color=configure.vivid_cyan,
                                               hover_color=configure.light_cyan, width=100, height=35, corner_radius=10)
-        self.__takeAttendance.grid(row=0, column=1, sticky='e')
+        self.__takeAttendance.grid(row=0, column=2, sticky='e')
         self.__addAttendance = ctk.CTkButton(master=self.__option, text='Add', font=(configure.font, 18, "bold"),
                                              text_color=configure.very_dark_gray, command=lambda: self.add(),
                                              fg_color=configure.vivid_cyan,
                                              hover_color=configure.light_cyan, width=100, height=35, corner_radius=10)
         self.__addAttendance.grid(row=0, column=3, padx=25)
         self.__option.grid(row=1, column=0)
+
         enrolls = list(self.attendanceSql.getEnrollment(self.date))
         if not enrolls:
             self.__emptyAttendanceGUI()
         else:
             self.__tableAttendanceGUI()
 
+    def refresh(self):
+        enrolls = list(self.attendanceSql.getEnrollment(self.date))
+        if not enrolls:
+            self.__emptyFrame.destroy()
+            self.__emptyAttendanceGUI()
+        else:
+            self.__frame.destroy()
+            self.__tableAttendanceGUI()
+
     def __tableAttendanceGUI(self):
+        self.__emptyFrame.destroy()
+        self.__frame = ctk.CTkScrollableFrame(master=self, fg_color=configure.very_dark_gray,
+                                              width=(configure.screen_width / 4) * 3,
+                                              height=(configure.screen_height - 200))
+        self.__frame.grid(row=3, column=0)
         ctk.CTkLabel(master=self, text='').grid(row=2, column=0)
-        self.frame = ctk.CTkScrollableFrame(master=self, fg_color=configure.very_dark_gray,
-                                            width=(configure.screen_width / 4) * 3, height=(configure.screen_height - 200))
-        self.frame.grid(row=3, column=0)
         data = list(self.attendanceSql.getAttendance(self.date))
         table_header = ['SR No.', 'Enrollment No.', 'Name', 'E-mail', 'Time']
         for i in range(len(table_header)):
-            self.label = ctk.CTkLabel(master=self.frame, text=table_header[i], font=(configure.font, 23, "bold"),
+            self.label = ctk.CTkLabel(master=self.__frame, text=table_header[i], font=(configure.font, 23, "bold"),
                                       text_color=configure.vivid_cyan)
-            self.label.grid(row=0, column=i, sticky='nsew',  padx=20)
+            self.label.grid(row=0, column=i, sticky='nsew', padx=20)
         info = [[], [], [], [], []]
         for i in range(len(data)):
             data[i] = list(data[i])
@@ -79,14 +104,15 @@ class Attendance(ctk.CTkFrame):
         data = info
         for details in range(len(data)):
             for fields in range(len(data[details])):
-                self.label = ctk.CTkLabel(master=self.frame, text=data[details][fields], font=(configure.font, 20))
+                self.label = ctk.CTkLabel(master=self.__frame, text=data[details][fields], font=(configure.font, 20))
                 self.label.grid(row=details + 1, column=fields, sticky='nsew', padx=20, pady=10)
 
     def __emptyAttendanceGUI(self):
-        frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
-        frame.grid(row=2, column=0, sticky='nsew', padx=(((configure.screen_width / 4) * 3) - 140) / 2,
-                   pady=(configure.screen_height - 191) / 2)
-        label = ctk.CTkLabel(frame, text='No Data available!!', font=configure.welcome_fontstyle,
+        self.__frame.destroy()
+        self.__emptyFrame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
+        self.__emptyFrame.grid(row=2, column=0, sticky='nsew', padx=(((configure.screen_width / 4) * 3) - 140) / 2,
+                               pady=(configure.screen_height - 191) / 2)
+        label = ctk.CTkLabel(self.__emptyFrame, text='No Data available!!', font=configure.welcome_fontstyle,
                              fg_color=configure.very_dark_gray)
         label.grid(row=1, column=1)
 

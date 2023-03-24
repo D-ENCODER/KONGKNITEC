@@ -7,9 +7,7 @@
 import customtkinter as ctk
 import requests
 from PIL import Image
-
 import configure
-from Helper_Functions.loadImage import loadImage
 from Screens.Refactor.customWidgets import CustomWidgets
 
 

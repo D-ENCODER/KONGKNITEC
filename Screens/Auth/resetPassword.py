@@ -11,7 +11,6 @@ import configure
 from Backend.FirebaseServices.authenticationServices import AuthenticationServices
 from Backend.encryptor import encrypt
 from Backend.smtp_services import sendPasswordChanged
-from Helper_Functions.loadImage import loadImage
 from Screens.Refactor.customWidgets import CustomWidgets
 from Screens.Refactor.loginHeaderGUI import loginHeaderGUI
 from Screens.Validator.validator import validate_password
