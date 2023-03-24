@@ -7,7 +7,6 @@
 import pickle
 from datetime import datetime
 from tkinter import PhotoImage
-
 import face_recognition
 import customtkinter as ctk
 import cv2

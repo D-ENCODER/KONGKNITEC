@@ -48,12 +48,12 @@ class Profile(ctk.CTkFrame):
         ctk.CTkLabel(master=self.phone_frame, text='Contact', font=(configure.font, 17, 'bold'),
                      width=30).grid(row=5, column=0, sticky='e')
         self.phone_entry = CustomWidgets.customEntry(parent=self.phone_frame, placeholder='1234567890')
-        self.phone_entry.grid(row=5, column=2)
+        self.phone_entry.grid(row=5, column=1, padx=50)
         self.phone_entry.bind('<FocusOut>', lambda event: self._validate_fields(0))
-        self.phone_frame.grid(row=5, column=2, pady=10, padx=25)
+        self.phone_frame.grid(row=5, column=2, pady=10)
         self.birth_frame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
         ctk.CTkLabel(master=self.birth_frame, text='DoB', font=(configure.font, 17, 'bold'),
-                     width=70).grid(row=6, column=0, sticky='e')
+                     width=70).grid(row=6, column=0, sticky='e', padx="50")
         self.day = CustomWidgets.customEntry(parent=self.birth_frame, placeholder='DD', width=40)
         self.day.bind('<KeyRelease>', lambda event: self._switch(0))
         self.day.grid(row=6, column=2)

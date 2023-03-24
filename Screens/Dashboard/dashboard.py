@@ -50,7 +50,7 @@ class Dashboard(ctk.CTkFrame):
                                        master=master)
             canvas._tkcanvas.config(bg='#1a1a1a')
             canvas.draw()
-            canvas.get_tk_widget().pack()
+            canvas.get_tk_widget().pack() 
 
     def __emptyData(self, master):
         self.__empty = ctk.CTkLabel(master, text='No Data Found', fg_color=configure.very_dark_gray)
