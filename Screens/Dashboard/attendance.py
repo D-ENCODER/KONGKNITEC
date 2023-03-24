@@ -86,9 +86,11 @@ class Attendance(ctk.CTkFrame):
             self.label = ctk.CTkLabel(master=self.__frame, text=table_header[i], font=(configure.font, 23, "bold"),
                                       text_color=configure.vivid_cyan)
             self.label.grid(row=0, column=i, sticky='nsew', padx=20)
-        info = [[], [], [], [], []]
+
+        info = []
         for i in range(len(data)):
             data[i] = list(data[i])
+            info.append([])
             for j in range(len(data[i])):
                 if j == 0:
                     info[i].append(data[i][0])

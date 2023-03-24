@@ -71,6 +71,14 @@ class AttendanceSqliteServices:
         self.cursor.execute("SELECT EnrollmentNo FROM {}".format("A" + name))
         return self.cursor.fetchall()
 
+    def getTableDetails(self):
+        """
+        This method returns the details of the tables.
+        :return: List of tuples containing the details of the tables.
+        """
+        self.cursor.execute("SELECT TableName FROM Attendance")
+        return self.cursor.fetchall()
+
     def __del__(self):
         """
         This is the destructor of AttendanceSqliteServices class. It closes the connection with the database.
