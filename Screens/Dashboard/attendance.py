@@ -27,6 +27,15 @@ class Attendance(ctk.CTkFrame):
         self.__DBMSframe = ctk.CTkScrollableFrame(master=self, fg_color=configure.very_dark_gray,
                                                   width=(configure.screen_width / 4) * 3,
                                                   height=(configure.screen_height - 200))
+        self.__PPUDframe = ctk.CTkScrollableFrame(master=self, fg_color=configure.very_dark_gray,
+                                                  width=(configure.screen_width / 4) * 3,
+                                                  height=(configure.screen_height - 200))
+        self.__NMAframe = ctk.CTkScrollableFrame(master=self, fg_color=configure.very_dark_gray,
+                                                 width=(configure.screen_width / 4) * 3,
+                                                 height=(configure.screen_height - 200))
+        self.__MCADframe = ctk.CTkScrollableFrame(master=self, fg_color=configure.very_dark_gray,
+                                                  width=(configure.screen_width / 4) * 3,
+                                                  height=(configure.screen_height - 200))
         self.__emptyFrame = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
         self.__emptyFrame.grid(row=2, column=0, sticky='nsew', padx=(((configure.screen_width / 4) * 3) - 140) / 2,
                                pady=(configure.screen_height - 191) / 2)
@@ -81,26 +90,46 @@ class Attendance(ctk.CTkFrame):
             self.__tableDBMSAttendanceGUI()
 
     def subject(self):
-        print(self.subjects.get())
         if self.subjects.get() == 'DBMS':
             self.sub = 'DBMS'
             self.__emptyFrame.destroy()
             self.__JAVAframe.destroy()
+            self.__NMAframe.destroy()
+            self.__MCADframe.destroy()
+            self.__PPUDframe.destroy()
             self.__tableDBMSAttendanceGUI()
         elif self.subjects.get() == 'JAVA':
             self.sub = 'JAVA'
+            self.__MCADframe.destroy()
+            self.__NMAframe.destroy()
+            self.__PPUDframe.destroy()
             self.__emptyFrame.destroy()
             self.__DBMSframe.destroy()
             self.__tableJAVAAttendanceGUI()
         elif self.subjects.get() == 'MCAD':
             self.sub = 'MCAD'
-            pass
+            self.__emptyFrame.destroy()
+            self.__DBMSframe.destroy()
+            self.__JAVAframe.destroy()
+            self.__NMAframe.destroy()
+            self.__PPUDframe.destroy()
+            self.__tableMCADAttendanceGUI()
         elif self.subjects.get() == 'NMA':
             self.sub = 'NMA'
-            pass
+            self.__emptyFrame.destroy()
+            self.__DBMSframe.destroy()
+            self.__JAVAframe.destroy()
+            self.__MCADframe.destroy()
+            self.__PPUDframe.destroy()
+            self.__tableNMAAttendanceGUI()
         elif self.subjects.get() == 'PPUD':
             self.sub = 'PPUD'
-            pass
+            self.__MCADframe.destroy()
+            self.__NMAframe.destroy()
+            self.__JAVAframe.destroy()
+            self.__DBMSframe.destroy()
+            self.__emptyFrame.destroy()
+            self.__tablePPUDAttendanceGUI()
 
     def __tableDBMSAttendanceGUI(self):
         self.__DBMSframe = ctk.CTkScrollableFrame(master=self, fg_color=configure.very_dark_gray,
@@ -136,6 +165,117 @@ class Attendance(ctk.CTkFrame):
         for details in range(len(data)):
             for fields in range(len(data[details])):
                 self.label = ctk.CTkLabel(master=self.__DBMSframe, text=data[details][fields],
+                                          font=(configure.font, 20))
+                self.label.grid(row=details + 1, column=fields, sticky='nsew', padx=20, pady=10)
+
+    def __tablePPUDAttendanceGUI(self):
+        self.__PPUDframe = ctk.CTkScrollableFrame(master=self, fg_color=configure.very_dark_gray,
+                                                  width=(configure.screen_width / 4) * 3,
+                                                  height=(configure.screen_height - 200))
+        self.__PPUDframe.grid(row=3, column=0)
+        self.__PPUDframe.tkraise()
+        ctk.CTkLabel(master=self, text='').grid(row=2, column=0)
+        data = list(self.attendanceSql.getAttendanceWithSubject(self.date, "PPUD"))
+        table_header = ['SR No.', 'Enrollment No.', 'Name', 'E-mail', 'Time']
+        for i in range(len(table_header)):
+            self.label = ctk.CTkLabel(master=self.__PPUDframe, text=table_header[i], font=(configure.font, 23, "bold"),
+                                      text_color=configure.vivid_cyan)
+            self.label.grid(row=0, column=i, sticky='nsew', padx=20)
+
+        info = []
+        for i in range(len(data)):
+            data[i] = list(data[i])
+            info.append([])
+            for j in range(len(data[i])):
+                if j == 0:
+                    info[i].append(data[i][0])
+                if j == 1:
+                    enroll = str(data[i][1])[1:]
+                    info[i].append(enroll)
+                    userdata = list(self.__signupSql.fetchCondition('Fname, Lname, Email', enroll))
+                    for user in userdata:
+                        info[i].append(user[0] + ' ' + user[1])
+                        info[i].append(user[2])
+                if j == 2:
+                    info[i].append(data[i][2])
+        data = info
+        for details in range(len(data)):
+            for fields in range(len(data[details])):
+                self.label = ctk.CTkLabel(master=self.__PPUDframe, text=data[details][fields],
+                                          font=(configure.font, 20))
+                self.label.grid(row=details + 1, column=fields, sticky='nsew', padx=20, pady=10)
+
+    def __tableNMAAttendanceGUI(self):
+        self.__NMAframe = ctk.CTkScrollableFrame(master=self, fg_color=configure.very_dark_gray,
+                                                  width=(configure.screen_width / 4) * 3,
+                                                  height=(configure.screen_height - 200))
+        self.__NMAframe.grid(row=3, column=0)
+        self.__NMAframe.tkraise()
+        ctk.CTkLabel(master=self, text='').grid(row=2, column=0)
+        data = list(self.attendanceSql.getAttendanceWithSubject(self.date, "NMA"))
+        table_header = ['SR No.', 'Enrollment No.', 'Name', 'E-mail', 'Time']
+        for i in range(len(table_header)):
+            self.label = ctk.CTkLabel(master=self.__NMAframe, text=table_header[i], font=(configure.font, 23, "bold"),
+                                      text_color=configure.vivid_cyan)
+            self.label.grid(row=0, column=i, sticky='nsew', padx=20)
+
+        info = []
+        for i in range(len(data)):
+            data[i] = list(data[i])
+            info.append([])
+            for j in range(len(data[i])):
+                if j == 0:
+                    info[i].append(data[i][0])
+                if j == 1:
+                    enroll = str(data[i][1])[1:]
+                    info[i].append(enroll)
+                    userdata = list(self.__signupSql.fetchCondition('Fname, Lname, Email', enroll))
+                    for user in userdata:
+                        info[i].append(user[0] + ' ' + user[1])
+                        info[i].append(user[2])
+                if j == 2:
+                    info[i].append(data[i][2])
+        data = info
+        for details in range(len(data)):
+            for fields in range(len(data[details])):
+                self.label = ctk.CTkLabel(master=self.__NMAframe, text=data[details][fields],
+                                          font=(configure.font, 20))
+                self.label.grid(row=details + 1, column=fields, sticky='nsew', padx=20, pady=10)
+
+    def __tableMCADAttendanceGUI(self):
+        self.__MCADframe = ctk.CTkScrollableFrame(master=self, fg_color=configure.very_dark_gray,
+                                                  width=(configure.screen_width / 4) * 3,
+                                                  height=(configure.screen_height - 200))
+        self.__MCADframe.grid(row=3, column=0)
+        self.__MCADframe.tkraise()
+        ctk.CTkLabel(master=self, text='').grid(row=2, column=0)
+        data = list(self.attendanceSql.getAttendanceWithSubject(self.date, "MCAD"))
+        table_header = ['SR No.', 'Enrollment No.', 'Name', 'E-mail', 'Time']
+        for i in range(len(table_header)):
+            self.label = ctk.CTkLabel(master=self.__MCADframe, text=table_header[i], font=(configure.font, 23, "bold"),
+                                      text_color=configure.vivid_cyan)
+            self.label.grid(row=0, column=i, sticky='nsew', padx=20)
+
+        info = []
+        for i in range(len(data)):
+            data[i] = list(data[i])
+            info.append([])
+            for j in range(len(data[i])):
+                if j == 0:
+                    info[i].append(data[i][0])
+                if j == 1:
+                    enroll = str(data[i][1])[1:]
+                    info[i].append(enroll)
+                    userdata = list(self.__signupSql.fetchCondition('Fname, Lname, Email', enroll))
+                    for user in userdata:
+                        info[i].append(user[0] + ' ' + user[1])
+                        info[i].append(user[2])
+                if j == 2:
+                    info[i].append(data[i][2])
+        data = info
+        for details in range(len(data)):
+            for fields in range(len(data[details])):
+                self.label = ctk.CTkLabel(master=self.__MCADframe, text=data[details][fields],
                                           font=(configure.font, 20))
                 self.label.grid(row=details + 1, column=fields, sticky='nsew', padx=20, pady=10)
 
