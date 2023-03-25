@@ -36,10 +36,10 @@ class AttendanceSqliteServices:
             self.cursor.execute("INSERT INTO Attendance (Id, TableName) VALUES ({}, '{}')".format(Id, name))
 
         self.cursor.execute(
-            "CREATE TABLE IF NOT EXISTS {} (Id INTEGER, EnrollmentNo TEXT, Time TEXT)".format(name))
+            "CREATE TABLE IF NOT EXISTS {} (Id INTEGER, EnrollmentNo TEXT, Time TEXT, Subject TEXT)".format(name))
         self.conn.commit()
 
-    def insertAttendance(self, name, enrollno):
+    def insertAttendance(self, name, enrollno, subject):
         """
         This method inserts the attendance details into the table.
         :param name: The name of the table
@@ -49,8 +49,8 @@ class AttendanceSqliteServices:
         self.cursor.execute("SELECT Id FROM {}".format("A" + name))
         Id = len(list(self.cursor.fetchall())) + 1
         self.cursor.execute(
-            "INSERT INTO {} (Id, EnrollmentNo, Time) VALUES ({}, '{}', datetime('now', 'localtime'))".format("A" + name, Id,
-                                                                                                             enrollno))
+            "INSERT INTO {} (Id, EnrollmentNo, Time, Subject) VALUES ({}, '{}', datetime('now', 'localtime'), '{}')".format("A" + name, Id,
+                                                                                                             enrollno, subject))
         self.conn.commit()
 
     def getAttendance(self, name):
@@ -62,6 +62,15 @@ class AttendanceSqliteServices:
         self.cursor.execute("SELECT * FROM {}".format("A" + name))
         return self.cursor.fetchall()
 
+    def getAttendanceWithSubject(self, name, subject):
+        """
+        This method returns the attendance details of the table.
+        :param name: The name of the table
+        :return: List of tuples containing the attendance details of the table.
+        """
+        self.cursor.execute("SELECT * FROM {} WHERE Subject='{}'".format("A" + name, subject))
+        return self.cursor.fetchall()
+
     def getEnrollment(self, name):
         """
         This method returns the enrollment numbers of the students.
@@ -69,6 +78,15 @@ class AttendanceSqliteServices:
         :return: List of tuples containing the enrollment numbers of the students.
         """
         self.cursor.execute("SELECT EnrollmentNo FROM {}".format("A" + name))
+        return self.cursor.fetchall()
+
+    def getEnrollmentWithSubject(self, name, subject):
+        """
+        This method returns the enrollment numbers of the students.
+        :param name: The name of the table
+        :return: List of tuples containing the enrollment numbers of the students.
+        """
+        self.cursor.execute("SELECT EnrollmentNo FROM {} WHERE Subject='{}'".format("A" + name, subject))
         return self.cursor.fetchall()
 
     def getTableDetails(self):

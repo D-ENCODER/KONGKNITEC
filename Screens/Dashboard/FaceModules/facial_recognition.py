@@ -19,7 +19,7 @@ from Screens.Refactor.customWidgets import CustomWidgets
 
 
 class FacialRecognition(ctk.CTkToplevel):
-    def __init__(self):
+    def __init__(self, subject):
         super().__init__()
         self.title("Facial Recognition")
         self.protocol("WM_DELETE_WINDOW", self.onClosing)
@@ -43,6 +43,7 @@ class FacialRecognition(ctk.CTkToplevel):
         self.__attendancesql = AttendanceSqliteServices()
         self.__attendancesql.createTable(self.__date)
         self.__videoCapture = cv2.VideoCapture(0)
+        self.__subject = subject
         with open('Dataset/TrainedData/trained_dataset.dat', 'rb') as f:
             self.all_face_encodings = pickle.load(f)
         self.__knownFaceNames = list(self.all_face_encodings.keys())
@@ -87,13 +88,13 @@ class FacialRecognition(ctk.CTkToplevel):
                     name = 'A' + name
 
             if name != "Unknown":
-                enrolls = list(self.__attendancesql.getEnrollment(self.__date))
+                enrolls = list(self.__attendancesql.getEnrollmentWithSubject(self.__date, self.__subject))
                 for i in enrolls:
                     enrolls[enrolls.index(i)] = i[0]
                 if name not in enrolls:
                     self.__textarea.configure(state="normal")
                     self.__textarea.insert("0.0", name + " attendance marked successfully\n")
-                    self.__attendancesql.insertAttendance(self.__date, name)
+                    self.__attendancesql.insertAttendance(self.__date, name, self.__subject)
                     self.enrolls.append(name)
                     self.__textarea.configure(state="disabled")
                 else:

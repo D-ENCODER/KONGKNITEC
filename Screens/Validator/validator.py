@@ -42,7 +42,8 @@ def validate_enrollment(**kwargs):
     """
     if 13 > len(kwargs['parent'].enrollment_entry.get()) > 0:
         # If the email is valid then remove the error label
-        kwargs['parent'].enrollment_error_label.destroy()
+        if kwargs['parent'].enrollment_error_label.winfo_exists():
+            kwargs['parent'].enrollment_error_label.destroy()
         # reset the color of the entry to default
         kwargs['parent'].enrollment_entry.configure(border_color=configure.dark_gray)
         return True
@@ -69,7 +70,8 @@ def validate_password(**kwargs):
     """
     if Validator.validate_password(kwargs['parent'].password_entry.get())[0]:
         # If the password is valid then remove the error label
-        kwargs['parent'].password_error_label.destroy()
+        if kwargs['parent'].password_error_label.winfo_exists():
+            kwargs['parent'].password_error_label.destroy()
         # reset the color of the entry to default
         kwargs['parent'].password_entry.configure(border_color=configure.dark_gray)
         return True

@@ -34,7 +34,7 @@ class Dashboard(ctk.CTkFrame):
                                        master=master)
             canvas._tkcanvas.config(bg='#1a1a1a')
             canvas.draw()
-            canvas.get_tk_widget().pack()
+            canvas.get_tk_widget()
 
     def __lineGraph(self, master, present, absent, dates):
         with plt.rc_context({'axes.edgecolor': '#1de9b6', 'xtick.color': '#ffffff', 'ytick.color': '#ffffff',
@@ -50,7 +50,7 @@ class Dashboard(ctk.CTkFrame):
                                        master=master)
             canvas._tkcanvas.config(bg='#1a1a1a')
             canvas.draw()
-            canvas.get_tk_widget().pack() 
+            canvas.get_tk_widget().grid(row=0, column=0, pady=0, padx=0)
 
     def __emptyData(self, master):
         self.__empty = ctk.CTkLabel(master, text='No Data Found', fg_color=configure.very_dark_gray)

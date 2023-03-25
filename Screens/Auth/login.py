@@ -104,7 +104,7 @@ class Login(ctk.CTkFrame):
         # are valid and legit
         def _verifyLogin():
             # if email is valid and password is valid then login
-            if validate_password(parent=self.frame) and validate_enrollment(parent=self.frame):
+            if validate_password(parent=self) and validate_enrollment(parent=self):
                 try:
                     requests.get('https://google.com')
                     if self.enrollment_entry.get().startswith('314'):

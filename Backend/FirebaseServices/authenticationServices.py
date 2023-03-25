@@ -69,7 +69,7 @@ class AuthenticationServices:
             query = self.db.collection('User_details').where('Enrollment', '==', int(enroll))
 
         for doc in query.stream():
-            return doc.to_dict()['password']
+            return doc.to_dict()['Password']
         return None
 
     def dbLogin(self, enrollment):

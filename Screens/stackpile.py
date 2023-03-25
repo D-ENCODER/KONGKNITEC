@@ -53,8 +53,8 @@ class StackPile(ctk.CTk):
         self.previous = ''
         self.frame_stack = (
             noInternet.NoInternet, login.Login, signup.Signup, forgotPassword.ForgotPassword, verify.Verify,
-            resetPassword.ResetPassword, personalInfo.UserDetailsStack, mainscreen.MainScreen,
-            splashScreen.SplashScreen
+            resetPassword.ResetPassword, personalInfo.UserDetailsStack, mainscreen.MainScreen
+            # splashScreen.SplashScreen
         )
         # to add the frames to the stack
         for window in self.frame_stack:
