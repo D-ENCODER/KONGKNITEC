@@ -53,8 +53,8 @@ class StackPile(ctk.CTk):
         self.previous = ''
         self.frame_stack = (
             noInternet.NoInternet, login.Login, signup.Signup, forgotPassword.ForgotPassword, verify.Verify,
-            resetPassword.ResetPassword, personalInfo.UserDetailsStack, mainscreen.MainScreen
-            # splashScreen.SplashScreen
+            resetPassword.ResetPassword, personalInfo.UserDetailsStack, mainscreen.MainScreen,
+            splashScreen.SplashScreen
         )
         # to add the frames to the stack
         for window in self.frame_stack:
@@ -65,7 +65,7 @@ class StackPile(ctk.CTk):
             self.frames[page_name] = frame
             # to place the frame on the main frame
             frame.grid(row=0, column=0, sticky='nsew')
-        self.showFrame("MainScreen", self)
+        self.showFrame("SplashScreen", self)
 
     def showFrame(self, page_name, previous):
         """
