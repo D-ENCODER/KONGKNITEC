@@ -1,6 +1,6 @@
 ![Face Recognition Banner](https://user-images.githubusercontent.com/86153190/184497475-a5e6d0e4-5704-4f01-ad75-e69ea6556744.png)
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 # KONGKNITEC
 
