@@ -1,0 +1,28 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "D-ENCODER",
+      "name": "Het Joshi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86153190?v=4",
+      "profile": "https://het-joshi.web.app/",
+      "contributions": [
+        "code",
+        "research",
+        "projectManagement",
+        "ideas"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "KONGKNITEC",
+  "projectOwner": "D-ENCODER"
+}
