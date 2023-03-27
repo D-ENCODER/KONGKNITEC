@@ -1,4 +1,7 @@
 ![Face Recognition Banner](https://user-images.githubusercontent.com/86153190/184497475-a5e6d0e4-5704-4f01-ad75-e69ea6556744.png)
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 # KONGKNITEC
 
 ## What is Face Recognition?
@@ -31,3 +34,25 @@ python3 main.py
 ```
 
 ## Special Thanks To The Team
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/saket0x07"><img src="https://avatars.githubusercontent.com/u/109578300?v=4?s=100" width="100px;" alt="saket0x07"/><br /><sub><b>saket0x07</b></sub></a><br /><a href="#design-saket0x07" title="Design">🎨</a> <a href="#ideas-saket0x07" title="Ideas, Planning, & Feedback">🤔</a> <a href="#content-saket0x07" title="Content">🖋</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
