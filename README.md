@@ -40,6 +40,7 @@ python3 main.py
 <table>
   <tbody>
     <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Maulikatgit"><img src="https://avatars.githubusercontent.com/u/109577079?v=4?s=100" width="100px;" alt="Maulik Parmar"/><br /><sub><b>Maulik Parmar</b></sub></a><br /><a href="https://github.com/D-ENCODER/KONGKNITEC/commits?author=Maulikatgit" title="Code">💻</a> <a href="#data-Maulikatgit" title="Data">🔣</a> <a href="https://github.com/D-ENCODER/KONGKNITEC/commits?author=Maulikatgit" title="Tests">⚠️</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://het-joshi.web.app/"><img src="https://avatars.githubusercontent.com/u/86153190?v=4?s=100" width="100px;" alt="Het Joshi"/><br /><sub><b>Het Joshi</b></sub></a><br /><a href="https://github.com/D-ENCODER/KONGKNITEC/commits?author=D-ENCODER" title="Code">💻</a> <a href="#research-D-ENCODER" title="Research">🔬</a> <a href="#projectManagement-D-ENCODER" title="Project Management">📆</a> <a href="#ideas-D-ENCODER" title="Ideas, Planning, & Feedback">🤔</a></td>
     </tr>
   </tbody>
