@@ -1,0 +1,27 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "SAHIL-099",
+      "name": "SAHIL-099",
+      "avatar_url": "https://avatars.githubusercontent.com/u/103878012?v=4",
+      "profile": "https://github.com/SAHIL-099",
+      "contributions": [
+        "code",
+        "bug",
+        "test"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "KONGKNITEC",
+  "projectOwner": "D-ENCODER"
+}
