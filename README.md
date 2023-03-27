@@ -31,6 +31,7 @@ python3 main.py
 ```
 
 ## Special Thanks To The Team
+
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
