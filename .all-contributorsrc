@@ -1,0 +1,27 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "Khushi02Donga",
+      "name": "Khushi Donga ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/109589042?v=4",
+      "profile": "https://github.com/Khushi02Donga",
+      "contributions": [
+        "design",
+        "ideas",
+        "doc"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "KONGKNITEC",
+  "projectOwner": "D-ENCODER"
+}
