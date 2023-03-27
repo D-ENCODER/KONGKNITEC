@@ -3,7 +3,6 @@
 # GitHub    : (https://github.com/D-ENCODER)
 # Twitter    : (https://twitter.com/Hetjoshi1684)
 # Version : 1.0.0
-from Backend.auth import FirebaseDatabase
 
 light_cyan = '#64FFDA'
 vivid_cyan = '#1de9b6'
@@ -13,6 +12,5 @@ very_dark_gray = '#1a1a1a'
 screen_width = 0
 screen_height = 0
 font = 'Ubuntu Mono'
-welcome_fontstyle = (font, 14, "bold")
-header_fontstyle = (font, 20, "bold")
-obj = FirebaseDatabase()
+welcome_fontstyle = (font, 19, "bold")
+header_fontstyle = (font, 25, "bold")
