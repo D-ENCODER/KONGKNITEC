@@ -22,8 +22,8 @@ class Attendance(ctk.CTkFrame):
         self.date = datetime.now().strftime("%d%m%Y")
         self.__signupSql = SignupSqliteServices()
         self.__JAVAframe = ctk.CTkScrollableFrame(master=self, fg_color=configure.very_dark_gray,
-                                              width=(configure.screen_width / 4) * 3,
-                                              height=(configure.screen_height - 200))
+                                                  width=(configure.screen_width / 4) * 3,
+                                                  height=(configure.screen_height - 200))
         self.__DBMSframe = ctk.CTkScrollableFrame(master=self, fg_color=configure.very_dark_gray,
                                                   width=(configure.screen_width / 4) * 3,
                                                   height=(configure.screen_height - 200))
@@ -49,8 +49,8 @@ class Attendance(ctk.CTkFrame):
         self.__option = ctk.CTkFrame(master=self, fg_color=configure.very_dark_gray)
         self.__size = (configure.screen_width - (configure.screen_width / 4) - 500)
 
-        def take(self):
-            obj = FacialRecognition(self.sub)
+        def take(parent):
+            obj = FacialRecognition(parent.sub)
 
         ctk.CTkLabel(master=self.__option, text='', width=self.__size).grid(row=0, column=0)
         image = ctk.CTkImage(Image.open('Assets/sync.png'), size=(25, 25))
@@ -86,7 +86,7 @@ class Attendance(ctk.CTkFrame):
             self.__emptyFrame.destroy()
             self.__emptyAttendanceGUI()
         else:
-            self.__frame.destroy()
+            self.__DBMSframe.destroy()
             self.__tableDBMSAttendanceGUI()
 
     def subject(self):
@@ -207,8 +207,8 @@ class Attendance(ctk.CTkFrame):
 
     def __tableNMAAttendanceGUI(self):
         self.__NMAframe = ctk.CTkScrollableFrame(master=self, fg_color=configure.very_dark_gray,
-                                                  width=(configure.screen_width / 4) * 3,
-                                                  height=(configure.screen_height - 200))
+                                                 width=(configure.screen_width / 4) * 3,
+                                                 height=(configure.screen_height - 200))
         self.__NMAframe.grid(row=3, column=0)
         self.__NMAframe.tkraise()
         ctk.CTkLabel(master=self, text='').grid(row=2, column=0)
@@ -281,8 +281,8 @@ class Attendance(ctk.CTkFrame):
 
     def __tableJAVAAttendanceGUI(self):
         self.__JAVAframe = ctk.CTkScrollableFrame(master=self, fg_color=configure.very_dark_gray,
-                                              width=(configure.screen_width / 4) * 3,
-                                              height=(configure.screen_height - 200))
+                                                  width=(configure.screen_width / 4) * 3,
+                                                  height=(configure.screen_height - 200))
         self.__JAVAframe.grid(row=3, column=0)
         self.__JAVAframe.tkraise()
         ctk.CTkLabel(master=self, text='').grid(row=2, column=0)
@@ -314,7 +314,8 @@ class Attendance(ctk.CTkFrame):
         data = info
         for details in range(len(data)):
             for fields in range(len(data[details])):
-                self.label = ctk.CTkLabel(master=self.__JAVAframe, text=data[details][fields], font=(configure.font, 20))
+                self.label = ctk.CTkLabel(master=self.__JAVAframe, text=data[details][fields],
+                                          font=(configure.font, 20))
                 self.label.grid(row=details + 1, column=fields, sticky='nsew', padx=20, pady=10)
 
     def __emptyAttendanceGUI(self):
@@ -365,7 +366,7 @@ class Attendance(ctk.CTkFrame):
                         CustomWidgets.customErrorLabel(parent=frame,
                                                        error_text='Attendance already added', ).grid(row=1, column=0)
                     else:
-                        self.attendanceSql.insertAttendance(self.date, 'M' + enrollment)
+                        self.attendanceSql.insertAttendance(self.date, 'M' + enrollment, self.sub)
                         window.destroy()
 
         button = CustomWidgets.customButton(parent=frame, text='Add', command=lambda: addDataset(entry.get()))

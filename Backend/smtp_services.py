@@ -131,8 +131,7 @@ def sendWelcome(email, name, bool):
               'free to use(no subscription required). If you want the source code then link is down below, ' \
               'and do give it a star to support the project.</p><p style="padding-bottom: 16px"><a ' \
               'href="https://github.com/D-ENCODER/KONGKNITEC" style="color:#1de9b6">Link to source ' \
-              'code</a></p><p>Warm regards,</p><p style="padding-bottom: 16px">Het Joshi<br><span style="color: ' \
-              '#999">Project leader and developer</span><br><span style="color: #999">The Kongknitec ' \
+              'code</a></p><p>Warm regards,</p></span><br><span style="color: #999">The Kongknitec ' \
               'Team</span></p></div><div style="padding-top: 20px; color: #1de9b6; text-align: center;"><p ' \
               'style="padding-bottom: 16px">Made with ♥ by Kongknitec ' \
               'Team</p></div></div></td></tr></tbody></table></td></tr></tbody></table></body></html> '

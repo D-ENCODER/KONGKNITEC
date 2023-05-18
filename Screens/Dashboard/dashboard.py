@@ -15,6 +15,7 @@ from Backend.SqliteServices.signup_sqlite_services import SignupSqliteServices
 
 
 class Dashboard(ctk.CTkFrame):
+    
     def __init__(self, **kwargs):
         ctk.CTkFrame.__init__(self, kwargs['parent'], fg_color=configure.very_dark_gray)
         self.__parent = kwargs['parent']
@@ -28,11 +29,11 @@ class Dashboard(ctk.CTkFrame):
             fig = Figure(figsize=(4, 4), dpi=100)
             plot1 = fig.add_subplot(111)
             plot1.set_facecolor('#1a1a1a')
-            plot1.pie(x=data, labels=['Automatic', 'Mannual'], colors=['#1de9b6', '#eeeeee'], shadow=True,
+            plot1.pie(x=data, labels=['Automatic', 'Manual'], colors=['#1de9b6', '#eeeeee'], shadow=True,
                       explode=[0.1, 0])
             canvas = FigureCanvasTkAgg(fig,
                                        master=master)
-            canvas._tkcanvas.config(bg='#1a1a1a')
+            canvas.tkcanvas.config(bg='#1a1a1a')
             canvas.draw()
             canvas.get_tk_widget()
 
