@@ -1,4 +1,7 @@
 ![Face Recognition Banner](https://user-images.githubusercontent.com/86153190/184497475-a5e6d0e4-5704-4f01-ad75-e69ea6556744.png)
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 # KONGKNITEC
 
 ## What is Face Recognition?
@@ -31,3 +34,22 @@ python3 main.py
 ```
 
 ## Special Thanks To The Team
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://het-joshi.web.app/"><img src="https://avatars.githubusercontent.com/u/86153190?v=4?s=100" width="100px;" alt="Het Joshi"/><br /><sub><b>Het Joshi</b></sub></a><br /><a href="https://github.com/D-ENCODER/KONGKNITEC/commits?author=D-ENCODER" title="Code">💻</a> <a href="#research-D-ENCODER" title="Research">🔬</a> <a href="#projectManagement-D-ENCODER" title="Project Management">📆</a> <a href="#ideas-D-ENCODER" title="Ideas, Planning, & Feedback">🤔</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Maulikatgit"><img src="https://avatars.githubusercontent.com/u/109577079?v=4?s=100" width="100px;" alt="Maulik Parmar"/><br /><sub><b>Maulik Parmar</b></sub></a><br /><a href="https://github.com/D-ENCODER/KONGKNITEC/commits?author=Maulikatgit" title="Code">💻</a> <a href="#data-Maulikatgit" title="Data">🔣</a> <a href="https://github.com/D-ENCODER/KONGKNITEC/commits?author=Maulikatgit" title="Tests">⚠️</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/saket0x07"><img src="https://avatars.githubusercontent.com/u/109578300?v=4?s=100" width="100px;" alt="saket0x07"/><br /><sub><b>saket0x07</b></sub></a><br /><a href="#design-saket0x07" title="Design">🎨</a> <a href="#ideas-saket0x07" title="Ideas, Planning, & Feedback">🤔</a> <a href="#content-saket0x07" title="Content">🖋</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/ShreyBParmar"><img src="https://avatars.githubusercontent.com/u/103874657?v=4?s=100" width="100px;" alt="ShreyBParmar"/><br /><sub><b>ShreyBParmar</b></sub></a><br /><a href="https://github.com/D-ENCODER/KONGKNITEC/commits?author=ShreyBParmar" title="Documentation">📖</a> <a href="#design-ShreyBParmar" title="Design">🎨</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/SAHIL-099"><img src="https://avatars.githubusercontent.com/u/103878012?v=4?s=100" width="100px;" alt="SAHIL-099"/><br /><sub><b>SAHIL-099</b></sub></a><br /><a href="https://github.com/D-ENCODER/KONGKNITEC/commits?author=SAHIL-099" title="Code">💻</a> <a href="https://github.com/D-ENCODER/KONGKNITEC/issues?q=author%3ASAHIL-099" title="Bug reports">🐛</a> <a href="https://github.com/D-ENCODER/KONGKNITEC/commits?author=SAHIL-099" title="Tests">⚠️</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Khushi02Donga"><img src="https://avatars.githubusercontent.com/u/109589042?v=4?s=100" width="100px;" alt="Khushi Donga "/><br /><sub><b>Khushi Donga </b></sub></a><br /><a href="#design-Khushi02Donga" title="Design">🎨</a> <a href="#ideas-Khushi02Donga" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/D-ENCODER/KONGKNITEC/commits?author=Khushi02Donga" title="Documentation">📖</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
